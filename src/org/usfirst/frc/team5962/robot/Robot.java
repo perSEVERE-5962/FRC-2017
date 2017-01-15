@@ -6,9 +6,11 @@ import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
+import edu.wpi.first.wpilibj.networktables.NetworkTable;
 
 import org.usfirst.frc.team5962.robot.commands.ExampleCommand;
 import org.usfirst.frc.team5962.robot.sensors.RobotUltrasonicAnalog;
+import org.usfirst.frc.team5962.robot.subsystems.Camera;
 import org.usfirst.frc.team5962.robot.subsystems.Drive;
 import org.usfirst.frc.team5962.robot.subsystems.ExampleSubsystem;
 import org.usfirst.frc.team5962.robot.subsystems.GripPipeline;
@@ -33,10 +35,18 @@ import edu.wpi.first.wpilibj.vision.VisionThread;
  */
 public class Robot extends IterativeRobot {
 
+	NetworkTable table;
+	
+	public Robot(){
+		table = NetworkTable.getTable("GRIP/myContentReport");
+	}
+	
 	public static final ExampleSubsystem exampleSubsystem = new ExampleSubsystem();
 	public static OI oi;
 	private static final int IMG_WIDTH = 320;
 	private static final int IMG_HEIGHT = 240;
+	
+	public static Camera camera;
 	
 	private VisionThread visionThread;
 	private double centerX = 0.0;
@@ -55,18 +65,19 @@ public class Robot extends IterativeRobot {
      */
     public void robotInit() {
 		RobotMap.init();
-	    UsbCamera camera = CameraServer.getInstance().startAutomaticCapture();
-	    camera.setResolution(IMG_WIDTH, IMG_HEIGHT);
-	    
-	    visionThread = new VisionThread(camera, new GripPipeline(), pipeline -> {
-	        if (!pipeline.filterContoursOutput().isEmpty()) {
-	            Rect r = Imgproc.boundingRect(pipeline.filterContoursOutput().get(0));
-	            synchronized (imgLock) {
-	                centerX = r.x + (r.width / 2);
-	            }
-	        }
-	    });
-	    visionThread.start();		
+		camera = new Camera();
+//	    UsbCamera camera = CameraServer.getInstance().startAutomaticCapture();
+//	    camera.setResolution(IMG_WIDTH, IMG_HEIGHT);
+//	    
+//	    visionThread = new VisionThread(camera, new GripPipeline(), pipeline -> {
+//	        if (!pipeline.filterContoursOutput().isEmpty()) {
+//	            Rect r = Imgproc.boundingRect(pipeline.filterContoursOutput().get(0));
+//	            synchronized (imgLock) {
+//	                centerX = r.x + (r.width / 2);
+//	            }
+//	        }
+//	    });
+//	    visionThread.start();		
 		drive = new Drive();
 	    ultrasonicShoot = new RobotUltrasonicAnalog(0);
 		oi = new OI();

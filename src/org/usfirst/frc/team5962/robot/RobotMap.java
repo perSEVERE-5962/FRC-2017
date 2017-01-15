@@ -2,6 +2,7 @@ package org.usfirst.frc.team5962.robot;
 
 import edu.wpi.first.wpilibj.RobotDrive;
 import edu.wpi.first.wpilibj.SpeedController;
+//import com.ctre.CANTalon;
 import edu.wpi.first.wpilibj.Victor;
 
 /**
@@ -11,35 +12,26 @@ import edu.wpi.first.wpilibj.Victor;
  * floating around.
  */
 public class RobotMap {
-    // For example to map the left and right motors, you could define the
-    // following variables to use with your drivetrain subsystem.
-    // public static int leftMotor = 1;
-    // public static int rightMotor = 2;
-    
-    // If you are using multiple modules, make sure to define both the port
-    // number and the module. For example you with a rangefinder:
-    // public static int rangefinderPort = 1;
-    // public static int rangefinderModule = 1;
 	public static RobotDrive myRobot;
 	
 	public static Victor ledVictor;
-	public static Victor testRobotLeftVictor1;
-	public static Victor testRobotLeftVictor2;
-	public static Victor testRobotRightVictor1;
-	public static Victor testRobotRightVictor2;
+	public static Victor robotLeftVictor1;
+	public static Victor robotLeftVictor2;
+	public static Victor robotRightVictor1;
+	public static Victor robotRightVictor2;
 	
 	public static void init() {
 		ledVictor = new Victor(4);
 
 		SpeedController leftDrive;
 		SpeedController rightDrive;
-		testRobotLeftVictor1 = new Victor(0);
-		testRobotLeftVictor2 = new Victor(1);
-		testRobotRightVictor1 = new Victor(6);
-		testRobotRightVictor2 = new Victor(7);
+		robotLeftVictor1 = new Victor(0);
+		robotLeftVictor2 = new Victor(1);
+		robotRightVictor1 = new Victor(6);
+		robotRightVictor2 = new Victor(7);
 		
-	    leftDrive = new MultiSpeedController(testRobotLeftVictor1, testRobotLeftVictor2);
-	    rightDrive = new MultiSpeedController(testRobotRightVictor1, testRobotRightVictor2);
+	    leftDrive = new MultiSpeedController(robotLeftVictor1, robotLeftVictor2);
+	    rightDrive = new MultiSpeedController(robotRightVictor1, robotRightVictor2);
 		myRobot = new RobotDrive(leftDrive, rightDrive);
 
 	}

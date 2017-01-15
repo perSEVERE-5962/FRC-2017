@@ -9,15 +9,14 @@ public class RobotUltrasonicAnalog extends RobotUltrasonicBase{
 
     public RobotUltrasonicAnalog(int channel) {
 		ultrasonic = new AnalogInput(channel);   
-//		SmartDashboard.putBoolean("Enable Analog Ultrasonic Range Finder", true);
+
+		SmartDashboard.putBoolean("Enable Analog Ultrasonic Range Finder", true);
    }
     public double getRange() {
-//    	return ultrasonic.getValue()*valueToInches; //sensor returns a value from 0-4095 that is scaled to inches 
-    	return ultrasonic.getValue();
+    	return ultrasonic.getValue()*valueToInches; //sensor returns a value from 0-4095 that is scaled to inches 
     }
 	
 	public boolean isEnabled() {
-//		return SmartDashboard.getBoolean("Enable Analog Ultrasonic Range Finder");
-		return true;
+		return SmartDashboard.getBoolean("Enable Analog Ultrasonic Range Finder");
 	}
 }
