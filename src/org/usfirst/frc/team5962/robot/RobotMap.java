@@ -2,6 +2,7 @@ package org.usfirst.frc.team5962.robot;
 
 import edu.wpi.first.wpilibj.RobotDrive;
 import edu.wpi.first.wpilibj.SpeedController;
+//import com.ctre.CANTalon;
 import edu.wpi.first.wpilibj.Victor;
 
 /**
@@ -11,12 +12,6 @@ import edu.wpi.first.wpilibj.Victor;
  * floating around.
  */
 public class RobotMap {
-    
-	//Victors
-//	private static Victor leftVictor1;
-//	private static Victor leftVictor2;
-//	private static Victor rightVictor1;
-//	private static Victor rightVictor2;
 	
 	//PWM Channels
 //	public final static int PWM_CHANNEL_0 = 0;
@@ -42,16 +37,28 @@ public class RobotMap {
 //	public final static int DIO_CHANNEL_8 = 8;
 //	public final static int DIO_CHANNEL_9 = 9;
 	
-	public static void init(){
-		configureRobotDrive();
-	}
+
+	public static RobotDrive myRobot;
 	
-	private static void configureRobotDrive(){
-//		leftVictor1 = new Victor(PWM_CHANNEL_0);
-//		leftVictor2 = new Victor(PWM_CHANNEL_1);
-//		rightVictor1 = new Victor(PWM_CHANNEL_2);
-//		rightVictor2 = new Victor(PWM_CHANNEL_3);
+	public static Victor ledVictor;
+	public static Victor robotLeftVictor1;
+	public static Victor robotLeftVictor2;
+	public static Victor robotRightVictor1;
+	public static Victor robotRightVictor2;
+	
+	public static void init() {
+		ledVictor = new Victor(4);
+
+		SpeedController leftDrive;
+		SpeedController rightDrive;
+		robotLeftVictor1 = new Victor(0);
+		robotLeftVictor2 = new Victor(1);
+		robotRightVictor1 = new Victor(6);
+		robotRightVictor2 = new Victor(7);
 		
+	    leftDrive = new MultiSpeedController(robotLeftVictor1, robotLeftVictor2);
+	    rightDrive = new MultiSpeedController(robotRightVictor1, robotRightVictor2);
+		myRobot = new RobotDrive(leftDrive, rightDrive);
+
 	}
-	
 }

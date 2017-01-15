@@ -1,6 +1,9 @@
 package org.usfirst.frc.team5962.robot;
 
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.Button;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
 import org.usfirst.frc.team5962.robot.commands.ExampleCommand;
 
 /**
@@ -34,5 +37,24 @@ public class OI {
     // Start the command when the button is released  and let it run the command
     // until it is finished as determined by it's isFinished method.
     // button.whenReleased(new ExampleCommand());
+	
+	public Joystick gamePad1;
+	private String currentDriveMode = "";
+
+	public OI() {
+
+		// add game controllers
+		gamePad1 = new Joystick(0);
+	}
+	public double getCoPilotRightTrigger() {
+		double value = gamePad1.getRawAxis(3);
+		return value;
+	}
+	
+	public void setCurrentDriverMode(String mode) {
+		currentDriveMode = mode;
+		SmartDashboard.putString("Driver Mode Choose", currentDriveMode);
+	}
+
 }
 
