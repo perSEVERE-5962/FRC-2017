@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj.networktables.NetworkTable;
 import org.usfirst.frc.team5962.robot.commands.ExampleCommand;
 import org.usfirst.frc.team5962.robot.sensors.RobotUltrasonicAnalog;
 import org.usfirst.frc.team5962.robot.subsystems.Camera;
+import org.usfirst.frc.team5962.robot.subsystems.CameraTwo;
 import org.usfirst.frc.team5962.robot.subsystems.Drive;
 import org.usfirst.frc.team5962.robot.subsystems.ExampleSubsystem;
 import org.usfirst.frc.team5962.robot.subsystems.GripPipeline;
@@ -49,7 +50,11 @@ public class Robot extends IterativeRobot {
 	private static final int IMG_HEIGHT = 240;
 	
 	public static Camera camera;
+<<<<<<< HEAD
 	public static Pneumatics pneumatics;
+=======
+	public static CameraTwo camerTwo;
+>>>>>>> KoopaFreak600
 	
 	private VisionThread visionThread;
 	private double centerX = 0.0;
