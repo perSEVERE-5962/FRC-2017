@@ -1,5 +1,4 @@
 package org.usfirst.frc.team5962.robot.subsystems;
-import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
@@ -10,18 +9,18 @@ import edu.wpi.cscore.CvSink;
 import edu.wpi.cscore.CvSource;
 import edu.wpi.cscore.UsbCamera;
 import edu.wpi.cscore.CameraServerJNI;
-import edu.wpi.first.wpilibj.CameraServer;
+import org.usfirst.frc.team5962.robot.CameraServer2;
 import edu.wpi.first.wpilibj.IterativeRobot;
 
 
-public class Camera extends Subsystem {
-	public Camera() {
+public class CameraTwo extends Subsystem {
+	public CameraTwo() {
         new Thread(() -> {
-            UsbCamera camera = CameraServer.getInstance().startAutomaticCapture();
+            UsbCamera camera = CameraServer2.getInstance().startAutomaticCapture();
             camera.setResolution(640, 480);
             
-            CvSink cvSink = CameraServer.getInstance().getVideo();
-            CvSource outputStream = CameraServer.getInstance().putVideo("Blur", 640, 480);
+            CvSink cvSink = CameraServer2.getInstance().getVideo();
+            CvSource outputStream = CameraServer2.getInstance().putVideo("Blur", 640, 480);
             
             Mat source = new Mat();
             Mat output1 = new Mat();
