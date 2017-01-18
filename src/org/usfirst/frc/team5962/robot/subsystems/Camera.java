@@ -16,7 +16,7 @@ import edu.wpi.first.wpilibj.IterativeRobot;
 public class Camera extends Subsystem {
 	public Camera() {
         new Thread(() -> {
-            UsbCamera camera = CameraServer.getInstance().startAutomaticCapture();
+           UsbCamera camera = CameraServer.getInstance().startAutomaticCapture();
             camera.setResolution(640, 480);
             
             CvSink cvSink = CameraServer.getInstance().getVideo();

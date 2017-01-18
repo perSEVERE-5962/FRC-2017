@@ -2,6 +2,7 @@
 package org.usfirst.frc.team5962.robot;
 
 import edu.wpi.first.wpilibj.IterativeRobot;
+
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
@@ -14,6 +15,7 @@ import org.usfirst.frc.team5962.robot.subsystems.Camera;
 import org.usfirst.frc.team5962.robot.subsystems.Drive;
 import org.usfirst.frc.team5962.robot.subsystems.ExampleSubsystem;
 import org.usfirst.frc.team5962.robot.subsystems.GripPipeline;
+import org.usfirst.frc.team5962.robot.subsystems.Pneumatics;
 
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -26,8 +28,8 @@ import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.RobotDrive;
 import edu.wpi.first.wpilibj.vision.VisionRunner;
 import edu.wpi.first.wpilibj.vision.VisionThread;
-/**
- * The VM is configured to automatically run this class, and to call the
+
+ /* The VM is configured to automatically run this class, and to call the
  * functions corresponding to each mode, as described in the IterativeRobot
  * documentation. If you change the name of this class or the package after
  * creating this project, you must also update the manifest file in the resource
@@ -47,6 +49,7 @@ public class Robot extends IterativeRobot {
 	private static final int IMG_HEIGHT = 240;
 	
 	public static Camera camera;
+	public static Pneumatics pneumatics;
 	
 	private VisionThread visionThread;
 	private double centerX = 0.0;
@@ -81,6 +84,7 @@ public class Robot extends IterativeRobot {
 		drive = new Drive();
 	    ultrasonicShoot = new RobotUltrasonicAnalog(0);
 		oi = new OI();
+		pneumatics = new Pneumatics();
 
 //        chooser = new SendableChooser();
 //        chooser.addDefault("Default Auto", new ExampleCommand());
@@ -161,9 +165,53 @@ public class Robot extends IterativeRobot {
     /**
      * This function is called periodically during operator control
      */
+    Solenoid green = new Solenoid(0);
+    Solenoid red = new Solenoid(1);
+    Solenoid blue = new Solenoid(2);
+    Solenoid yellow = new Solenoid(3);
     public void teleopPeriodic() {
         Scheduler.getInstance().run();
     	SmartDashboard.putNumber("UR", ultrasonicShoot.getRange());
+    	
+    	if(oi.getGreenAButton() == true)
+    	{
+    		green.set(true);
+    		
+    	}
+    	else
+    	{
+    		green.set(false);
+    	}
+    	
+    	if(oi.getRedBButton() == true)
+    	{
+    		red.set(true);
+    		
+    	}
+    	else
+    	{
+    		red.set(false);
+    	}
+    	
+    	if(oi.getBlueXButton() == true)
+    	{
+    		blue.set(true);
+    		
+    	}
+    	else
+    	{
+    		blue.set(false);
+    	}
+    	if(oi.getYellowYButton() == true)
+    	{
+    		yellow.set(true);
+    		
+    	}
+    	else
+    	{
+    		yellow.set(false);
+    	}
+    	
     }
     
     /**
@@ -188,5 +236,6 @@ public class Robot extends IterativeRobot {
 //		} else {
 //			RobotMap.ledVictor.set(0);		
 //		}
+			
 	}
 }
