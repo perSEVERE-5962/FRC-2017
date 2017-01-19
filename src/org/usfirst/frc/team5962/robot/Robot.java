@@ -50,11 +50,8 @@ public class Robot extends IterativeRobot {
 	private static final int IMG_HEIGHT = 240;
 	
 	public static Camera camera;
-<<<<<<< HEAD
 	public static Pneumatics pneumatics;
-=======
 	public static CameraTwo camerTwo;
->>>>>>> KoopaFreak600
 	
 	private VisionThread visionThread;
 	private double centerX = 0.0;
