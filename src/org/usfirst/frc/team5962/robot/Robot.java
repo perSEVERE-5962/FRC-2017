@@ -10,6 +10,8 @@ import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.networktables.NetworkTable;
 
 import org.usfirst.frc.team5962.robot.commands.ExampleCommand;
+import org.usfirst.frc.team5962.robot.sensors.RobotEncoder;
+import org.usfirst.frc.team5962.robot.sensors.RobotGyro;
 import org.usfirst.frc.team5962.robot.sensors.RobotUltrasonicAnalog;
 import org.usfirst.frc.team5962.robot.subsystems.Camera;
 import org.usfirst.frc.team5962.robot.subsystems.CameraTwo;
@@ -17,6 +19,9 @@ import org.usfirst.frc.team5962.robot.subsystems.Drive;
 import org.usfirst.frc.team5962.robot.subsystems.ExampleSubsystem;
 import org.usfirst.frc.team5962.robot.subsystems.GripPipeline;
 import org.usfirst.frc.team5962.robot.subsystems.Pneumatics;
+import org.usfirst.frc.team5962.robot.subsystems.ShootingMechnasim;
+import org.usfirst.frc.team5962.robot.subsystems.scalingMechnasim;
+import org.usfirst.frc.team5962.robot.subsystems.BallIntake;
 
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -50,17 +55,21 @@ public class Robot extends IterativeRobot {
 	private static final int IMG_HEIGHT = 240;
 	
 	public static Camera camera;
-<<<<<<< HEAD
+
 	public static Pneumatics pneumatics;
-=======
+
 	public static CameraTwo camerTwo;
->>>>>>> KoopaFreak600
+	public static BallIntake intake;
+	public static ShootingMechnasim ballshooting;
+	public static scalingMechnasim scaling;
 	
 	private VisionThread visionThread;
 	private double centerX = 0.0;
 	public static Drive drive;
 	
     public static RobotUltrasonicAnalog ultrasonicShoot;
+    public static RobotGyro gyro= new RobotGyro();
+    public static RobotEncoder encoder = new RobotEncoder();
 	
 	private final Object imgLock = new Object();
 //    Command autonomousCommand;
@@ -73,6 +82,7 @@ public class Robot extends IterativeRobot {
      */
     public void robotInit() {
 		RobotMap.init();
+		
 		camera = new Camera();
 //	    UsbCamera camera = CameraServer.getInstance().startAutomaticCapture();
 //	    camera.setResolution(IMG_WIDTH, IMG_HEIGHT);
@@ -90,7 +100,10 @@ public class Robot extends IterativeRobot {
 	    ultrasonicShoot = new RobotUltrasonicAnalog(0);
 		oi = new OI();
 		pneumatics = new Pneumatics();
-
+		gyro.resetGyro();
+		intake = new BallIntake();
+		ballshooting = new ShootingMechnasim();
+		scaling = new scalingMechnasim();
 //        chooser = new SendableChooser();
 //        chooser.addDefault("Default Auto", new ExampleCommand());
 ////        chooser.addObject("My Auto", new MyAutoCommand());
@@ -106,7 +119,7 @@ public class Robot extends IterativeRobot {
      */
     public void disabledInit(){
     	// start with the LED ring off
-		RobotMap.ledVictor.set(0);		
+//		RobotMap.ledVictor.set(0);		
     }
 	
 	public void disabledPeriodic() {
@@ -140,7 +153,7 @@ public class Robot extends IterativeRobot {
 //        if (autonomousCommand != null) autonomousCommand.start();
     	
     	// turn the LED ring on
-    	RobotMap.ledVictor.set(1);
+//    	RobotMap.ledVictor.set(1);
     }
 
     /**
@@ -164,7 +177,7 @@ public class Robot extends IterativeRobot {
 //        if (autonomousCommand != null) autonomousCommand.cancel();
     	
     	// start with the LED ring off
-		RobotMap.ledVictor.set(0);		
+//		RobotMap.ledVictor.set(0);		
     }
 
     /**
@@ -178,6 +191,34 @@ public class Robot extends IterativeRobot {
         Scheduler.getInstance().run();
     	SmartDashboard.putNumber("UR", ultrasonicShoot.getRange());
     	
+    	if (oi.getIntakeButton() == true)
+    	{
+    		intake.inTakeBall();
+    		
+    	}
+    	else 
+    	{
+    		intake.stop();
+    	}
+    	if (oi.getShootingBall() == true)
+    	{
+    		ballshooting.shootingBall();
+    		
+    	}
+    	else 
+    	{
+    		ballshooting.stop();
+    	}
+
+    	if (oi.getScaling() == true)
+    	{
+    		scaling.scaling();
+    		
+    	}
+    	else 
+    	{
+    		scaling.stop();
+    	}
     	if(oi.getGreenAButton() == true)
     	{
     		green.set(true);
@@ -237,7 +278,7 @@ public class Robot extends IterativeRobot {
    	
 //		if (oi.getCoPilotRightTrigger() >= 0.5)
 //		{	
-			RobotMap.ledVictor.set(1);		
+//			RobotMap.ledVictor.set(1);		
 //		} else {
 //			RobotMap.ledVictor.set(0);		
 //		}
