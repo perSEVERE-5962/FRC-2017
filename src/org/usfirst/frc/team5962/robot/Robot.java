@@ -17,7 +17,10 @@ import org.usfirst.frc.team5962.robot.subsystems.Camera;
 import org.usfirst.frc.team5962.robot.subsystems.CameraTwo;
 import org.usfirst.frc.team5962.robot.subsystems.Drive;
 import org.usfirst.frc.team5962.robot.subsystems.ExampleSubsystem;
+import org.usfirst.frc.team5962.robot.subsystems.GearMechanism;
 import org.usfirst.frc.team5962.robot.subsystems.GripPipeline;
+import org.usfirst.frc.team5962.robot.subsystems.LimitSwitchclose;
+import org.usfirst.frc.team5962.robot.subsystems.LimitSwitchopen;
 import org.usfirst.frc.team5962.robot.subsystems.Pneumatics;
 import org.usfirst.frc.team5962.robot.subsystems.ShootingMechnasim;
 import org.usfirst.frc.team5962.robot.subsystems.scalingMechnasim;
@@ -31,6 +34,7 @@ import org.opencv.imgproc.Imgproc;
 import com.ctre.CANTalon;
 import edu.wpi.cscore.UsbCamera;
 import edu.wpi.first.wpilibj.CameraServer;
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.RobotDrive;
 import edu.wpi.first.wpilibj.vision.VisionRunner;
 import edu.wpi.first.wpilibj.vision.VisionThread;
@@ -61,6 +65,9 @@ public class Robot extends IterativeRobot {
 	public static BallIntake intake;
 	public static ShootingMechnasim ballshooting;
 	public static scalingMechnasim scaling;
+	public static GearMechanism gearmechanism;
+	public static LimitSwitchopen limitSwitchright;
+	public static LimitSwitchclose limitSwitchleft;
 	
 	private VisionThread visionThread;
 	private double centerX = 0.0;
@@ -70,10 +77,10 @@ public class Robot extends IterativeRobot {
     public static RobotGyro gyro= new RobotGyro();
     public static RobotEncoder encoder = new RobotEncoder();
 	
-	private final Object imgLock = new Object();
-//    Command autonomousCommand;
-//    SendableChooser chooser;
-//	Solenoid exampleSolenoid = new Solenoid(0);
+	//private final Object imgLock = new Object();
+    Command autonomousCommand;
+    SendableChooser chooser;
+	//Solenoid exampleSolenoid = new Solenoid(0);
 
     /**
      * This function is run when the robot is first started up and should be
@@ -81,20 +88,22 @@ public class Robot extends IterativeRobot {
      */
     public void robotInit() {
 		RobotMap.init();
-		
+	
+	/*	
 		camera = new Camera();
-//	    UsbCamera camera = CameraServer.getInstance().startAutomaticCapture();
-//	    camera.setResolution(IMG_WIDTH, IMG_HEIGHT);
-//	    
-//	    visionThread = new VisionThread(camera, new GripPipeline(), pipeline -> {
-//	        if (!pipeline.filterContoursOutput().isEmpty()) {
-//	            Rect r = Imgproc.boundingRect(pipeline.filterContoursOutput().get(0));
-//	            synchronized (imgLock) {
-//	                centerX = r.x + (r.width / 2);
-//	            }
-//	        }
-//	    });
-//	    visionThread.start();		
+	    UsbCamera camera = CameraServer.getInstance().startAutomaticCapture();
+	    camera.setResolution(IMG_WIDTH, IMG_HEIGHT);
+	    
+	    visionThread = new VisionThread(camera, new GripPipeline(), pipeline -> {
+	        if (!pipeline.filterContoursOutput().isEmpty()) {
+	            Rect r = Imgproc.boundingRect(pipeline.filterContoursOutput().get(0));
+	            synchronized (imgLock) {
+	                centerX = r.x + (r.width / 2);
+	            }
+	        }
+	    });
+	    visionThread.start();	
+	    */
 		drive = new Drive();
 	    ultrasonicShoot = new RobotUltrasonicAnalog(0);
 		oi = new OI();
@@ -103,9 +112,12 @@ public class Robot extends IterativeRobot {
 		intake = new BallIntake();
 		ballshooting = new ShootingMechnasim();
 		scaling = new scalingMechnasim();
-//        chooser = new SendableChooser();
-//        chooser.addDefault("Default Auto", new ExampleCommand());
-////        chooser.addObject("My Auto", new MyAutoCommand());
+		gearmechanism = new GearMechanism();
+		limitSwitchright = new LimitSwitchopen();
+		limitSwitchleft = new LimitSwitchclose(); 
+      //  chooser = new SendableChooser();
+    //    chooser.addDefault("Default Auto", new ExampleCommand());
+  //     chooser.addObject("My Auto", new MyAutoCommand());
 //        SmartDashboard.putData("Auto mode", chooser);
 
 	        
@@ -158,7 +170,7 @@ public class Robot extends IterativeRobot {
     /**
      * This function is called periodically during autonomous
      */
-    public void autonomousPeriodic() {
+  /*  public void autonomousPeriodic() {
         Scheduler.getInstance().run();
     	double centerX;
     	synchronized (imgLock) {
@@ -167,7 +179,7 @@ public class Robot extends IterativeRobot {
     	double turn = centerX - (IMG_WIDTH / 2);
     	RobotMap.myRobot.arcadeDrive(-0.6, turn * 0.005);
     }
-
+*/
     public void teleopInit() {
 		// This makes sure that the autonomous stops running when
         // teleop starts running. If you want the autonomous to 
@@ -186,10 +198,49 @@ public class Robot extends IterativeRobot {
     Solenoid red = new Solenoid(1);
     Solenoid blue = new Solenoid(2);
     Solenoid yellow = new Solenoid(3);
+    boolean downbuttonpress = false;
+    boolean upbuttonpress = false;
     public void teleopPeriodic() {
         Scheduler.getInstance().run();
     	SmartDashboard.putNumber("UR", ultrasonicShoot.getRange());
     	
+     
+    	if (oi.getgearopen() == true)
+    	{
+    		downbuttonpress = true;
+    		gearmechanism.openthegear();
+    		
+    	}
+    	if(downbuttonpress == true && limitSwitchright.islimitSwitchopen() == false )
+    	{
+    		
+    		gearmechanism.gearStop();
+    		downbuttonpress = false;
+    	}
+    	else if(downbuttonpress == true)
+    	{
+    		gearmechanism.openthegear();
+    	}
+    	
+    	
+    	
+    	if (oi.getgearclose() == true)
+    	{
+    		upbuttonpress = true;
+    		gearmechanism.closethegear();
+    		
+    	}
+    	if(upbuttonpress == true && limitSwitchleft.islimitSwitchclose() == false)
+    	{
+    		gearmechanism.gearStop();
+    		upbuttonpress = false;
+    	}
+    	else if (upbuttonpress == true)
+    	//else 
+    	{
+    		gearmechanism.closethegear();
+    		//gearmechanism.gearStop();
+    	}
     	if (oi.getIntakeButton() == true)
     	{
     		intake.inTakeBall();

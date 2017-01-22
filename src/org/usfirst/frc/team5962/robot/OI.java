@@ -36,6 +36,15 @@ public class OI {
 	{
 		return joystickLeft.getRawButton(5);
 	}
+	public boolean getgearclose()
+	{
+		return joystickLeft.getRawButton(6);
+	}
+	public boolean getgearopen()
+	{
+		return joystickLeft.getRawButton(2);
+	}
+	////////////////////////////////////////////////////////
 	public boolean getGreenAButton()
 	{
 	return gamePad1.getRawButton(1);

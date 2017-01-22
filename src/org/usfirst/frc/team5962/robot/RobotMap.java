@@ -20,14 +20,14 @@ public class RobotMap {
 	public final static int PWM_CHANNEL_3 = 3;
 	public final static int PWM_CHANNEL_4 = 4;
 	public final static int PWM_CHANNEL_5 = 5;
-//	public final static int PWM_CHANNEL_6 = 6;
+	public final static int PWM_CHANNEL_6 = 6;
 //	public final static int PWM_CHANNEL_7 = 7;
-//	public final static int PWM_CHANNEL_8 = 8;
+	public final static int PWM_CHANNEL_8 = 8;
 //	public final static int PWM_CHANNEL_9 = 9;
 	
 	//DIO Channels
-//	public final static int DIO_CHANNEL_0 = 0;
-//	public final static int DIO_CHANNEL_1 = 1;
+	public final static int DIO_CHANNEL_0 = 0;
+	public final static int DIO_CHANNEL_1 = 1;
 //	public final static int DIO_CHANNEL_2 = 2;
 //	public final static int DIO_CHANNEL_3 = 3;
 //	public final static int DIO_CHANNEL_4 = 4;
@@ -42,6 +42,8 @@ public class RobotMap {
 	public static Victor inTakeVictor;
 	public static Victor ballShootingvictor;
 	public static Victor scalingvictor;
+	public static Victor gearvictor;
+	public static Victor limitvictor;
 	//public static Victor manipulatorVictor;
 	
 //	public static Victor ledVictor;
@@ -49,6 +51,7 @@ public class RobotMap {
 	public static Victor robotLeftVictor2;
 	public static Victor robotRightVictor1;
 	public static Victor robotRightVictor2;
+	
 	
 	public static void init() {
 //		ledVictor = new Victor(5);
@@ -58,6 +61,12 @@ public class RobotMap {
 		ballShootingvictor.setSafetyEnabled(false);
 		scalingvictor = new Victor(PWM_CHANNEL_5);
 		scalingvictor.setSafetyEnabled(false);
+		gearvictor = new Victor(PWM_CHANNEL_8);
+		gearvictor.setSafetyEnabled(false);
+		
+		
+		
+		
 		
 		SpeedController leftDrive;
 		SpeedController rightDrive;
