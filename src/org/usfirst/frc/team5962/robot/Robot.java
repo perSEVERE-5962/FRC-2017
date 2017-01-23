@@ -9,34 +9,22 @@ import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.networktables.NetworkTable;
 
-import org.usfirst.frc.team5962.robot.commands.ExampleCommand;
 import org.usfirst.frc.team5962.robot.sensors.RobotEncoder;
 import org.usfirst.frc.team5962.robot.sensors.RobotGyro;
 import org.usfirst.frc.team5962.robot.sensors.RobotUltrasonicAnalog;
 import org.usfirst.frc.team5962.robot.subsystems.Camera;
 import org.usfirst.frc.team5962.robot.subsystems.CameraTwo;
 import org.usfirst.frc.team5962.robot.subsystems.Drive;
-import org.usfirst.frc.team5962.robot.subsystems.ExampleSubsystem;
 import org.usfirst.frc.team5962.robot.subsystems.GearMechanism;
-import org.usfirst.frc.team5962.robot.subsystems.GripPipeline;
 import org.usfirst.frc.team5962.robot.subsystems.LimitSwitchclose;
 import org.usfirst.frc.team5962.robot.subsystems.LimitSwitchopen;
 import org.usfirst.frc.team5962.robot.subsystems.Pneumatics;
-import org.usfirst.frc.team5962.robot.subsystems.ShootingMechnasim;
-import org.usfirst.frc.team5962.robot.subsystems.scalingMechnasim;
+import org.usfirst.frc.team5962.robot.subsystems.ShootingMechansim;
+import org.usfirst.frc.team5962.robot.subsystems.ScalingMechanism;
 import org.usfirst.frc.team5962.robot.subsystems.BallIntake;
 
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-
-import org.opencv.core.Rect;
-import org.opencv.imgproc.Imgproc;
-import com.ctre.CANTalon;
-import edu.wpi.cscore.UsbCamera;
-import edu.wpi.first.wpilibj.CameraServer;
-import edu.wpi.first.wpilibj.DigitalInput;
-import edu.wpi.first.wpilibj.RobotDrive;
-import edu.wpi.first.wpilibj.vision.VisionRunner;
 import edu.wpi.first.wpilibj.vision.VisionThread;
 
  /* The VM is configured to automatically run this class, and to call the
@@ -53,24 +41,26 @@ public class Robot extends IterativeRobot {
 		table = NetworkTable.getTable("GRIP/myContentReport");
 	}
 	
-	public static final ExampleSubsystem exampleSubsystem = new ExampleSubsystem();
 	public static OI oi;
 	private static final int IMG_WIDTH = 320;
 	private static final int IMG_HEIGHT = 240;
 	
 	public static Camera camera;
-	public static Pneumatics pneumatics;
+//	public static Pneumatics pneumatics;
 	public static CameraTwo camerTwo;
 
 	public static BallIntake intake;
-	public static ShootingMechnasim ballshooting;
-	public static scalingMechnasim scaling;
-	public static GearMechanism gearmechanism;
-	public static LimitSwitchopen limitSwitchright;
-	public static LimitSwitchclose limitSwitchleft;
+	public static ShootingMechansim ballshooting;
+	public static ScalingMechanism scaling;
 	
-	private VisionThread visionThread;
-	private double centerX = 0.0;
+	// Gear Manipulator
+//	public static GearMechanism gearmechanism;
+//	public static LimitSwitchopen limitSwitchright;
+//	public static LimitSwitchclose limitSwitchleft;
+	
+//	private VisionThread visionThread;
+//	private double centerX = 0.0;
+	
 	public static Drive drive;
 	
     public static RobotUltrasonicAnalog ultrasonicShoot;
@@ -80,7 +70,6 @@ public class Robot extends IterativeRobot {
 	//private final Object imgLock = new Object();
     Command autonomousCommand;
     SendableChooser chooser;
-	//Solenoid exampleSolenoid = new Solenoid(0);
 
     /**
      * This function is run when the robot is first started up and should be
@@ -104,17 +93,20 @@ public class Robot extends IterativeRobot {
 	    });
 	    visionThread.start();	
 	    */
+		
 		drive = new Drive();
 	    ultrasonicShoot = new RobotUltrasonicAnalog(0);
 		oi = new OI();
-		pneumatics = new Pneumatics();
+//		pneumatics = new Pneumatics();
 		gyro.resetGyro();
 		intake = new BallIntake();
-		ballshooting = new ShootingMechnasim();
-		scaling = new scalingMechnasim();
-		gearmechanism = new GearMechanism();
-		limitSwitchright = new LimitSwitchopen();
-		limitSwitchleft = new LimitSwitchclose(); 
+		ballshooting = new ShootingMechansim();
+		scaling = new ScalingMechanism();
+		
+//		gearmechanism = new GearMechanism();
+//		limitSwitchright = new LimitSwitchopen();
+//		limitSwitchleft = new LimitSwitchclose(); 
+		
       //  chooser = new SendableChooser();
     //    chooser.addDefault("Default Auto", new ExampleCommand());
   //     chooser.addObject("My Auto", new MyAutoCommand());
@@ -129,8 +121,6 @@ public class Robot extends IterativeRobot {
 	 * the robot is disabled.
      */
     public void disabledInit(){
-    	// start with the LED ring off
-//		RobotMap.ledVictor.set(0);		
     }
 	
 	public void disabledPeriodic() {
@@ -163,14 +153,13 @@ public class Robot extends IterativeRobot {
     	// schedule the autonomous command (example)
 //        if (autonomousCommand != null) autonomousCommand.start();
     	
-    	// turn the LED ring on
-//    	RobotMap.ledVictor.set(1);
     }
 
     /**
      * This function is called periodically during autonomous
      */
-  /*  public void autonomousPeriodic() {
+    public void autonomousPeriodic() {
+    	/*
         Scheduler.getInstance().run();
     	double centerX;
     	synchronized (imgLock) {
@@ -178,8 +167,9 @@ public class Robot extends IterativeRobot {
     	}
     	double turn = centerX - (IMG_WIDTH / 2);
     	RobotMap.myRobot.arcadeDrive(-0.6, turn * 0.005);
+    	*/
     }
-*/
+
     public void teleopInit() {
 		// This makes sure that the autonomous stops running when
         // teleop starts running. If you want the autonomous to 
@@ -187,151 +177,99 @@ public class Robot extends IterativeRobot {
         // this line or comment it out.
 //        if (autonomousCommand != null) autonomousCommand.cancel();
     	
-    	// start with the LED ring off
-//		RobotMap.ledVictor.set(0);		
     }
 
-    /**
-     * This function is called periodically during operator control
-     */
-    Solenoid green = new Solenoid(0);
-    Solenoid red = new Solenoid(1);
-    Solenoid blue = new Solenoid(2);
-    Solenoid yellow = new Solenoid(3);
-    boolean downbuttonpress = false;
-    boolean upbuttonpress = false;
-    public void teleopPeriodic() {
-        Scheduler.getInstance().run();
-    	SmartDashboard.putNumber("UR", ultrasonicShoot.getRange());
-    	
-     
-    	if (oi.getgearopen() == true)
-    	{
-    		downbuttonpress = true;
-    		gearmechanism.openthegear();
-    		
-    	}
-    	if(downbuttonpress == true && limitSwitchright.islimitSwitchopen() == false )
-    	{
-    		
-    		gearmechanism.gearStop();
-    		downbuttonpress = false;
-    	}
-    	else if(downbuttonpress == true)
-    	{
-    		gearmechanism.openthegear();
-    	}
-    	
-    	
-    	
-    	if (oi.getgearclose() == true)
-    	{
-    		upbuttonpress = true;
-    		gearmechanism.closethegear();
-    		
-    	}
-    	if(upbuttonpress == true && limitSwitchleft.islimitSwitchclose() == false)
-    	{
-    		gearmechanism.gearStop();
-    		upbuttonpress = false;
-    	}
-    	else if (upbuttonpress == true)
-    	//else 
-    	{
-    		gearmechanism.closethegear();
-    		//gearmechanism.gearStop();
-    	}
+//    boolean downbuttonpress = false;
+//    private void openGear() {
+//    	if (oi.getgearopen() == true)
+//    	{
+//    		downbuttonpress = true;
+//    		gearmechanism.openthegear();	
+//    	}
+//    	if(downbuttonpress == true && limitSwitchright.islimitSwitchopen() == false )
+//    	{	
+//    		gearmechanism.gearStop();
+//    		downbuttonpress = false;
+//    	}
+//    	else if(downbuttonpress == true)
+//    	{
+//    		gearmechanism.openthegear();
+//    	}
+//    }
+    
+//    boolean upbuttonpress = false;
+//    private void closeGear() {
+//    	if (oi.getgearclose() == true)
+//    	{
+//    		upbuttonpress = true;
+//    		gearmechanism.closethegear();  		
+//    	}
+//    	if(upbuttonpress == true && limitSwitchleft.islimitSwitchclose() == false)
+//    	{
+//    		gearmechanism.gearStop();
+//    		upbuttonpress = false;
+//    	}
+//    	else if (upbuttonpress == true)
+//    	//else 
+//    	{
+//    		gearmechanism.closethegear();
+//    		//gearmechanism.gearStop();
+//    	}
+//    }
+    
+    private void intakeBalls() {
     	if (oi.getIntakeButton() == true)
     	{
-    		intake.inTakeBall();
-    		
+    		intake.inTakeBall();   		
     	}
     	else 
     	{
     		intake.stop();
     	}
+    }
+    
+    private void shootBalls() {
     	if (oi.getShootingBall() == true)
     	{
-    		ballshooting.shootingBall();
-    		
+    		ballshooting.shootingBall();   		
     	}
     	else 
     	{
     		ballshooting.stop();
     	}
-
+    }
+    
+    private void climbTheRope() {
     	if (oi.getScaling() == true)
     	{
-    		scaling.scaling();
-    		
+    		scaling.scaling();    		
     	}
     	else 
     	{
     		scaling.stop();
     	}
-    	if(oi.getGreenAButton() == true)
-    	{
-    		green.set(true);
-    		
-    	}
-    	else
-    	{
-    		green.set(false);
-    	}
+    }
+   
+    /**
+     * This function is called periodically during operator control
+     */
+    public void teleopPeriodic() {
+        Scheduler.getInstance().run();
+    	SmartDashboard.putNumber("UR", ultrasonicShoot.getRange());
     	
-    	if(oi.getRedBButton() == true)
-    	{
-    		red.set(true);
-    		
-    	}
-    	else
-    	{
-    		red.set(false);
-    	}
+//    	openGear();
+//    	closeGear();
     	
-    	if(oi.getBlueXButton() == true)
-    	{
-    		blue.set(true);
-    		
-    	}
-    	else
-    	{
-    		blue.set(false);
-    	}
-    	if(oi.getYellowYButton() == true)
-    	{
-    		yellow.set(true);
-    		
-    	}
-    	else
-    	{
-    		yellow.set(false);
-    	}
+    	intakeBalls();
+    	shootBalls();
+    	climbTheRope();
     	
     }
     
     /**
      * This function is called periodically during test mode
      */
-    int count = 0;
     public void testPeriodic() {
-       LiveWindow.run();
-//		if (count <=300 || count > 600) {
-//			exampleSolenoid.set(true);
-//		}
-//
-//    else if (count > 300 && count <=600) {
-//    		exampleSolenoid.set(false);
-//		}
-//    	count++;
-    	
-   	
-//		if (oi.getCoPilotRightTrigger() >= 0.5)
-//		{	
-//			RobotMap.ledVictor.set(1);		
-//		} else {
-//			RobotMap.ledVictor.set(0);		
-//		}
-			
+       LiveWindow.run();			
 	}
 }

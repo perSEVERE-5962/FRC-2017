@@ -39,14 +39,13 @@ public class RobotMap {
 	
 
 	public static RobotDrive myRobot;
+	
 	public static Victor inTakeVictor;
 	public static Victor ballShootingvictor;
 	public static Victor scalingvictor;
-	public static Victor gearvictor;
-	public static Victor limitvictor;
-	//public static Victor manipulatorVictor;
 	
-//	public static Victor ledVictor;
+//	public static Victor gearvictor;
+
 	public static Victor robotLeftVictor1;
 	public static Victor robotLeftVictor2;
 	public static Victor robotRightVictor1;
@@ -54,19 +53,16 @@ public class RobotMap {
 	
 	
 	public static void init() {
-//		ledVictor = new Victor(5);
 		inTakeVictor = new Victor(PWM_CHANNEL_3);
 		inTakeVictor.setSafetyEnabled(false);
 		ballShootingvictor = new Victor(PWM_CHANNEL_4);
 		ballShootingvictor.setSafetyEnabled(false);
 		scalingvictor = new Victor(PWM_CHANNEL_5);
 		scalingvictor.setSafetyEnabled(false);
-		gearvictor = new Victor(PWM_CHANNEL_8);
-		gearvictor.setSafetyEnabled(false);
 		
-		
-		
-		
+		// Gear Manipulator - using motor
+//		gearvictor = new Victor(PWM_CHANNEL_8);
+//		gearvictor.setSafetyEnabled(false);
 		
 		SpeedController leftDrive;
 		SpeedController rightDrive;
@@ -78,7 +74,5 @@ public class RobotMap {
 	    leftDrive = new MultiSpeedController(robotLeftVictor1, robotLeftVictor2);
 	    rightDrive = new MultiSpeedController(robotRightVictor1, robotRightVictor2);
 		myRobot = new RobotDrive(leftDrive, rightDrive);
-		
-
 	}
 }
