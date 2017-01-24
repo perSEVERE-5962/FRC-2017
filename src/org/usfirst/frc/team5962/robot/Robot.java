@@ -49,12 +49,32 @@ public class Robot extends IterativeRobot {
 
 	NetworkTable table;
 	
+	
 	public Robot(){
 		table = NetworkTable.getTable("GRIP/myContentReport");
 	}
 	
 	public static final ExampleSubsystem exampleSubsystem = new ExampleSubsystem();
 	public static OI oi;
+	
+	public static enum AutonomousPosition {
+		LeftStartingPosition,
+		MiddleStartingPosition,
+		RightStartingPosition,
+	}
+	
+	public static enum AutonomousTarget {
+		
+		CrossTheLine,
+		PutTheGear,
+		ShootTheBall,
+		
+	}
+	
+	
+	
+	
+	
 	private static final int IMG_WIDTH = 320;
 	private static final int IMG_HEIGHT = 240;
 	
@@ -79,7 +99,9 @@ public class Robot extends IterativeRobot {
 	
 	//private final Object imgLock = new Object();
     Command autonomousCommand;
-    SendableChooser chooser;
+    SendableChooser autoPositionChooser;
+    SendableChooser autoFirstTargetChooser;
+    
 	//Solenoid exampleSolenoid = new Solenoid(0);
 
     /**
@@ -115,13 +137,32 @@ public class Robot extends IterativeRobot {
 		gearmechanism = new GearMechanism();
 		limitSwitchright = new LimitSwitchopen();
 		limitSwitchleft = new LimitSwitchclose(); 
-      //  chooser = new SendableChooser();
-    //    chooser.addDefault("Default Auto", new ExampleCommand());
-  //     chooser.addObject("My Auto", new MyAutoCommand());
-//        SmartDashboard.putData("Auto mode", chooser);
-
+       // chooser = new SendableChooser();
+       // chooser.addDefault("Default Auto", new ExampleCommand());
+       //chooser.addObject("My Auto", new MyAutoCommand());
+       //SmartDashboard.putData("Auto mode", chooser);
+		initAutonomousPositionChooser();
+		initAutonomousTargetChooser();
 	        
 	}
+    private void initAutonomousPositionChooser() {
+    	autoPositionChooser = new SendableChooser();
+    	autoPositionChooser.addDefault("LeftStartingPosition", AutonomousPosition.LeftStartingPosition);
+    	autoPositionChooser.addObject("MiddleStartingPosition", AutonomousPosition.MiddleStartingPosition);
+    	autoPositionChooser.addObject("RightStartingPosition", AutonomousPosition.RightStartingPosition);
+    	SmartDashboard.putData("Select Autonomous Start Position", autoPositionChooser);
+    }
+    
+    private void initAutonomousTargetChooser(){
+    	autoFirstTargetChooser = new SendableChooser();
+    	autoFirstTargetChooser.addDefault("CrossTheLine", AutonomousTarget.CrossTheLine);
+    	autoFirstTargetChooser.addObject("PutTheGear", AutonomousTarget.PutTheGear);
+    	autoFirstTargetChooser.addObject("ShootTheBall", AutonomousTarget.ShootTheBall);
+    	SmartDashboard.putData("Select Autonomous First Target", autoFirstTargetChooser);
+    	
+    }
+    
+    
 	
 	/**
      * This function is called once each time the robot enters Disabled mode.
