@@ -13,6 +13,9 @@ import edu.wpi.first.wpilibj.Victor;
  */
 public class RobotMap {
 	
+	
+	
+	
 	//PWM Channels
 //	public final static int PWM_CHANNEL_0 = 0;
 //	public final static int PWM_CHANNEL_1 = 1;
@@ -66,13 +69,15 @@ public class RobotMap {
 		
 		SpeedController leftDrive;
 		SpeedController rightDrive;
-		robotLeftVictor1 = new Victor(0);
-		robotLeftVictor2 = new Victor(1);
-		robotRightVictor1 = new Victor(6);
-		robotRightVictor2 = new Victor(7);
+		robotLeftVictor1 = new Victor(6);
+		robotLeftVictor2 = new Victor(7);
+		robotRightVictor1 = new Victor(0);
+		robotRightVictor2 = new Victor(1);
 		
 	    leftDrive = new MultiSpeedController(robotLeftVictor1, robotLeftVictor2);
 	    rightDrive = new MultiSpeedController(robotRightVictor1, robotRightVictor2);
+	    leftDrive.setInverted(true);
+	    rightDrive.setInverted(true);
 		myRobot = new RobotDrive(leftDrive, rightDrive);
 	}
 }

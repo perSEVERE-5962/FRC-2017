@@ -9,9 +9,13 @@ import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.networktables.NetworkTable;
 
+import org.usfirst.frc.team5962.robot.Robot.AutonomousPosition;
+import org.usfirst.frc.team5962.robot.commands.RunArcadeGame;
+import org.usfirst.frc.team5962.robot.commands.RunAutonomous;
 import org.usfirst.frc.team5962.robot.sensors.RobotEncoder;
 import org.usfirst.frc.team5962.robot.sensors.RobotGyro;
 import org.usfirst.frc.team5962.robot.sensors.RobotUltrasonicAnalog;
+import org.usfirst.frc.team5962.robot.sensors.RobotUltrasonicDigital;
 import org.usfirst.frc.team5962.robot.subsystems.Camera;
 import org.usfirst.frc.team5962.robot.subsystems.CameraTwo;
 import org.usfirst.frc.team5962.robot.subsystems.Drive;
@@ -20,7 +24,9 @@ import org.usfirst.frc.team5962.robot.subsystems.LimitSwitchclose;
 import org.usfirst.frc.team5962.robot.subsystems.LimitSwitchopen;
 import org.usfirst.frc.team5962.robot.subsystems.Pneumatics;
 import org.usfirst.frc.team5962.robot.subsystems.ShootingMechansim;
+import org.usfirst.frc.team5962.robot.subsystems.Autonomous.state;
 import org.usfirst.frc.team5962.robot.subsystems.ScalingMechanism;
+import org.usfirst.frc.team5962.robot.subsystems.Autonomous;
 import org.usfirst.frc.team5962.robot.subsystems.BallIntake;
 
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -36,6 +42,7 @@ import edu.wpi.first.wpilibj.vision.VisionThread;
 public class Robot extends IterativeRobot {
 
 	NetworkTable table;
+	public static Autonomous autonomousSubsystem;
 	
 	
 	public Robot(){
@@ -43,6 +50,11 @@ public class Robot extends IterativeRobot {
 	}
 	
 	public static OI oi;
+	public static enum AutonomousChoosing
+	{
+		withGreenLight,
+		withOutGreenLight,
+	}
 	
 	public static enum AutonomousPosition {
 		LeftStartingPosition,
@@ -55,6 +67,7 @@ public class Robot extends IterativeRobot {
 		CrossTheLine,
 		PutTheGear,
 		ShootTheBall,
+		None,
 		
 	}
 	
@@ -74,9 +87,9 @@ public class Robot extends IterativeRobot {
 	public static ScalingMechanism scaling;
 	
 	// Gear Manipulator
-//	public static GearMechanism gearmechanism;
-//	public static LimitSwitchopen limitSwitchright;
-//	public static LimitSwitchclose limitSwitchleft;
+	public static GearMechanism gearmechanism;
+	public static LimitSwitchopen limitSwitchright;
+	public static LimitSwitchclose limitSwitchleft;
 	
 //	private VisionThread visionThread;
 //	private double centerX = 0.0;
@@ -84,12 +97,14 @@ public class Robot extends IterativeRobot {
 	public static Drive drive;
 	
     public static RobotUltrasonicAnalog ultrasonicShoot;
+    public static RobotUltrasonicAnalog ultrasonictest;
     public static RobotGyro gyro= new RobotGyro();
     public static RobotEncoder encoder = new RobotEncoder();
 	
 	//private final Object imgLock = new Object();
     Command autonomousCommand;
 
+    SendableChooser autonomouschoosing;
     SendableChooser autoPositionChooser;
     SendableChooser autoFirstTargetChooser;
     
@@ -121,6 +136,7 @@ public class Robot extends IterativeRobot {
 		
 		drive = new Drive();
 	    ultrasonicShoot = new RobotUltrasonicAnalog(0);
+	    ultrasonictest = new RobotUltrasonicAnalog(1);
 		oi = new OI();
 //		pneumatics = new Pneumatics();
 		gyro.resetGyro();
@@ -128,21 +144,28 @@ public class Robot extends IterativeRobot {
 		ballshooting = new ShootingMechansim();
 		scaling = new ScalingMechanism();
 		
-		//gearmechanism = new GearMechanism();
-		//limitSwitchright = new LimitSwitchopen();
-		//limitSwitchleft = new LimitSwitchclose(); 
+		gearmechanism = new GearMechanism();
+		limitSwitchright = new LimitSwitchopen();
+		limitSwitchleft = new LimitSwitchclose(); 
        
 		initAutonomousPositionChooser();
 		initAutonomousTargetChooser();
+		initAutonomousChoosing();
 
 	        
 	}
+    private void initAutonomousChoosing()
+    {
+    	autonomouschoosing = new SendableChooser();
+    	autonomouschoosing.addDefault(" withgreenlight ",   AutonomousChoosing.withGreenLight);
+    	autonomouschoosing.addObject(" withoutgreenlight ", AutonomousChoosing.withOutGreenLight);
+    }
     private void initAutonomousPositionChooser() {
     	autoPositionChooser = new SendableChooser();
     	autoPositionChooser.addDefault("LeftStartingPosition", AutonomousPosition.LeftStartingPosition);
     	autoPositionChooser.addObject("MiddleStartingPosition", AutonomousPosition.MiddleStartingPosition);
     	autoPositionChooser.addObject("RightStartingPosition", AutonomousPosition.RightStartingPosition);
-    	SmartDashboard.putData("Select Autonomous Start Position", autoPositionChooser);
+    	SmartDashboard.putData("Select Autonomous Start Position:", autoPositionChooser);
     }
     
     private void initAutonomousTargetChooser(){
@@ -150,7 +173,8 @@ public class Robot extends IterativeRobot {
     	autoFirstTargetChooser.addDefault("CrossTheLine", AutonomousTarget.CrossTheLine);
     	autoFirstTargetChooser.addObject("PutTheGear", AutonomousTarget.PutTheGear);
     	autoFirstTargetChooser.addObject("ShootTheBall", AutonomousTarget.ShootTheBall);
-    	SmartDashboard.putData("Select Autonomous First Target", autoFirstTargetChooser);
+    	autoFirstTargetChooser.addObject("None", AutonomousTarget.None);
+    	SmartDashboard.putData("Select Autonomous First Target:", autoFirstTargetChooser);
     	
     }
     
@@ -178,30 +202,34 @@ public class Robot extends IterativeRobot {
 	 * or additional comparisons to the switch structure below with additional strings & commands.
 	 */
     public void autonomousInit() {
-//        autonomousCommand = (Command) chooser.getSelected();
-        
-		/* String autoSelected = SmartDashboard.getString("Auto Selector", "Default");
-		switch(autoSelected) {
-		case "My Auto":
-			autonomousCommand = new MyAutoCommand();
-			break;
-		case "Default Auto":
-		default:
-			autonomousCommand = new ExampleCommand();
-			break;
-		} */
-    	
-    	// schedule the autonomous command (example)
-//        if (autonomousCommand != null) autonomousCommand.start();
-    	
-    }
+    	encoder.reset();		
+		SmartDashboard.putString("Starting Gyro Angle", gyro.getGyroAngle()+"");
+		Autonomous.State = state.croosline;
+		
+		autonomousSubsystem = new Autonomous();
+		autonomousSubsystem.State = state.croosline; 
+		
+		
+		AutonomousChoosing autochoosing = (AutonomousChoosing) autonomouschoosing.getSelected();
+		AutonomousPosition position = (AutonomousPosition) autoPositionChooser.getSelected();
+		AutonomousTarget obstacle = (AutonomousTarget) autoFirstTargetChooser.getSelected();
+		
+		autonomousCommand = new RunAutonomous(autochoosing , position, obstacle);
 
+
+		// schedule the autonomous command (example)
+		if (autonomousCommand != null)
+		{
+			SmartDashboard.putString("Starting autonomousCommand", "TRUE");
+			autonomousCommand.start();
+		}
+    }
     /**
      * This function is called periodically during autonomous
      */
     public void autonomousPeriodic() {
-    	/*
         Scheduler.getInstance().run();
+    	/*
     	double centerX;
     	synchronized (imgLock) {
     		centerX = this.centerX;
@@ -217,7 +245,10 @@ public class Robot extends IterativeRobot {
         // continue until interrupted by another command, remove
         // this line or comment it out.
 //        if (autonomousCommand != null) autonomousCommand.cancel();
-    	
+		Command command = new RunArcadeGame();
+//OLDHOMEDAY2016 code		Command command = new RunGameXTank(getMaxSpeed());
+		command.start();
+   	
     }
 
 //    boolean downbuttonpress = false;
@@ -297,13 +328,14 @@ public class Robot extends IterativeRobot {
     public void teleopPeriodic() {
         Scheduler.getInstance().run();
     	SmartDashboard.putNumber("UR", ultrasonicShoot.getRange());
-    	
+    	SmartDashboard.putNumber("Ultrasinictest", ultrasonictest.getRange());
+    	SmartDashboard.putNumber("ENCODERS", encoder.getDistance());
 //    	openGear();
 //    	closeGear();
     	
-    	intakeBalls();
-    	shootBalls();
-    	climbTheRope();
+    	//intakeBalls();
+    	//shootBalls();
+    	//climbTheRope();
     	
     }
     
