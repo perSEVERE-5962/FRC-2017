@@ -3,26 +3,22 @@ package org.usfirst.frc.team5962.robot;
 
 import edu.wpi.first.wpilibj.IterativeRobot;
 
-import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.networktables.NetworkTable;
 
-import org.usfirst.frc.team5962.robot.Robot.AutonomousPosition;
 import org.usfirst.frc.team5962.robot.commands.RunArcadeGame;
 import org.usfirst.frc.team5962.robot.commands.RunAutonomous;
 import org.usfirst.frc.team5962.robot.sensors.RobotEncoder;
 import org.usfirst.frc.team5962.robot.sensors.RobotGyro;
 import org.usfirst.frc.team5962.robot.sensors.RobotUltrasonicAnalog;
-import org.usfirst.frc.team5962.robot.sensors.RobotUltrasonicDigital;
 import org.usfirst.frc.team5962.robot.subsystems.Camera;
 import org.usfirst.frc.team5962.robot.subsystems.CameraTwo;
 import org.usfirst.frc.team5962.robot.subsystems.Drive;
 import org.usfirst.frc.team5962.robot.subsystems.GearMechanism;
 import org.usfirst.frc.team5962.robot.subsystems.LimitSwitchclose;
 import org.usfirst.frc.team5962.robot.subsystems.LimitSwitchopen;
-import org.usfirst.frc.team5962.robot.subsystems.Pneumatics;
 import org.usfirst.frc.team5962.robot.subsystems.ShootingMechansim;
 import org.usfirst.frc.team5962.robot.subsystems.Autonomous.state;
 import org.usfirst.frc.team5962.robot.subsystems.ScalingMechanism;
@@ -31,7 +27,6 @@ import org.usfirst.frc.team5962.robot.subsystems.BallIntake;
 
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj.vision.VisionThread;
 
  /* The VM is configured to automatically run this class, and to call the
  * functions corresponding to each mode, as described in the IterativeRobot

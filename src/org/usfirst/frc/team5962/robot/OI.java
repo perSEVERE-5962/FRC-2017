@@ -4,6 +4,7 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 
 import org.usfirst.frc.team5962.robot.commands.GearSolenoid;
+import org.usfirst.frc.team5962.robot.commands.SolenoidZeroOne;
 
 /**
  * This class is the glue that binds the controls on the physical operator
@@ -21,7 +22,7 @@ public class OI {
 		joystickLeft = new Joystick(2);
 		
 		buttonOne = new JoystickButton(gamePad1, 1);		
-		buttonOne.toggleWhenPressed(new GearSolenoid());
+		buttonOne.toggleWhenPressed(new SolenoidZeroOne());
 	}
 	
 	public boolean getIntakeButton()
