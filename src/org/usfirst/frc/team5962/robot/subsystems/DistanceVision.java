@@ -16,19 +16,13 @@ public class DistanceVision extends Subsystem{
 	private int length = 0;
 	private int place = 0;
 	private int biggestPlace = 0;
-	//private int biggestPlaceTwo = 0;
-	private int imgWidth = 640;
 	private int imgHeight = 480;
 	
 	private double biggestValue = 0.0;
-	//private double biggestValueTwo = 0.0;
-	//private double avgCenterX = 0.0;
-	
 	
 	@Override
 	protected void initDefaultCommand() {
-		// TODO Auto-generated method stub
-		
+		// TODO Auto-generated method stub	
 	}
 	
 	public void runDistanceVision(){

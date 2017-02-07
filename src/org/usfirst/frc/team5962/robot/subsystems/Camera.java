@@ -1,24 +1,15 @@
 package org.usfirst.frc.team5962.robot.subsystems;
 import edu.wpi.first.wpilibj.CameraServer;
-import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.command.Subsystem;
-import edu.wpi.first.wpilibj.vision.VisionThread;
-import edu.wpi.first.wpilibj.vision.VisionRunner;
 
 import org.opencv.core.Mat;
-import org.opencv.core.Rect;
 import org.opencv.imgproc.Imgproc;
-import org.usfirst.frc.team5962.robot.Robot;
 
 import edu.wpi.cscore.CvSink;
 import edu.wpi.cscore.CvSource;
 import edu.wpi.cscore.UsbCamera;
-import edu.wpi.cscore.CameraServerJNI;
-import edu.wpi.first.wpilibj.CameraServer;
-import edu.wpi.first.wpilibj.IterativeRobot;
 
 public class Camera extends Subsystem {
-	private VisionThread visionThread;
 	public static double centerX = 0.0;
 	public static double centerY = 0.0;
 	public static double area = 0.0;

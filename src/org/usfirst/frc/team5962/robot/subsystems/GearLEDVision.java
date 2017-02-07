@@ -18,7 +18,6 @@ public class GearLEDVision extends Subsystem{
 	private int biggestPlaceOne = 0;
 	private int biggestPlaceTwo = 0;
 	private int imgWidth = 640;
-	private int imgHeight = 480;
 	
 	private double biggestValueOne = 0.0;
 	private double biggestValueTwo = 0.0;

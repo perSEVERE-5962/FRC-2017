@@ -17,6 +17,6 @@ public class RobotUltrasonicAnalog extends RobotUltrasonicBase{
     }
 	
 	public boolean isEnabled() {
-		return SmartDashboard.getBoolean("Enable Analog Ultrasonic Range Finder");
+		return SmartDashboard.getBoolean("Enable Analog Ultrasonic Range Finder", false);
 	}
 }

@@ -34,7 +34,7 @@ public class RobotUltrasonicDigital extends RobotUltrasonicBase {
     
 	
 	public boolean isEnabled() {
-		return SmartDashboard.getBoolean("Enable Digital Ultrasonic Range Finder");
+		return SmartDashboard.getBoolean("Enable Digital Ultrasonic Range Finder", false);
 	}
    
     

@@ -6,7 +6,7 @@ import edu.wpi.first.wpilibj.Victor;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
 public class ScalingMechanism extends Subsystem {
-	Victor scalingvictor = RobotMap.scalingvictor;
+	Victor scalingvictor = RobotMap.scalingVictor;
 
 	public void scaling()
 	{

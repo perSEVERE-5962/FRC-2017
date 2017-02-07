@@ -13,42 +13,36 @@ import edu.wpi.first.wpilibj.Victor;
  */
 public class RobotMap {
 	
-	
-	
-	
 	//PWM Channels
-//	public final static int PWM_CHANNEL_0 = 0;
-//	public final static int PWM_CHANNEL_1 = 1;
-//	public final static int PWM_CHANNEL_2 = 2;
+	public final static int PWM_CHANNEL_0 = 0;
+	public final static int PWM_CHANNEL_1 = 1;
+	public final static int PWM_CHANNEL_2 = 2;
 	public final static int PWM_CHANNEL_3 = 3;
 	public final static int PWM_CHANNEL_4 = 4;
 	public final static int PWM_CHANNEL_5 = 5;
 	public final static int PWM_CHANNEL_6 = 6;
-//	public final static int PWM_CHANNEL_7 = 7;
+	public final static int PWM_CHANNEL_7 = 7;
 	public final static int PWM_CHANNEL_8 = 8;
-//	public final static int PWM_CHANNEL_9 = 9;
+	public final static int PWM_CHANNEL_9 = 9;
 	
 	//DIO Channels
 	public final static int DIO_CHANNEL_0 = 0;
 	public final static int DIO_CHANNEL_1 = 1;
-//	public final static int DIO_CHANNEL_2 = 2;
-//	public final static int DIO_CHANNEL_3 = 3;
-//	public final static int DIO_CHANNEL_4 = 4;
-//	public final static int DIO_CHANNEL_5 = 5;
-//	public final static int DIO_CHANNEL_6 = 6;
-//	public final static int DIO_CHANNEL_7 = 7;
-//	public final static int DIO_CHANNEL_8 = 8;
-//	public final static int DIO_CHANNEL_9 = 9;
-	
+	public final static int DIO_CHANNEL_2 = 2;
+	public final static int DIO_CHANNEL_3 = 3;
+	public final static int DIO_CHANNEL_4 = 4;
+	public final static int DIO_CHANNEL_5 = 5;
+	public final static int DIO_CHANNEL_6 = 6;
+	public final static int DIO_CHANNEL_7 = 7;
+	public final static int DIO_CHANNEL_8 = 8;
+	public final static int DIO_CHANNEL_9 = 9;	
 
 	public static RobotDrive myRobot;
 	
 	public static Victor inTakeVictor;
-	public static Victor ballShootingvictor;
-	public static Victor scalingvictor;
+	public static Victor ballShootingVictor;
+	public static Victor scalingVictor;
 	
-//	public static Victor gearvictor;
-
 	public static Victor robotLeftVictor1;
 	public static Victor robotLeftVictor2;
 	public static Victor robotRightVictor1;
@@ -57,14 +51,10 @@ public class RobotMap {
 	public static void init() {
 		inTakeVictor = new Victor(PWM_CHANNEL_3);
 		inTakeVictor.setSafetyEnabled(false);
-		ballShootingvictor = new Victor(PWM_CHANNEL_4);
-		ballShootingvictor.setSafetyEnabled(false);
-		scalingvictor = new Victor(PWM_CHANNEL_5);
-		scalingvictor.setSafetyEnabled(false);
-		
-		// Gear Manipulator - using motor
-//		gearvictor = new Victor(PWM_CHANNEL_8);
-//		gearvictor.setSafetyEnabled(false);
+		ballShootingVictor = new Victor(PWM_CHANNEL_4);
+		ballShootingVictor.setSafetyEnabled(false);
+		scalingVictor = new Victor(PWM_CHANNEL_5);
+		scalingVictor.setSafetyEnabled(false);
 		
 		SpeedController leftDrive;
 		SpeedController rightDrive;

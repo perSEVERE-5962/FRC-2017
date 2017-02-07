@@ -1,5 +1,4 @@
 package org.usfirst.frc.team5962.robot.commands;
-import org.usfirst.frc.team5962.robot.Robot;
 
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.command.Command;

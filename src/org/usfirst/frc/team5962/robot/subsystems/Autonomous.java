@@ -26,26 +26,25 @@ public class Autonomous extends Subsystem  {
 	private boolean isWithinRange() {
 		boolean isWithinRange = false;
 
-		boolean ultrasonicEnabled = Robot.ultrasonicShoot.isEnabled();
+		boolean ultrasonicEnabled = Robot.ultrasonic.isEnabled();
 		if (ultrasonicEnabled) {
-			isWithinRange = Robot.ultrasonicShoot.getRange() <= ULTRASONIC_RANGE_VALUE;
+			isWithinRange = Robot.ultrasonic.getRange() <= ULTRASONIC_RANGE_VALUE;
 		} // otherwise just return the default (true)
-    	SmartDashboard.putNumber("ultrasonicShoot", Robot.ultrasonicShoot.getRange());
 		return isWithinRange;
 	}
 	
-	public  enum state
+	public enum State
 	{
-		croosline,
+		crossLine,
 		turn,
-		drivetohook,
-		placethegear,
-		turndrivebackwards,
-		drivetomiddle,
+		driveToHook,
+		placeTheGear,
+		turnDriveBackwards,
+		driveToMiddle,
 		stop
 		
 	};
-	public static state State;
+	public State state;
 	
 	public boolean driveForward()
 	{
@@ -104,16 +103,16 @@ public class Autonomous extends Subsystem  {
 	}
 	private void placeTheGear()
 	{
-		if(Robot.limitSwitchright.islimitSwitchopen() == false){
-			//stopgearmotr
-			Robot.gearmechanism.gearStop();
-			put_the_Gear = true;
-		}
-		else
-		{
-			//rungearmotor
-			Robot.gearmechanism.openthegear();
-		}
+//		if(Robot.limitSwitchright.islimitSwitchopen() == false){
+//			//stopgearmotr
+//			Robot.gearmechanism.gearStop();
+//			put_the_Gear = true;
+//		}
+//		else
+//		{
+//			//rungearmotor
+//			Robot.gearmechanism.openthegear();
+//		}
 		
 	}
 	private void turnToDriveBackward()
@@ -125,7 +124,7 @@ public class Autonomous extends Subsystem  {
 			turned = true;
 		}
 	}
-	private void driveToMiddke()
+	private void driveToMiddle()
 	{
 		// if(distance > 10 && turned == true && distance <= 40)
 		{
@@ -218,11 +217,11 @@ public class Autonomous extends Subsystem  {
 		
 */		double angle = getGyroAngle();
 		//State = state.croosline;
-		SmartDashboard.putString("state", State+"");
-		switch(State){
-		case croosline:
+		SmartDashboard.putString("state", state+"");
+		switch(state){
+		case crossLine:
 			if (driveForward() == true) {
-				State = state.turn;
+				state = state.turn;
 			}
 			break;
 			
@@ -232,10 +231,10 @@ public class Autonomous extends Subsystem  {
 				RobotMap.myRobot.drive(0.25,1);//need to try on robot; need to change left value every time, for left right turn chek + (left) or -(right) value 
 			}
 			else
-			State = state.drivetohook;
+			state = state.driveToHook;
 			break;
 		
-		case drivetohook:
+		case driveToHook:
 			if(isWithinRange() == false){
 				RobotMap.myRobot.drive(-0.25, -angle * 0.03);
 				
@@ -246,34 +245,34 @@ public class Autonomous extends Subsystem  {
 				
 			}
 		
-		State = state.placethegear;
+		state = state.placeTheGear;
 			break;
 			
-		case placethegear:
-			if(Robot.limitSwitchright.islimitSwitchopen() == false){
-				//stopgearmotr
-				Robot.gearmechanism.gearStop();
-				
-			}
-			else
-			{
-				//rungearmotor
-				Robot.gearmechanism.openthegear();
-			}
-			State = state.turndrivebackwards;
+		case placeTheGear:
+//			if(Robot.limitSwitchright.islimitSwitchopen() == false){
+//				//stopgearmotr
+//				Robot.gearmechanism.gearStop();
+//				
+//			}
+//			else
+//			{
+//				//rungearmotor
+//				Robot.gearmechanism.openthegear();
+//			}
+			state = state.turnDriveBackwards;
 			break;
 			
-		case turndrivebackwards:
+		case turnDriveBackwards:
 			if(distance <= 10)
 			{
 				RobotMap.myRobot.drive(-0.2,1);//check the sign
 				distance++;
 				
 			}
-			State = state.drivetomiddle;
+			state = state.driveToMiddle;
 			break;
 			
-		case drivetomiddle:
+		case driveToMiddle:
 			if(distance <= 40)
 			{
 				
@@ -281,7 +280,7 @@ public class Autonomous extends Subsystem  {
 				distance ++;
 				
 			}
-			State = state.stop;
+			state = state.stop;
 			break;
 			
 		case stop:
@@ -307,16 +306,16 @@ public class Autonomous extends Subsystem  {
 		}
 		else if(isinrange == true)
 		{
-			if(Robot.limitSwitchright.islimitSwitchopen() == false){
-				//stopgearmotr
-				Robot.gearmechanism.gearStop();
-				
-			}
-			else
-			{
-				//rungearmotor
-				Robot.gearmechanism.openthegear();
-			}
+//			if(Robot.limitSwitchright.islimitSwitchopen() == false){
+//				//stopgearmotr
+//				Robot.gearmechanism.gearStop();
+//				
+//			}
+//			else
+//			{
+//				//rungearmotor
+//				Robot.gearmechanism.openthegear();
+//			}
 		}
 		else {
 			
