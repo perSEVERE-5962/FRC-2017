@@ -1,20 +1,25 @@
 
 package org.usfirst.frc.team5962.robot;
 
-import edu.wpi.first.wpilibj.IterativeRobot;
+import edu.wpi.cscore.CvSink;
+import edu.wpi.cscore.CvSource;
 
+import edu.wpi.first.wpilibj.IterativeRobot;
+import edu.wpi.first.wpilibj.Solenoid;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.networktables.NetworkTable;
-
 import org.usfirst.frc.team5962.robot.commands.RunArcadeGame;
 import org.usfirst.frc.team5962.robot.commands.RunAutonomous;
 import org.usfirst.frc.team5962.robot.sensors.RobotEncoder;
 import org.usfirst.frc.team5962.robot.sensors.RobotGyro;
 import org.usfirst.frc.team5962.robot.sensors.RobotUltrasonicAnalog;
+import org.usfirst.frc.team5962.robot.subsystems.BoilerLEDVision;
 import org.usfirst.frc.team5962.robot.subsystems.Camera;
 import org.usfirst.frc.team5962.robot.subsystems.CameraTwo;
+import org.usfirst.frc.team5962.robot.subsystems.DistanceVision;
 import org.usfirst.frc.team5962.robot.subsystems.Drive;
 import org.usfirst.frc.team5962.robot.subsystems.GearMechanism;
 import org.usfirst.frc.team5962.robot.subsystems.LimitSwitchclose;
@@ -24,11 +29,32 @@ import org.usfirst.frc.team5962.robot.subsystems.Autonomous.state;
 import org.usfirst.frc.team5962.robot.subsystems.ScalingMechanism;
 import org.usfirst.frc.team5962.robot.subsystems.Autonomous;
 import org.usfirst.frc.team5962.robot.subsystems.BallIntake;
+import org.usfirst.frc.team5962.robot.subsystems.GearLEDVision;
+import org.usfirst.frc.team5962.robot.subsystems.GripPipeline;
 
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.vision.VisionThread;
 
  /* The VM is configured to automatically run this class, and to call the
+=======
+import java.util.ArrayList;
+import java.util.Enumeration;
+
+import org.opencv.core.MatOfPoint;
+import org.opencv.core.Rect;
+import org.opencv.imgproc.Imgproc;
+import com.ctre.CANTalon;
+import edu.wpi.cscore.UsbCamera;
+import edu.wpi.first.wpilibj.CameraServer;
+import edu.wpi.first.wpilibj.RobotDrive;
+import edu.wpi.first.wpilibj.vision.VisionRunner;
+import edu.wpi.first.wpilibj.vision.VisionThread;
+
+import org.usfirst.frc.team5962.robot.sensors.*;
+/**
+ * The VM is configured to automatically run this class, and to call the
+>>>>>>> KoopaFreak600
  * functions corresponding to each mode, as described in the IterativeRobot
  * documentation. If you change the name of this class or the package after
  * creating this project, you must also update the manifest file in the resource
@@ -36,12 +62,66 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  */
 public class Robot extends IterativeRobot {
 
+	
+	public static GearLEDVision gearVision = new GearLEDVision();
+	public static BoilerLEDVision boilerVision = new BoilerLEDVision();
+	public static DistanceVision distanceVision = new DistanceVision();
+	
+	public static NetworkTable LEDBoiler;
+	public NetworkTable LEDPeg;
+	NetworkTable BlueBoiler;
+	NetworkTable RedBoiler;
 	NetworkTable table;
 	public static Autonomous autonomousSubsystem;
 	
 	
+	/*
+	boolean bGot = false;
+	boolean gGot = false;
+	boolean gotFin = false;
+	
+	//boolean moved = false;
+	
+	
+	
+	double[] LBAreas = null;
+	double[] LBCenterX = null;
+	double[] LPAreas = null;
+	double[] LPCenterX = null;
+	
+	int bLength = 0;
+	int gLength = 0;
+	int bPlace = 0;
+	int gPlace = 0;
+	double bBiggestValue = 0.0;
+	double gBiggestValueOne = 0.0;
+	double gBiggestValueTwo = 0.0;
+	int bBiggestPlace = 0;
+	int gBiggestPlaceOne = 0;
+	int gBiggestPlaceTwo = 0;
+	int timesRan = 0;
+	
+	double avgCenter = 0.0;
+	
+	int ImgHeight = 480;
+	int ImgWidth = 640;
+	
+	boolean less = false;
+	
+	boolean senseBoiler = false;
+	boolean senseGear = true;
+	*/
+	
+	public static Solenoid s0 = new Solenoid(0);
+	public static Solenoid s1 = new Solenoid(1);
 	public Robot(){
-		table = NetworkTable.getTable("GRIP/myContentReport");
+		LEDBoiler = NetworkTable.getTable("GRIP/LEDBoiler");
+		LEDPeg = NetworkTable.getTable("GRIP/LEDPeg");
+		BlueBoiler = NetworkTable.getTable("GRIP/BlueBoiler");
+		RedBoiler = NetworkTable.getTable("GRIP/RedBoiler");
+		table = NetworkTable.getTable("GRIP/myContoursReport");
+		
+		
 	}
 	
 	public static OI oi;
@@ -73,9 +153,6 @@ public class Robot extends IterativeRobot {
 	private static final int IMG_WIDTH = 320;
 	private static final int IMG_HEIGHT = 240;
 	
-	public static Camera camera;
-//	public static Pneumatics pneumatics;
-	public static CameraTwo camerTwo;
 
 	public static BallIntake intake;
 	public static ShootingMechansim ballshooting;
@@ -86,10 +163,15 @@ public class Robot extends IterativeRobot {
 	public static LimitSwitchopen limitSwitchright;
 	public static LimitSwitchclose limitSwitchleft;
 	
-//	private VisionThread visionThread;
-//	private double centerX = 0.0;
+	public static Camera camera;
+	public static CameraTwo cameraTwo;
 	
+	private VisionThread visionThread;
+	public static GripPipeline gripPipeline;
+	//private double centerX = 0.0;
 	public static Drive drive;
+	
+	//private RobotDrive visionDrive;
 	
     public static RobotUltrasonicAnalog ultrasonicShoot;
     public static RobotUltrasonicAnalog ultrasonictest;
@@ -102,38 +184,23 @@ public class Robot extends IterativeRobot {
     SendableChooser autonomouschoosing;
     SendableChooser autoPositionChooser;
     SendableChooser autoFirstTargetChooser;
-    
-	
 
 
     /**
      * This function is run when the robot is first started up and should be
      * used for any initialization code.
      */
+	boolean ran = false;
+	
     public void robotInit() {
 		RobotMap.init();
-	
-	/*	
+		
 		camera = new Camera();
-	    UsbCamera camera = CameraServer.getInstance().startAutomaticCapture();
-	    camera.setResolution(IMG_WIDTH, IMG_HEIGHT);
-	    
-	    visionThread = new VisionThread(camera, new GripPipeline(), pipeline -> {
-	        if (!pipeline.filterContoursOutput().isEmpty()) {
-	            Rect r = Imgproc.boundingRect(pipeline.filterContoursOutput().get(0));
-	            synchronized (imgLock) {
-	                centerX = r.x + (r.width / 2);
-	            }
-	        }
-	    });
-	    visionThread.start();	
-	    */
 		
 		drive = new Drive();
 	    ultrasonicShoot = new RobotUltrasonicAnalog(0);
 	    ultrasonictest = new RobotUltrasonicAnalog(1);
 		oi = new OI();
-//		pneumatics = new Pneumatics();
 		gyro.resetGyro();
 		intake = new BallIntake();
 		ballshooting = new ShootingMechansim();
@@ -146,8 +213,7 @@ public class Robot extends IterativeRobot {
 		initAutonomousPositionChooser();
 		initAutonomousTargetChooser();
 		initAutonomousChoosing();
-
-	        
+		s1.set(true);
 	}
     private void initAutonomousChoosing()
     {
@@ -224,26 +290,11 @@ public class Robot extends IterativeRobot {
      */
     public void autonomousPeriodic() {
         Scheduler.getInstance().run();
-    	/*
-    	double centerX;
-    	synchronized (imgLock) {
-    		centerX = this.centerX;
-    	}
-    	double turn = centerX - (IMG_WIDTH / 2);
-    	RobotMap.myRobot.arcadeDrive(-0.6, turn * 0.005);
-    	*/
     }
 
     public void teleopInit() {
-		// This makes sure that the autonomous stops running when
-        // teleop starts running. If you want the autonomous to 
-        // continue until interrupted by another command, remove
-        // this line or comment it out.
-//        if (autonomousCommand != null) autonomousCommand.cancel();
 		Command command = new RunArcadeGame();
-//OLDHOMEDAY2016 code		Command command = new RunGameXTank(getMaxSpeed());
 		command.start();
-   	
     }
 
 //    boolean downbuttonpress = false;
@@ -340,4 +391,6 @@ public class Robot extends IterativeRobot {
     public void testPeriodic() {
        LiveWindow.run();			
 	}
+    
+    
 }

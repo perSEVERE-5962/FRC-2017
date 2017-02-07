@@ -54,7 +54,6 @@ public class RobotMap {
 	public static Victor robotRightVictor1;
 	public static Victor robotRightVictor2;
 	
-	
 	public static void init() {
 		inTakeVictor = new Victor(PWM_CHANNEL_3);
 		inTakeVictor.setSafetyEnabled(false);
@@ -69,6 +68,7 @@ public class RobotMap {
 		
 		SpeedController leftDrive;
 		SpeedController rightDrive;
+
 		robotLeftVictor1 = new Victor(6);
 		robotLeftVictor2 = new Victor(7);
 		robotRightVictor1 = new Victor(0);
