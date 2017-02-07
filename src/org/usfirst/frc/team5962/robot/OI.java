@@ -2,7 +2,9 @@ package org.usfirst.frc.team5962.robot;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.Button;
+import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import org.usfirst.frc.team5962.robot.commands.*;
 
 import org.usfirst.frc.team5962.robot.commands.ExampleCommand;
 
@@ -38,13 +40,32 @@ public class OI {
     // until it is finished as determined by it's isFinished method.
     // button.whenReleased(new ExampleCommand());
 	
+	SolenoidZeroOne solenoidZeroOne = new SolenoidZeroOne();
+	RunBoilerLEDVision runBoilerVision = new RunBoilerLEDVision();
+	RunGearLEDVision runGearVision = new RunGearLEDVision();
+	RunDistanceVision runDistanceVision = new RunDistanceVision();
+	
 	public Joystick gamePad1;
 	private String currentDriveMode = "";
+	private JoystickButton buttonOne;
+	private JoystickButton buttonTwo;
+	private JoystickButton buttonThree;
+	private JoystickButton buttonFour;
 
 	public OI() {
 
 		// add game controllers
 		gamePad1 = new Joystick(0);
+		
+		// add buttons
+		buttonOne = new JoystickButton(gamePad1, 1);
+		buttonTwo = new JoystickButton(gamePad1, 2);
+		buttonThree = new JoystickButton(gamePad1, 3);
+		buttonFour = new JoystickButton(gamePad1, 4);
+		buttonOne.toggleWhenPressed(solenoidZeroOne);
+		buttonTwo.toggleWhenPressed(runBoilerVision);
+		buttonThree.toggleWhenPressed(runGearVision);
+		buttonFour.toggleWhenPressed(runDistanceVision);
 	}
 	public double getCoPilotRightTrigger() {
 		double value = gamePad1.getRawAxis(3);

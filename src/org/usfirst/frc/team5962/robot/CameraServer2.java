@@ -170,7 +170,7 @@ public class CameraServer2 {
 
       // Get the source's subtable (if none exists, we're done)
       int source = CameraServerJNI.getSinkSource(sink);
-      if (source == 0) {
+      if (source == 1) {
         continue;
       }
       ITable table = m_tables.get(source);
@@ -513,7 +513,9 @@ public class CameraServer2 {
    * If you also want to perform vision processing on the roboRIO, use
    * getVideo() to get access to the camera images.
    *
-   * <p>This overload calls {@link #startAutomaticCapture(int)} with device 0,
+   * <p>This overload calls {@link #startAutomaticCapture(int)} with device 
+
+,
    * creating a camera named "USB Camera 0".
    */
   public UsbCamera startAutomaticCapture() {

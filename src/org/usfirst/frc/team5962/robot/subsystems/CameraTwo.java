@@ -16,19 +16,19 @@ import edu.wpi.first.wpilibj.IterativeRobot;
 public class CameraTwo extends Subsystem {
 	public CameraTwo() {
         new Thread(() -> {
-            UsbCamera camera = CameraServer2.getInstance().startAutomaticCapture();
-            camera.setResolution(640, 480);
+            UsbCamera camera2 = CameraServer2.getInstance().startAutomaticCapture();
+            camera2.setResolution(640, 480);
             
-            CvSink cvSink = CameraServer2.getInstance().getVideo();
-            CvSource outputStream = CameraServer2.getInstance().putVideo("Blur", 640, 480);
+            CvSink cvSink2 = CameraServer2.getInstance().getVideo();
+            CvSource outputStream2 = CameraServer2.getInstance().putVideo("Blur2", 640, 480);
             
-            Mat source = new Mat();
-            Mat output1 = new Mat();
+            Mat source2 = new Mat();
+            Mat output2 = new Mat();
             
             while(true) {
-                cvSink.grabFrame(source);
-                Imgproc.cvtColor(source, output1, Imgproc.COLOR_BGR2GRAY);
-                outputStream.putFrame(output1);
+                cvSink2.grabFrame(source2);
+                Imgproc.cvtColor(source2, output2, Imgproc.COLOR_BGR2GRAY);
+                outputStream2.putFrame(output2);
             }
         }).start();
 }

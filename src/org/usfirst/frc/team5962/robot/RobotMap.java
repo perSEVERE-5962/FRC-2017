@@ -46,15 +46,27 @@ public class RobotMap {
 	public static Victor robotRightVictor1;
 	public static Victor robotRightVictor2;
 	
+	public static Victor robotVictor8;
+	
 	public static void init() {
 		ledVictor = new Victor(4);
 
 		SpeedController leftDrive;
 		SpeedController rightDrive;
+		
+		SpeedController singleDrive0;
+		
 		robotLeftVictor1 = new Victor(0);
+		//robotLeftVictor1.setInverted(true);
 		robotLeftVictor2 = new Victor(1);
+		//robotLeftVictor2.setInverted(true);
 		robotRightVictor1 = new Victor(6);
+		//robotRightVictor1.setInverted(true);
 		robotRightVictor2 = new Victor(7);
+		//robotRightVictor2.setInverted(true);
+
+		
+		robotVictor8 = new Victor(8);
 		
 	    leftDrive = new MultiSpeedController(robotLeftVictor1, robotLeftVictor2);
 	    rightDrive = new MultiSpeedController(robotRightVictor1, robotRightVictor2);
