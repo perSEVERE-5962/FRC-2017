@@ -20,7 +20,7 @@ public class Autonomous extends Subsystem  {
 	private boolean turned = false;
 	private int distance = 0;
 	private double DISTANCETOGEARMIDDLE = 160;
-	
+
 	private Robot.AutonomousPosition position = Robot.AutonomousPosition.LeftStartingPosition;
 
 	public enum State
@@ -77,27 +77,23 @@ public class Autonomous extends Subsystem  {
 		SmartDashboard.putString("state", state+"");
 		switch(state){
 		case crossLine:
-			if (this.position == AutonomousPosition.MiddleStartingPosition){
-				state = State.driveToHook;
+			if (drivePastLine() == true) {
+				state = State.turn;
 				RobotMap.myRobot.drive(0,0);
-			} else {
-				if (drivePastLine() == true) {
-					state = State.turn;
-					RobotMap.myRobot.drive(0,0);
-				}
 			}
+
 			break;
 
 		case turn:
 			// TODO: change turn based on position
-//			if (this.position == AutonomousPosition.LeftStartingPosition) {
-//				
-//			} else if (this.position == AutonomousPosition.RightStartingPosition) {
-//				
-//			} else {
-//				
-//			}
-			
+			//			if (this.position == AutonomousPosition.LeftStartingPosition) {
+			//				
+			//			} else if (this.position == AutonomousPosition.RightStartingPosition) {
+			//				
+			//			} else {
+			//				
+			//			}
+
 			if(angle <= targetAngle)
 			{
 				RobotMap.myRobot.drive(0.25,1);//need to try on robot; need to change left value every time, for left right turn chek + (left) or -(right) value 
@@ -169,10 +165,10 @@ public class Autonomous extends Subsystem  {
 	 * CODE BELOW HERE HAS NOT BEEN REFACTORED YET
 	 */
 
-/*	
- *  ==============================================================================
- *  OLD putTheGear Comments
- *  
+	/*	
+	 *  ==============================================================================
+	 *  OLD putTheGear Comments
+	 *  
  	// #1 drive to line
 
 
@@ -248,9 +244,9 @@ public class Autonomous extends Subsystem  {
 
 	return put_the_Gear;
 
- *
- *  ==============================================================================
- */		
+	 *
+	 *  ==============================================================================
+	 */		
 
 
 	private void turnTheRobot()
