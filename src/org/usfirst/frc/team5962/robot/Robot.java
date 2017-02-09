@@ -177,7 +177,6 @@ public class Robot extends IterativeRobot {
 		SmartDashboard.putString("Starting Gyro Angle", gyro.getGyroAngle()+"");
 
 		autonomousSubsystem = new Autonomous();
-		autonomousSubsystem.state = State.crossLine; 		
 
 		AutonomousVision autoVision = (AutonomousVision) autonomousVision.getSelected();
 		AutonomousPosition position = (AutonomousPosition) autoPositionChooser.getSelected();

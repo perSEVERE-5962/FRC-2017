@@ -9,22 +9,23 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class RunAutonomous extends Command {
 
-	private Robot.AutonomousPosition position;
 	private Robot.AutonomousTarget target;
 	private Robot.AutonomousVision autoVision;
 
 	private Autonomous autonomousSubsystem = new Autonomous();
 	private boolean reachedTarget = false;
 	private boolean isFinished = false;	
-	public RunAutonomous (Robot.AutonomousVision autoVision , Robot.AutonomousPosition position , Robot.AutonomousTarget target){
-		this.position = position;
-		this.target = target;
-		this.autoVision = autoVision;
 
+	public RunAutonomous (Robot.AutonomousVision autoVision , Robot.AutonomousPosition position , Robot.AutonomousTarget target){
 		SmartDashboard.putString("Autonomous Position Selected", position.toString());
 		SmartDashboard.putString("Autonomous Target Selected", target.toString());
 		SmartDashboard.putString("Autonomous Vision", autoVision.toString());
+
+		this.target = target;
+		this.autoVision = autoVision;
+		autonomousSubsystem.setPosition(position);
 	}
+
 
 	protected void initialize(){
 		Robot.encoder.reset();
@@ -32,16 +33,15 @@ public class RunAutonomous extends Command {
 		RobotMap.myRobot.setMaxOutput(1);	
 	}
 
-	private void reachToTheLine(){
+	private void reachTarget(){
 		if(autoVision == Robot.AutonomousVision.NotUsingVision ) 
 		{
 			switch(target){
 
 			case CrossTheLine:
-				reachedTarget = autonomousSubsystem.driveForward();
+				reachedTarget = autonomousSubsystem.drivePastLine();
 				break;
 			case PutTheGear:
-				//reachedTarget = autonomousSubsystem.driveForward();
 				autonomousSubsystem.putTheGear();
 				SmartDashboard.putString("putTheGear", "true");
 				break;
@@ -56,12 +56,12 @@ public class RunAutonomous extends Command {
 		}
 	}
 
+
 	int counter=0;
 	int elsecount=0;
 	protected void execute() {
 		if (isFinished || target == Robot.AutonomousTarget.None) {
 			SmartDashboard.putString("execute", "FINISHED");
-
 			RobotMap.myRobot.drive(0, 0);
 		}
 
@@ -69,7 +69,7 @@ public class RunAutonomous extends Command {
 		{
 			SmartDashboard.putString("elseif", "!reachedTarget");
 			SmartDashboard.putString("reachedTarget", counter++ + "");
-			reachToTheLine();
+			reachTarget();
 		}
 
 		else {
