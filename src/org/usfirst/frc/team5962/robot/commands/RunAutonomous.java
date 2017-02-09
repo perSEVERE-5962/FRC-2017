@@ -39,7 +39,7 @@ public class RunAutonomous extends Command {
 			switch(target){
 
 			case CrossTheLine:
-				reachedTarget = autonomousSubsystem.drivePastLine();
+				reachedTarget = autonomousSubsystem.driveForward();
 				break;
 			case PutTheGear:
 				autonomousSubsystem.putTheGear();

@@ -9,17 +9,20 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Autonomous extends Subsystem  {
 
-	private boolean reachToLine = false;
-	private boolean put_the_Gear = false;
-	private double DISTANCETOLINE = 192; 
-	private int turning = 0;
-	private int ULTRASONIC_RANGE_VALUE = 7;
-	private double gyroAngle = 0;
+	private boolean reachedTargetDistance = false;
+	private final double DISTANCETOLINE = 192; 
+	private final double DISTANCETOGEARMIDDLE = 160;
+	private final int ULTRASONIC_RANGE_VALUE = 7;
 	private double targetAngle = 40;
-	private boolean inRange = false;
-	private boolean turned = false;
 	private int distance = 0;
-	private double DISTANCETOGEARMIDDLE = 160;
+	
+	private double targetDistance = DISTANCETOLINE;
+	
+//	private boolean put_the_Gear = false;
+//	private int turning = 0;
+//	private double gyroAngle = 0;
+//	private boolean inRange = false;
+//	private boolean turned = false;
 
 	private Robot.AutonomousPosition position = Robot.AutonomousPosition.LeftStartingPosition;
 
@@ -38,10 +41,11 @@ public class Autonomous extends Subsystem  {
 
 	public void setPosition(Robot.AutonomousPosition position) {
 		this.position = position;
+		state = State.crossLine;
 		if (this.position == AutonomousPosition.MiddleStartingPosition){
-			state = State.driveToHook;
+			targetDistance = DISTANCETOGEARMIDDLE;
 		} else {
-			state = State.crossLine;
+			targetDistance = DISTANCETOLINE;
 		}
 	}
 
@@ -55,20 +59,20 @@ public class Autonomous extends Subsystem  {
 		return isWithinRange;
 	}
 
-	public boolean drivePastLine()
+	public boolean driveForward()
 	{		
 		double angle = getGyroAngle();
 		// drive to obstacle
-		if (Robot.encoder.getDistance() <= DISTANCETOLINE)
+		if (Robot.encoder.getDistance() <= targetDistance)
 		{
 			RobotMap.myRobot.drive(-0.25, -angle * 0.03);			
 		}
 		else {		
 			RobotMap.myRobot.drive(0, 0);
 			Robot.encoder.reset();
-			reachToLine = true;
+			reachedTargetDistance = true;
 		}
-		return reachToLine;	
+		return reachedTargetDistance;	
 	}
 
 	public void putTheGear()
@@ -77,8 +81,13 @@ public class Autonomous extends Subsystem  {
 		SmartDashboard.putString("state", state+"");
 		switch(state){
 		case crossLine:
-			if (drivePastLine() == true) {
-				state = State.turn;
+			if (driveForward() == true) {
+				if (this.position == AutonomousPosition.MiddleStartingPosition){
+					state = State.driveToHook;
+				} else {
+					state = State.turn;
+				}
+				
 				RobotMap.myRobot.drive(0,0);
 			}
 
@@ -158,6 +167,16 @@ public class Autonomous extends Subsystem  {
 
 	}
 
+	private double getGyroAngle() {
+		double angle = Robot.gyro.getGyroAngle();
+		return angle;
+	}
+
+	@Override
+	protected void initDefaultCommand() {
+		// TODO Auto-generated method stub
+
+	}
 
 
 
@@ -248,124 +267,111 @@ public class Autonomous extends Subsystem  {
 	 *  ==============================================================================
 	 */		
 
-
-	private void turnTheRobot()
-	{
-		//if (reachToLine == true && put_the_Gear == false && turning <= 50  && inRange == false)
-		{
-			//need to use the gyro to tuen 
-			//maybe need encoders to distance
-			//need to use the utrasonic
-
-			RobotMap.myRobot.drive(0.1,1);//need to try on robot; need to change left value every time, for left right turn chek + or - value 
-			turning++;
-
-
-		}
-
-
-	}
-	private void driveToHook()
-	{
-		//if(reachToLine == true && put_the_Gear == false && turning > 50 && inRange == false  )
-		{
-			double angle = getGyroAngle();
-			if(isWithinRange() == false){
-				RobotMap.myRobot.drive(-0.25, -angle * 0.03);
-
-			}
-			else
-			{
-				RobotMap.myRobot.drive(0,0);
-				inRange = true;
-
-			}
-		}
-
-	}
-	private void placeTheGear()
-	{
-		//		if(Robot.limitSwitchright.islimitSwitchopen() == false){
-		//			//stopgearmotr
-		//			Robot.gearmechanism.gearStop();
-		//			put_the_Gear = true;
-		//		}
-		//		else
-		//		{
-		//			//rungearmotor
-		//			Robot.gearmechanism.openthegear();
-		//		}
-
-	}
-	private void turnToDriveBackward()
-	{
-		//if(put_the_Gear == true && distance <= 10)
-		{
-			RobotMap.myRobot.drive(-0,1);//check the sign
-			distance++;
-			turned = true;
-		}
-	}
-	private void driveToMiddle()
-	{
-		// if(distance > 10 && turned == true && distance <= 40)
-		{
-			double angle = getGyroAngle();
-			RobotMap.myRobot.drive(-0.25, -angle * 0.03);
-			distance ++;
-
-		}
-	}
-	private void finish()
-	{
-		RobotMap.myRobot.drive(0,0);
-	}
-
-
-	private boolean putTheGearMiddle()
-	{
-		boolean isinrange = false;
-		double angle = getGyroAngle();
-		// drive to obstacle
-		if (isWithinRange() || Robot.encoder.getDistance() <= DISTANCETOGEARMIDDLE)
-		{
-			RobotMap.myRobot.drive(-0.25, -angle * 0.03);
-			isinrange = true;	
-		}
-		else if(isinrange == true)
-		{
-			//			if(Robot.limitSwitchright.islimitSwitchopen() == false){
-			//				//stopgearmotr
-			//				Robot.gearmechanism.gearStop();
-			//				
-			//			}
-			//			else
-			//			{
-			//				//rungearmotor
-			//				Robot.gearmechanism.openthegear();
-			//			}
-		}
-		else {
-
-			RobotMap.myRobot.drive(0, 0);
-			Robot.encoder.reset();
-			reachToLine = true;
-		}
-		return reachToLine;		
-	}
-
-
-
-
-	private double getGyroAngle() {
-		double angle = Robot.gyro.getGyroAngle();
-		return angle;
-	}
-
-	@Override
-	protected void initDefaultCommand() {
-		// TODO Auto-generated method stub
-
-	}
+//
+//	private void turnTheRobot()
+//	{
+//		//if (reachToLine == true && put_the_Gear == false && turning <= 50  && inRange == false)
+//		{
+//			//need to use the gyro to tuen 
+//			//maybe need encoders to distance
+//			//need to use the utrasonic
+//
+//			RobotMap.myRobot.drive(0.1,1);//need to try on robot; need to change left value every time, for left right turn chek + or - value 
+//			turning++;
+//
+//
+//		}
+//
+//
+//	}
+//	private void driveToHook()
+//	{
+//		//if(reachToLine == true && put_the_Gear == false && turning > 50 && inRange == false  )
+//		{
+//			double angle = getGyroAngle();
+//			if(isWithinRange() == false){
+//				RobotMap.myRobot.drive(-0.25, -angle * 0.03);
+//
+//			}
+//			else
+//			{
+//				RobotMap.myRobot.drive(0,0);
+//				inRange = true;
+//
+//			}
+//		}
+//
+//	}
+//	private void placeTheGear()
+//	{
+//		//		if(Robot.limitSwitchright.islimitSwitchopen() == false){
+//		//			//stopgearmotr
+//		//			Robot.gearmechanism.gearStop();
+//		//			put_the_Gear = true;
+//		//		}
+//		//		else
+//		//		{
+//		//			//rungearmotor
+//		//			Robot.gearmechanism.openthegear();
+//		//		}
+//
+//	}
+//	private void turnToDriveBackward()
+//	{
+//		//if(put_the_Gear == true && distance <= 10)
+//		{
+//			RobotMap.myRobot.drive(-0,1);//check the sign
+//			distance++;
+//			turned = true;
+//		}
+//	}
+//	private void driveToMiddle()
+//	{
+//		// if(distance > 10 && turned == true && distance <= 40)
+//		{
+//			double angle = getGyroAngle();
+//			RobotMap.myRobot.drive(-0.25, -angle * 0.03);
+//			distance ++;
+//
+//		}
+//	}
+//	private void finish()
+//	{
+//		RobotMap.myRobot.drive(0,0);
+//	}
+//
+//
+//	private boolean putTheGearMiddle()
+//	{
+//		boolean isinrange = false;
+//		double angle = getGyroAngle();
+//		// drive to obstacle
+//		if (isWithinRange() || Robot.encoder.getDistance() <= DISTANCETOGEARMIDDLE)
+//		{
+//			RobotMap.myRobot.drive(-0.25, -angle * 0.03);
+//			isinrange = true;	
+//		}
+//		else if(isinrange == true)
+//		{
+//			//			if(Robot.limitSwitchright.islimitSwitchopen() == false){
+//			//				//stopgearmotr
+//			//				Robot.gearmechanism.gearStop();
+//			//				
+//			//			}
+//			//			else
+//			//			{
+//			//				//rungearmotor
+//			//				Robot.gearmechanism.openthegear();
+//			//			}
+//		}
+//		else {
+//
+//			RobotMap.myRobot.drive(0, 0);
+//			Robot.encoder.reset();
+//			reachToLine = true;
+//		}
+//		return reachToLine;		
+//	}
+//
 
 }
