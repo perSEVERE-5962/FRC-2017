@@ -13,10 +13,15 @@ public class Autonomous extends Subsystem  {
 	private final double DISTANCETOLINE = 192; 
 	private final double DISTANCETOGEARMIDDLE = 160;
 	private final int ULTRASONIC_RANGE_VALUE = 7;
-	private double targetAngle = 40;
+	private double lefttargetAngle = 40;
+	private double righttargetAngle = -40;
 	private int distance = 0;
 	
+	
+	
 	private double targetDistance = DISTANCETOLINE;
+	
+	
 	
 //	private boolean put_the_Gear = false;
 //	private int turning = 0;
@@ -37,7 +42,7 @@ public class Autonomous extends Subsystem  {
 		stop
 
 	};
-	private State state;
+	public State state;
 
 	public void setPosition(Robot.AutonomousPosition position) {
 		this.position = position;
@@ -95,25 +100,38 @@ public class Autonomous extends Subsystem  {
 
 		case turn:
 			// TODO: change turn based on position
-			//			if (this.position == AutonomousPosition.LeftStartingPosition) {
-			//				
-			//			} else if (this.position == AutonomousPosition.RightStartingPosition) {
-			//				
-			//			} else {
-			//				
-			//			}
+					/*	if (this.position == AutonomousPosition.LeftStartingPosition) {
+							
+							if(angle <= lefttargetAngle)
+							{
+								RobotMap.myRobot.drive(0.25,-1);//need to try on robot; need to change left value every time, for left right turn chek + (left) or -(right) value 
+							}
+						} 
+						else if (this.position == AutonomousPosition.RightStartingPosition)
+						{
+							if(angle >= righttargetAngle)
+							{
+								RobotMap.myRobot.drive(0.25,1);//need to try on robot; need to change left value every time, for left right turn chek + (left) or -(right) value 
+							}
+						}
+						else 
+						{
+							state = State.driveToHook;
+							RobotMap.myRobot.drive(0,0);
+						}*/
+						System.out.println("turn");
+						Robot.gearVision.runGearVision();
+						if(Robot.gearVision.switchStateGear == true){
+							state = State.driveToHook;
+						}
+						System.out.println(Robot.gearVision.switchStateGear + "AUTO AUTO");
 
-			if(angle <= targetAngle)
-			{
-				RobotMap.myRobot.drive(0.25,1);//need to try on robot; need to change left value every time, for left right turn chek + (left) or -(right) value 
-			}
-			else {
-				state = State.driveToHook;
-				RobotMap.myRobot.drive(0,0);
-			}
+			
+
 			break;
 
 		case driveToHook:
+			/*
 			if(isWithinRange() == false){
 				RobotMap.myRobot.drive(-0.25, -angle * 0.03);
 			}
@@ -122,7 +140,13 @@ public class Autonomous extends Subsystem  {
 				state = State.placeTheGear;
 				RobotMap.myRobot.drive(0,0);
 			}
-
+			*/
+			System.out.println("driveToHook");
+			Robot.distanceVision.runDistanceVision();
+			if(Robot.distanceVision.switchStateDistance == true){
+				state = State.placeTheGear;
+			}
+			
 			break;
 
 		case placeTheGear:

@@ -2,13 +2,14 @@ package org.usfirst.frc.team5962.robot.subsystems;
 
 import org.usfirst.frc.team5962.robot.Robot;
 import org.usfirst.frc.team5962.robot.RobotMap;
+import org.usfirst.frc.team5962.robot.subsystems.Autonomous.State;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
 
 public class GearLEDVision extends Subsystem{
 
 	private boolean got = false;
-	public boolean sense = false;
+	public boolean sense = true;
 	
 	private double[] areas = null;
 	private double[] centerX = null;
@@ -22,6 +23,8 @@ public class GearLEDVision extends Subsystem{
 	private double biggestValueOne = 0.0;
 	private double biggestValueTwo = 0.0;
 	private double avgCenterX = 0.0;
+	
+	public static boolean switchStateGear = false;
 	
 	
 	@Override
@@ -74,7 +77,7 @@ public class GearLEDVision extends Subsystem{
 				biggestPlaceOne = place;
 			}
 		}catch(Exception e){
-			move(-0.4, 1);
+			move(-0.32, -1);
 			printException(e);
 			resetValues();
 		}
@@ -85,10 +88,10 @@ public class GearLEDVision extends Subsystem{
 			avgCenterX = (centerX[biggestPlaceOne] + centerX[biggestPlaceTwo]) / 2;
 			
 			if(avgCenterX < ((.5*(imgWidth)) - 270)){
-				move(-0.35, -1);
+				move(-0.30, -1);
 			}
 			else if(avgCenterX > ((.5*(imgWidth)) + 270)){
-				move(-0.35, 1);
+				move(-0.30, 1);
 			}
 			
 			
@@ -109,13 +112,16 @@ public class GearLEDVision extends Subsystem{
 			
 			
 			else if(avgCenterX >= ((.5*(imgWidth)) - 50) && avgCenterX <= ((.5*(imgWidth)) + 50)){
+				switchStateGear = true;
+				System.out.println(switchStateGear + "GEAR GEAR");
+				System.out.println("HERE GEAR");
 				move(0, 0);
 			}
 			else{
-				move(-0.4, 1);
+				move(-0.32, -1);
 			}
 		}catch(Exception e){
-			move(-0.4, 1);
+			move(-0.32, -1);
 			printException(e);
 			resetValues();
 		}

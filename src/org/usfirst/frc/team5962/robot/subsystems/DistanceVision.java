@@ -2,13 +2,14 @@ package org.usfirst.frc.team5962.robot.subsystems;
 
 import org.usfirst.frc.team5962.robot.Robot;
 import org.usfirst.frc.team5962.robot.RobotMap;
+import org.usfirst.frc.team5962.robot.subsystems.Autonomous.State;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
 
 public class DistanceVision extends Subsystem{
 
 	private boolean got = false;
-	public boolean sense = false;
+	public boolean sense = true;
 	
 	private double[] areas = null;
 	private double[] centerY = null;
@@ -19,6 +20,8 @@ public class DistanceVision extends Subsystem{
 	private int imgHeight = 480;
 	
 	private double biggestValue = 0.0;
+	
+	public static boolean switchStateDistance = false;
 	
 	@Override
 	protected void initDefaultCommand() {
@@ -80,31 +83,27 @@ public class DistanceVision extends Subsystem{
 			
 			if(centerY[biggestPlace] < ((.5 * imgHeight) - 120)){
     			move(0.35, 0);
-    			resetValues();
     		}
     		else if(centerY[biggestPlace] > ((.5 * imgHeight) + 120)){
     			move(-0.35, 0);
-    			resetValues();
     		}
     		
     		
     		else if(centerY[biggestPlace] >= ((.5 * imgHeight) - 120) && centerY[biggestPlace] < ((.5 * imgHeight) - 55)){
     			move(0.25, 0);
-    			resetValues();
     		}
     		else if(centerY[biggestPlace] <= ((.5 * imgHeight) + 120) && centerY[biggestPlace] > ((.5 * imgHeight) + 55)){
     			move(-0.25, 0);
-    			resetValues();
     		}
     		
     		
     		else if(centerY[biggestPlace] >= ((.5 * imgHeight) - 55) && centerY[biggestPlace] <= ((.5 * imgHeight) + 55)){
+    			switchStateDistance = true;
+    			System.out.println("HERE DISTANCE");
     			move(0, 0);
-    			resetValues();
     		}
     		else{
     			move(0.35, 0);
-    			resetValues();
     		}
 		}catch(Exception e){
 			move(0.35, 0);
