@@ -39,12 +39,12 @@ public class PIDEncoders extends Subsystem {
 	StringBuilder string = new StringBuilder();
 	int loops = 0;
 	
-	
+	int targetSpeed = -1300;
 	public void robotInit() {
 		RobotMap.talon.setInverted(true);
         /* first choose the sensor */
 		RobotMap.talon.setFeedbackDevice(FeedbackDevice.QuadEncoder);
-		RobotMap.talon.reverseSensor(false);
+		RobotMap.talon.reverseSensor(true);
 		RobotMap.talon.configEncoderCodesPerRev(20); 
         // if using FeedbackDevice.QuadEncoder
         //_talon.configPotentiometerTurns(XXX), // if using FeedbackDevice.AnalogEncoder or AnalogPot
@@ -54,10 +54,15 @@ public class PIDEncoders extends Subsystem {
 		RobotMap.talon.configPeakOutputVoltage(+12.0f, -12.0f);
         /* set closed loop gains in slot0 */
 		RobotMap.talon.setProfile(0);
-		RobotMap.talon.setF(0.7);
+		RobotMap.talon.setF(0.07);
 		RobotMap.talon.setP(0);
-		RobotMap.talon.setI(0.3); 
+		RobotMap.talon.setI(0); 
 		RobotMap.talon.setD(0);
+		RobotMap.talon.enableControl();
+		
+    	//double targetSpeed = leftYstick * 1500.0; /* 1500 RPM in either direction */
+        	
+		
 	}
     /**
      * This function is called periodically during operator control
@@ -76,28 +81,28 @@ public class PIDEncoders extends Subsystem {
       //if(Robot.pidencoder.isEnabled() == true)
         {
         	/* Speed mode */
-        		int targetSpeed = 1500;
-        	//double targetSpeed = leftYstick * 1500.0; /* 1500 RPM in either direction */
-            	RobotMap.talon.changeControlMode(TalonControlMode.Speed);
-
+        	RobotMap.talon.changeControlMode(TalonControlMode.Speed);
         	RobotMap.talon.set(targetSpeed); /* 1500 RPM in either direction */
+        	//RobotMap.talon.set(targetSpeed); /* 1500 RPM in either direction */
 
         	/* append more signals to print when in speed mode. */
             string.append("\terr:");
             string.append(RobotMap.talon.getClosedLoopError());
             string.append("\ttrg:");
             string.append(targetSpeed);
+            
+
         //} /*else {
         	// Percent voltage mode 
         	//RobotMap.talon.changeControlMode(TalonControlMode.PercentVbus);
         	//talon.set(leftYstick);
         } 
 
-        if(++loops >= 10) {
-        	loops = 0;
-        	System.out.println(string.toString());
-        }
-        string.setLength(0);
+//        if(++loops >= 10) {
+//        	loops = 0;
+//        	System.out.println(string.toString());
+//        }
+//        string.setLength(0);
     }
     
     public void stopTalon(){

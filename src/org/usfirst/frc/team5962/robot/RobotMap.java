@@ -54,6 +54,7 @@ public class RobotMap {
 	public static Victor robotRightVictor1;
 	public static Victor robotRightVictor2;
 	public static CANTalon talon;
+	public static CANTalon scalingtalon;
 
 	public static Servo axisCameraServoViewHorizontal;
 	public static Servo axisCameraServoViewVertical;
@@ -75,6 +76,8 @@ public class RobotMap {
 		robotRightVictor2 = new Victor(PWM_CHANNEL_7);
 		
 		talon = new CANTalon(11);
+		scalingtalon = new CANTalon(13);
+		//talon.setInverted(true);
 		
 		axisCameraServoViewHorizontal = new Servo(PWM_CHANNEL_8);
 		axisCameraServoViewVertical = new Servo(PWM_CHANNEL_9);
