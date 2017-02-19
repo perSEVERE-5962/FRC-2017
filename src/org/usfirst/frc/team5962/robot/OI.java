@@ -2,9 +2,9 @@ package org.usfirst.frc.team5962.robot;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
-import org.usfirst.frc.team5962.robot.commands.*;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
-import org.usfirst.frc.team5962.robot.commands.SolenoidZeroOne;
+import org.usfirst.frc.team5962.robot.commands.*;
 
 /**
  * This class is the glue that binds the controls on the physical operator
@@ -42,7 +42,12 @@ public class OI {
 	RunBoilerLEDVision runBoilerVision = new RunBoilerLEDVision();
 	RunGearLEDVision runGearVision = new RunGearLEDVision();
 	RunDistanceVision runDistanceVision = new RunDistanceVision();
+	public RunPID runPID = new RunPID();
+	
+	public JoystickButton joystickTankMode;
 
+	
+	private String currentDriveMode = "";
 	public Joystick gamePad1;
 	public Joystick joystickLeft;
 	public Joystick joystickRight;
@@ -50,6 +55,7 @@ public class OI {
 	private JoystickButton buttonTwo;
 	private JoystickButton buttonThree;
 	private JoystickButton buttonFour;
+	private JoystickButton buttonFive;
 
 	public OI() {
 		// add game controllers
@@ -62,10 +68,19 @@ public class OI {
 		buttonTwo = new JoystickButton(gamePad1, 2);
 		buttonThree = new JoystickButton(gamePad1, 3);
 		buttonFour = new JoystickButton(gamePad1, 4);
+		buttonFive = new JoystickButton(gamePad1, 5);
 		buttonOne.toggleWhenPressed(solenoidZeroOne);
 		buttonTwo.toggleWhenPressed(runBoilerVision);
 		buttonThree.toggleWhenPressed(runGearVision);
 		buttonFour.toggleWhenPressed(runDistanceVision);
+		buttonFive.toggleWhenPressed(runPID);
+		joystickTankMode = new JoystickButton(joystickRight, 8);
+		
+		
+		
+		joystickTankMode.whenPressed(new RunJoystickTank());
+		
+		
 	}
 	public double getCoPilotRightTrigger() {
 		double value = gamePad1.getRawAxis(3);
@@ -89,5 +104,27 @@ public class OI {
 		// TODO: These need to be moved to the co-pilot controller
 		return joystickLeft.getRawButton(5);
 	}
+	
+	
+//	public boolean pidEncoders()
+//	{
+//		return gamePad1.getRawButton(6);
+//	}
+//	
+//	public boolean pidEncodersstop()
+//	{
+//		return gamePad1.getRawButton(5);
+//	}
+	
+	public void setCurrentDriverMode(String mode) {
+		currentDriveMode = mode;
+		SmartDashboard.putString("Driver Mode Choose", currentDriveMode);
+	}
+	
+	public int getCoPilotPOV(){
+		int value = gamePad1.getPOV();
+		return value;
+	}
+	
 }
 

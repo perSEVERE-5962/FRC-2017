@@ -7,8 +7,10 @@ import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.networktables.NetworkTable;
 
+import org.usfirst.frc.team5962.robot.commands.CameraControlPOV;
 import org.usfirst.frc.team5962.robot.commands.RunArcadeGame;
 import org.usfirst.frc.team5962.robot.commands.RunAutonomous;
+import org.usfirst.frc.team5962.robot.commands.RunJoystickTank;
 import org.usfirst.frc.team5962.robot.sensors.RobotEncoder;
 import org.usfirst.frc.team5962.robot.sensors.RobotGyro;
 import org.usfirst.frc.team5962.robot.sensors.RobotUltrasonicAnalog;
@@ -17,6 +19,7 @@ import org.usfirst.frc.team5962.robot.subsystems.Camera;
 import org.usfirst.frc.team5962.robot.subsystems.DistanceVision;
 import org.usfirst.frc.team5962.robot.subsystems.Drive;
 import org.usfirst.frc.team5962.robot.subsystems.GearMechanism;
+import org.usfirst.frc.team5962.robot.subsystems.PIDEncoders;
 import org.usfirst.frc.team5962.robot.subsystems.ShootingMechansim;
 import org.usfirst.frc.team5962.robot.subsystems.Autonomous.State;
 import org.usfirst.frc.team5962.robot.subsystems.ScalingMechanism;
@@ -39,6 +42,8 @@ public class Robot extends IterativeRobot {
 	public static GearLEDVision gearVision = new GearLEDVision();
 	public static BoilerLEDVision boilerVision = new BoilerLEDVision();
 	public static DistanceVision distanceVision = new DistanceVision();
+	public static PIDEncoders pidEncoders = new PIDEncoders();
+	public static CameraControlPOV cameraPOV;
 
 	public static NetworkTable LEDBoiler;
 	public NetworkTable LEDPeg;
@@ -72,7 +77,7 @@ public class Robot extends IterativeRobot {
 		ShootTheBall,
 		None,	
 	}
-
+	public static PIDEncoders pidencoder;
 	public static BallIntake intake;
 	public static ShootingMechansim ballshooting;
 	public static ScalingMechanism scaling;
@@ -117,10 +122,12 @@ public class Robot extends IterativeRobot {
 		scaling = new ScalingMechanism();
 
 		gearmechanism = new GearMechanism();
-
+		pidencoder = new PIDEncoders();
 		initAutonomousPositionChooser();
 		initAutonomousTargetChooser();
 		initAutonomousVision();
+
+		cameraPOV = new CameraControlPOV();
 	}
 
 	private void initAutonomousVision()
@@ -200,9 +207,32 @@ public class Robot extends IterativeRobot {
 	}
 
 	public void teleopInit() {
-		Command command = new RunArcadeGame();
+		Command command = new RunJoystickTank(); 
+		// Command command = new RunArcadeGame();
 		command.start();
 	}
+	
+	//	private void pidcontrol()
+	//	{	
+	//		
+	//		if(oi.pidEncoders() == true )
+	//		{
+	//			pidencoder.teleopPeriodic();
+	//		}
+	//		
+	//		
+	//		
+	//		
+	//	}
+	//	private void pidcontrolstop()
+	//	{
+	//
+	//		if(oi.pidEncodersstop() == true )
+	//		{
+	//			pidencoder.stopTalon();
+	//		}
+	//		
+	//	}
 
 	private void intakeBalls() {
 		if (oi.getIntakeButton() == true)
@@ -245,9 +275,14 @@ public class Robot extends IterativeRobot {
 		SmartDashboard.putNumber("Ultrasonic", ultrasonic.getRange());
 		SmartDashboard.putNumber("Encoder", encoder.getDistance());
 
+		cameraPOV.execute();
+
 		intakeBalls();
 		shootBalls();
 		climbTheRope();
+		//pidcontrol();
+		//pidcontrolstop();
+
 	}
 
 	/**
