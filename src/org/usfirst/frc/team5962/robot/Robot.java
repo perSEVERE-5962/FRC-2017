@@ -210,6 +210,7 @@ public class Robot extends IterativeRobot {
 		Command command = new RunJoystickTank(); 
 		// Command command = new RunArcadeGame();
 		command.start();
+		
 	}
 	
 	//	private void pidcontrol()
