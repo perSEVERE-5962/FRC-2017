@@ -2,20 +2,26 @@ package org.usfirst.frc.team5962.robot.subsystems;
 
 import org.usfirst.frc.team5962.robot.RobotMap;
 
+import com.ctre.CANTalon;
+
 import edu.wpi.first.wpilibj.Victor;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
 public class BallIntake extends Subsystem {
 	
-	Victor inTakeVictor = RobotMap.inTakeVictor;
+	CANTalon ballfeeder = RobotMap.ballfeedertalon;
+	CANTalon agitator = RobotMap.agitatortalon;
+	//Victor inTakeVictor = RobotMap.inTakeVictor;
 	
 	public void inTakeBall()
 	{
-		inTakeVictor.set(-0.5);
+		ballfeeder.set(-1);
+		agitator.set(-1);
 	}
 	
 	public void stop (){
-		inTakeVictor.set(0);
+		ballfeeder.set(0);
+		agitator.set(0);
 	}
 
 	

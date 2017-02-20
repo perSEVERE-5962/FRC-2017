@@ -1,6 +1,7 @@
 package org.usfirst.frc.team5962.robot.commands;
 
 import org.usfirst.frc.team5962.robot.Robot;
+import org.usfirst.frc.team5962.robot.RobotMap;
 
 import edu.wpi.first.wpilibj.command.Command;
 
@@ -12,13 +13,16 @@ public class RunPID extends Command{
     }
 
     protected void initialize() {
+    	stop = false;
     	Robot.pidEncoders.robotInit();
-    	System.out.println("start");
+    	System.out.println("initialize");
     }
 
     protected void execute() {
     	if(!stop)
     	{
+    		System.out.println("execute");
+    		
     	Robot.pidEncoders.teleopPeriodic();
     	}   	
     	//System.out.println("start");
@@ -27,18 +31,20 @@ public class RunPID extends Command{
     protected boolean isFinished() { 
         if(stop)
         {
-    	System.out.println("stop");
+    	System.out.println("isFinished");
         }
         return stop;
+        
     }
 
     protected void end() {
     	Robot.pidEncoders.stopTalon();
-    	System.out.println("totalstop");
+    	System.out.println("end");
     	stop = true;
     }
 
     protected void interrupted() {
+    	System.out.println("interrupted");
     	end();
     }
 

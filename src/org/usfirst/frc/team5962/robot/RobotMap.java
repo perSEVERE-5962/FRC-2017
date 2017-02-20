@@ -46,9 +46,6 @@ public class RobotMap {
 
 	public static RobotDrive myRobot;
 	
-	public static Victor inTakeVictor;
-	public static Victor ballShootingVictor;
-	public static Victor scalingVictor;
 	
 	public static Victor robotLeftVictor1;
 	public static Victor robotLeftVictor2;
@@ -56,6 +53,8 @@ public class RobotMap {
 	public static Victor robotRightVictor2;
 	public static CANTalon talon;
 	public static CANTalon scalingtalon;
+	public static CANTalon ballfeedertalon; 
+	public static CANTalon agitatortalon; 
 
 	public static Servo axisCameraServoViewHorizontal;
 	public static Servo axisCameraServoViewVertical;
@@ -64,12 +63,9 @@ public class RobotMap {
 	public static SpeedController rightDrive;
 	
 	public static void init() {
-		inTakeVictor = new Victor(PWM_CHANNEL_3);
-		inTakeVictor.setSafetyEnabled(false);
-		ballShootingVictor = new Victor(PWM_CHANNEL_4);
-		ballShootingVictor.setSafetyEnabled(false);
-		scalingVictor = new Victor(PWM_CHANNEL_5);
-		scalingVictor.setSafetyEnabled(false);
+		
+		SpeedController leftDrive;
+		SpeedController rightDrive;
 
 		robotLeftVictor1 = new Victor(PWM_CHANNEL_0);
 		robotLeftVictor2 = new Victor(PWM_CHANNEL_1);
@@ -78,6 +74,8 @@ public class RobotMap {
 		
 		talon = new CANTalon(11);
 		scalingtalon = new CANTalon(13);
+		ballfeedertalon = new CANTalon(10);
+		agitatortalon = new CANTalon(12);
 		//talon.setInverted(true);
 		
 		axisCameraServoViewHorizontal = new Servo(PWM_CHANNEL_8);

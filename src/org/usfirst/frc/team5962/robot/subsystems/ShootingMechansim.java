@@ -7,14 +7,14 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 
 public class ShootingMechansim extends Subsystem {
 
-	Victor ballShootingvictor = RobotMap.ballShootingVictor;
+//	Victor ballShootingvictor = RobotMap.ballShootingVictor;
 	public void shootingBall()
 	{
-		ballShootingvictor.set(-0.5);
+//		ballShootingvictor.set(-0.5);
 	}
 
 	public void stop (){
-		ballShootingvictor.set(0);
+//		ballShootingvictor.set(0);
 	}
  
 	@Override

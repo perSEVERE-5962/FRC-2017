@@ -219,6 +219,7 @@ public class Robot extends IterativeRobot {
 //		drive.uninvert();
 		
 		command.start();
+		
 	}
 	
 	//	private void pidcontrol()

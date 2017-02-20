@@ -39,12 +39,13 @@ public class PIDEncoders extends Subsystem {
 	StringBuilder string = new StringBuilder();
 	int loops = 0;
 	
-	int targetSpeed = -1300;
+	int targetSpeed = 3600;
 	public void robotInit() {
+		//RobotMap.talon.enableControl();
 		RobotMap.talon.setInverted(true);
         /* first choose the sensor */
 		RobotMap.talon.setFeedbackDevice(FeedbackDevice.QuadEncoder);
-		RobotMap.talon.reverseSensor(true);
+		RobotMap.talon.reverseSensor(false);
 		RobotMap.talon.configEncoderCodesPerRev(20); 
         // if using FeedbackDevice.QuadEncoder
         //_talon.configPotentiometerTurns(XXX), // if using FeedbackDevice.AnalogEncoder or AnalogPot
@@ -54,11 +55,10 @@ public class PIDEncoders extends Subsystem {
 		RobotMap.talon.configPeakOutputVoltage(+12.0f, -12.0f);
         /* set closed loop gains in slot0 */
 		RobotMap.talon.setProfile(0);
-		RobotMap.talon.setF(0.07);
+		RobotMap.talon.setF(1);
 		RobotMap.talon.setP(0);
 		RobotMap.talon.setI(0); 
 		RobotMap.talon.setD(0);
-		RobotMap.talon.enableControl();
 		
     	//double targetSpeed = leftYstick * 1500.0; /* 1500 RPM in either direction */
         	
@@ -98,16 +98,16 @@ public class PIDEncoders extends Subsystem {
         	//talon.set(leftYstick);
         } 
 
-//        if(++loops >= 10) {
-//        	loops = 0;
-//        	System.out.println(string.toString());
-//        }
-//        string.setLength(0);
+       if(++loops >= 10) {
+        	loops = 0;
+        	System.out.println(string.toString());
+        }
+        string.setLength(0);
     }
     
     public void stopTalon(){
     	
-    	RobotMap.talon.disableControl();
+    	//RobotMap.talon.disableControl();
     	RobotMap.talon.set(0);
     	
     }
