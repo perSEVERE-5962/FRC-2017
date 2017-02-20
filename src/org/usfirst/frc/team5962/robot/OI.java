@@ -4,8 +4,6 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import org.usfirst.frc.team5962.robot.commands.*;
 
-import org.usfirst.frc.team5962.robot.commands.SolenoidZeroOne;
-
 /**
  * This class is the glue that binds the controls on the physical operator
  * interface to the commands and command groups that allow control of the robot.
@@ -42,6 +40,7 @@ public class OI {
 	RunBoilerLEDVision runBoilerVision = new RunBoilerLEDVision();
 	RunGearLEDVision runGearVision = new RunGearLEDVision();
 	RunDistanceVision runDistanceVision = new RunDistanceVision();
+	ChangeDriveDirection changeDriveDirection = new ChangeDriveDirection();
 
 	public Joystick gamePad1;
 	public Joystick joystickLeft;
@@ -50,6 +49,8 @@ public class OI {
 	private JoystickButton buttonTwo;
 	private JoystickButton buttonThree;
 	private JoystickButton buttonFour;
+	//private JoystickButton buttonFive;
+	private JoystickButton buttonSix;
 
 	public OI() {
 		// add game controllers
@@ -62,10 +63,15 @@ public class OI {
 		buttonTwo = new JoystickButton(gamePad1, 2);
 		buttonThree = new JoystickButton(gamePad1, 3);
 		buttonFour = new JoystickButton(gamePad1, 4);
+		//buttonFive = new JoystickButton(gamePad1, 5);
+		buttonSix = new JoystickButton(gamePad1, 6);
+		// assign buttons
 		buttonOne.toggleWhenPressed(solenoidZeroOne);
 		buttonTwo.toggleWhenPressed(runBoilerVision);
 		buttonThree.toggleWhenPressed(runGearVision);
 		buttonFour.toggleWhenPressed(runDistanceVision);
+		//buttonFive.whenPressed(command);
+		buttonSix.toggleWhenPressed(changeDriveDirection);
 	}
 	public double getCoPilotRightTrigger() {
 		double value = gamePad1.getRawAxis(3);

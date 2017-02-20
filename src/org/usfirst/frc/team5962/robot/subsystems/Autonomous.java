@@ -10,12 +10,13 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class Autonomous extends Subsystem  {
 
 	private boolean reachedTargetDistance = false;
-	private final double DISTANCETOLINE = 192; 
+	private final double DISTANCETOLINE = 192;
 	private final double DISTANCETOGEARMIDDLE = 160;
 	private final int ULTRASONIC_RANGE_VALUE = 7;
 	private double lefttargetAngle = 40;
 	private double righttargetAngle = -40;
 	private int distance = 0;
+	public static boolean vision = false;
 	
 	
 	
@@ -31,14 +32,21 @@ public class Autonomous extends Subsystem  {
 
 	private Robot.AutonomousPosition position = Robot.AutonomousPosition.LeftStartingPosition;
 
-	public enum State
-	{
-		crossLine,
-		turn,
-		driveToHook,
-		placeTheGear,
-		turnDriveBackwards,
-		driveToMiddle,
+	public enum State{
+		crossLineNV,
+		turnNV,
+		driveToHookNV,
+		placeTheGearNV,
+		turnDriveBackwardsNV,
+		driveToMiddleNV,
+		
+		crossLineV,
+		turnV,
+		driveToHookV,
+		placeTheGearV,
+		turnDriveBackwardsV,
+		driveToMiddleV,
+		
 		stop
 
 	};
@@ -46,10 +54,16 @@ public class Autonomous extends Subsystem  {
 
 	public void setPosition(Robot.AutonomousPosition position) {
 		this.position = position;
-		state = State.crossLine;
-		if (this.position == AutonomousPosition.MiddleStartingPosition){
+		if(vision == false){
+			state = State.crossLineNV;
+		}
+		else if(vision == true){
+			state = State.crossLineV;
+		}
+		if(this.position == AutonomousPosition.MiddleStartingPosition){
 			targetDistance = DISTANCETOGEARMIDDLE;
-		} else {
+		}
+		else{
 			targetDistance = DISTANCETOLINE;
 		}
 	}
@@ -70,7 +84,7 @@ public class Autonomous extends Subsystem  {
 		// drive to obstacle
 		if (Robot.encoder.getDistance() <= targetDistance)
 		{
-			RobotMap.myRobot.drive(-0.25, -angle * 0.03);			
+			RobotMap.myRobot.drive(-0.75, -angle * 0.03);			
 		}
 		else {		
 			RobotMap.myRobot.drive(0, 0);
@@ -85,12 +99,13 @@ public class Autonomous extends Subsystem  {
 		double angle = getGyroAngle();
 		SmartDashboard.putString("state", state+"");
 		switch(state){
-		case crossLine:
+		case crossLineNV:
 			if (driveForward() == true) {
-				if (this.position == AutonomousPosition.MiddleStartingPosition){
-					state = State.driveToHook;
-				} else {
-					state = State.turn;
+				if(this.position == AutonomousPosition.MiddleStartingPosition && vision == false){
+					state = State.driveToHookNV;
+				} 
+				else{
+					state = State.turnNV;
 				}
 				
 				RobotMap.myRobot.drive(0,0);
@@ -98,58 +113,47 @@ public class Autonomous extends Subsystem  {
 
 			break;
 
-		case turn:
+		case turnNV:
 			// TODO: change turn based on position
-					/*	if (this.position == AutonomousPosition.LeftStartingPosition) {
-							
-							if(angle <= lefttargetAngle)
-							{
-								RobotMap.myRobot.drive(0.25,-1);//need to try on robot; need to change left value every time, for left right turn chek + (left) or -(right) value 
-							}
-						} 
-						else if (this.position == AutonomousPosition.RightStartingPosition)
+					if (this.position == AutonomousPosition.LeftStartingPosition) {
+						
+						if(angle <= lefttargetAngle)
 						{
-							if(angle >= righttargetAngle)
-							{
-								RobotMap.myRobot.drive(0.25,1);//need to try on robot; need to change left value every time, for left right turn chek + (left) or -(right) value 
-							}
+							RobotMap.myRobot.drive(0.25,-1);//need to try on robot; need to change left value every time, for left right turn chek + (left) or -(right) value 
 						}
-						else 
+					} 
+					else if (this.position == AutonomousPosition.RightStartingPosition){
+						if(angle >= righttargetAngle)
 						{
-							state = State.driveToHook;
-							RobotMap.myRobot.drive(0,0);
-						}*/
-						System.out.println("turn");
-						Robot.gearVision.runGearVision();
-						if(Robot.gearVision.switchStateGear == true){
-							state = State.driveToHook;
+							RobotMap.myRobot.drive(0.25,1);//need to try on robot; need to change left value every time, for left right turn chek + (left) or -(right) value 
 						}
-						System.out.println(Robot.gearVision.switchStateGear + "AUTO AUTO");
+					}
+					else 
+					{
+						state = State.driveToHookNV;
+						RobotMap.myRobot.drive(0,0);
+					}
+						
 
 			
 
 			break;
 
-		case driveToHook:
-			/*
+		case driveToHookNV:
+			
 			if(isWithinRange() == false){
-				RobotMap.myRobot.drive(-0.25, -angle * 0.03);
+				RobotMap.myRobot.drive(-0.50, -angle * 0.03);
 			}
 			else
 			{
-				state = State.placeTheGear;
+				state = State.placeTheGearNV;
 				RobotMap.myRobot.drive(0,0);
 			}
-			*/
-			System.out.println("driveToHook");
-			Robot.distanceVision.runDistanceVision();
-			if(Robot.distanceVision.switchStateDistance == true){
-				state = State.placeTheGear;
-			}
 			
+			System.out.println("driveToHook");
 			break;
 
-		case placeTheGear:
+		case placeTheGearNV:
 			//			if(Robot.limitSwitchright.islimitSwitchopen() == false){
 			//				//stopgearmotr
 			//				Robot.gearmechanism.gearStop();
@@ -160,29 +164,88 @@ public class Autonomous extends Subsystem  {
 			//				//rungearmotor
 			//				Robot.gearmechanism.openthegear();
 			//			}
-			state = State.turnDriveBackwards;
-			RobotMap.myRobot.drive(0,0);
+			Robot.solSub.activateOne();
+			
+			state = State.turnDriveBackwardsNV;
 			break;
 
-		case turnDriveBackwards:
-			if(distance <= 10)
-			{
-				RobotMap.myRobot.drive(-0.2,1);//check the sign
+		case turnDriveBackwardsNV:
+			if(distance <= 10){
+				RobotMap.myRobot.drive(-0.50,1);//check the sign
 				distance++;
 			}
-			state = State.driveToMiddle;
+			state = State.driveToMiddleNV;
 			break;
 
-		case driveToMiddle:
+		case driveToMiddleNV:
 			if(distance <= 40)
 			{
-				RobotMap.myRobot.drive(-0.25, -angle * 0.03);
+				RobotMap.myRobot.drive(-0.75, -angle * 0.03);
+				distance ++;
+			}
+			state = State.stop;
+			break;
+			
+		case crossLineV:
+			if (driveForward() == true) {
+				if(this.position == AutonomousPosition.MiddleStartingPosition){
+					state = State.driveToHookV;
+				} 
+				else{
+					state = State.turnV;
+				}
+				
+				RobotMap.myRobot.drive(0,0);
+			}
+			break;
+		
+		case turnV:
+			Robot.gearVision.runGearVision(0, 0);
+			if(Robot.gearVision.switchStateGear == true){
+				state = State.driveToHookV;
+			}
+			break;
+		
+		case driveToHookV:
+			if(isWithinRange() == false){
+				//	RobotMap.myRobot.drive(-0.25, -angle * 0.03);
+					System.out.println("driveToHook FALSE");
+					
+					Robot.gearVision.runGearVision(-0.50, 0);
+				}
+				else
+				{
+					state = State.placeTheGearV;
+					RobotMap.myRobot.drive(0,0);
+				}
+			break;
+			
+		case placeTheGearV:
+			Robot.solSub.activateOne();
+			
+			state = State.turnDriveBackwardsV;
+			break;
+			
+		case turnDriveBackwardsV:
+			if(distance <= 10){
+				RobotMap.myRobot.drive(-0.50,1);//check the sign
+				distance++;
+			}
+			state = State.driveToMiddleV;
+			break;
+			
+		case driveToMiddleV:
+			if(distance <= 40)
+			{
+				RobotMap.myRobot.drive(-0.50, -angle * 0.03);
 				distance ++;
 			}
 			state = State.stop;
 			break;
 
 		case stop:
+			Robot.solSub.activateZero();
+			
 			RobotMap.myRobot.drive(0,0);
 			break;
 		default:
@@ -201,7 +264,6 @@ public class Autonomous extends Subsystem  {
 		// TODO Auto-generated method stub
 
 	}
-
 
 
 	/**

@@ -1,6 +1,7 @@
 package org.usfirst.frc.team5962.robot;
 
 import edu.wpi.first.wpilibj.RobotDrive;
+import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.SpeedController;
 //import com.ctre.CANTalon;
 import edu.wpi.first.wpilibj.Victor;
@@ -48,6 +49,9 @@ public class RobotMap {
 	public static Victor robotRightVictor1;
 	public static Victor robotRightVictor2;
 	
+	public static SpeedController leftDrive;
+	public static SpeedController rightDrive;
+	
 	public static void init() {
 		inTakeVictor = new Victor(PWM_CHANNEL_3);
 		inTakeVictor.setSafetyEnabled(false);
@@ -55,9 +59,6 @@ public class RobotMap {
 		ballShootingVictor.setSafetyEnabled(false);
 		scalingVictor = new Victor(PWM_CHANNEL_5);
 		scalingVictor.setSafetyEnabled(false);
-		
-		SpeedController leftDrive;
-		SpeedController rightDrive;
 
 		robotLeftVictor1 = new Victor(0);
 		robotLeftVictor2 = new Victor(1);
@@ -66,8 +67,8 @@ public class RobotMap {
 		
 	    leftDrive = new MultiSpeedController(robotLeftVictor1, robotLeftVictor2);
 	    rightDrive = new MultiSpeedController(robotRightVictor1, robotRightVictor2);
-	    leftDrive.setInverted(false);
-	    rightDrive.setInverted(false);
+	    leftDrive.setInverted(true);
+	    rightDrive.setInverted(true);
 		myRobot = new RobotDrive(leftDrive, rightDrive);
 	}
 }

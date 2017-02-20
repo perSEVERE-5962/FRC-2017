@@ -18,6 +18,7 @@ import org.usfirst.frc.team5962.robot.subsystems.DistanceVision;
 import org.usfirst.frc.team5962.robot.subsystems.Drive;
 import org.usfirst.frc.team5962.robot.subsystems.GearMechanism;
 import org.usfirst.frc.team5962.robot.subsystems.ShootingMechansim;
+import org.usfirst.frc.team5962.robot.subsystems.SolenoidSubsystem;
 import org.usfirst.frc.team5962.robot.subsystems.Autonomous.State;
 import org.usfirst.frc.team5962.robot.subsystems.ScalingMechanism;
 import org.usfirst.frc.team5962.robot.subsystems.Autonomous;
@@ -34,23 +35,22 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  * directory.
  */
 public class Robot extends IterativeRobot {
-
+	
+	public static boolean mode = true; //true = auto, false = teleop
+	
 
 	public static GearLEDVision gearVision = new GearLEDVision();
 	public static BoilerLEDVision boilerVision = new BoilerLEDVision();
 	public static DistanceVision distanceVision = new DistanceVision();
 
 	public static NetworkTable LEDBoiler;
-	public NetworkTable LEDPeg;
-	NetworkTable BlueBoiler;
-	NetworkTable RedBoiler;
+	public static NetworkTable LEDGear;
 	public static Autonomous autonomousSubsystem;
+	public static SolenoidSubsystem solSub;
 
 	public Robot(){
 		LEDBoiler = NetworkTable.getTable("GRIP/LEDBoiler");
-		LEDPeg = NetworkTable.getTable("GRIP/LEDPeg");
-		BlueBoiler = NetworkTable.getTable("GRIP/BlueBoiler");
-		RedBoiler = NetworkTable.getTable("GRIP/RedBoiler");
+		LEDGear = NetworkTable.getTable("GRIP/LEDGear");
 	}
 
 	public static OI oi;
@@ -107,15 +107,17 @@ public class Robot extends IterativeRobot {
 		RobotMap.init();
 
 		camera = new Camera();
-
+		
 		drive = new Drive();
 		ultrasonic = new RobotUltrasonicAnalog(0);
+		solSub = new SolenoidSubsystem();
 		oi = new OI();
 		gyro.resetGyro();
 		intake = new BallIntake();
 		ballshooting = new ShootingMechansim();
 		scaling = new ScalingMechanism();
-
+		
+		
 		gearmechanism = new GearMechanism();
 
 		initAutonomousPositionChooser();
@@ -173,9 +175,11 @@ public class Robot extends IterativeRobot {
 	 * or additional comparisons to the switch structure below with additional strings & commands.
 	 */
 	public void autonomousInit() {
+		mode = true;
+		
 		encoder.reset();		
 		SmartDashboard.putString("Starting Gyro Angle", gyro.getGyroAngle()+"");
-
+		drive.invert();
 		autonomousSubsystem = new Autonomous();
 
 		AutonomousVision autoVision = (AutonomousVision) autonomousVision.getSelected();
@@ -200,6 +204,10 @@ public class Robot extends IterativeRobot {
 	}
 
 	public void teleopInit() {
+		mode = false;
+		
+		drive.uninvert();
+		
 		Command command = new RunArcadeGame();
 		command.start();
 	}

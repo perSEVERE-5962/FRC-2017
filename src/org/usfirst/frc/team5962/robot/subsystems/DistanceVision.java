@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 
 public class DistanceVision extends Subsystem{
 
+	private boolean setGyro = false;
 	private boolean got = false;
 	public boolean sense = true;
 	
@@ -19,6 +20,8 @@ public class DistanceVision extends Subsystem{
 	private int biggestPlace = 0;
 	private int imgHeight = 480;
 	
+	private double initAngle = 0.0;
+	private double sysTimeInit = 0.0;
 	private double biggestValue = 0.0;
 	
 	public static boolean switchStateDistance = false;
@@ -44,6 +47,7 @@ public class DistanceVision extends Subsystem{
 		length = areas.length;
 		place = 0;
 		
+		//setInitAngle();
 		got = true;
 	}
 	
@@ -72,41 +76,50 @@ public class DistanceVision extends Subsystem{
 				biggestPlace = place;
 			}
 		}catch(Exception e){
-			move(0.35, 0);
+			setInitSysTime();
+			double angle = getGyroAngle();
+			move(0.20, 0/*-angle * 0.03*/);
 			printException(e);
 		}
 	}
 	
 	private void centerContours(){
 		try{
+			double angle = getGyroAngle();
 			//avgCenterX = (centerX[biggestPlace] + centerX[biggestPlaceTwo]) / 2;
 			
 			if(centerY[biggestPlace] < ((.5 * imgHeight) - 120)){
-    			move(0.35, 0);
+				setInitSysTime();
+    			move(0.20, 0/*-angle * 0.03*/);
     		}
     		else if(centerY[biggestPlace] > ((.5 * imgHeight) + 120)){
-    			move(-0.35, 0);
+    			setInitSysTime();
+    			move(-0.20, 0/*-angle * 0.03*/);
     		}
     		
     		
     		else if(centerY[biggestPlace] >= ((.5 * imgHeight) - 120) && centerY[biggestPlace] < ((.5 * imgHeight) - 55)){
-    			move(0.25, 0);
+    			setInitSysTime();
+    			move(0.10, 0/*-angle * 0.03*/);
     		}
     		else if(centerY[biggestPlace] <= ((.5 * imgHeight) + 120) && centerY[biggestPlace] > ((.5 * imgHeight) + 55)){
-    			move(-0.25, 0);
+    			setInitSysTime();
+    			move(-0.10, 0/*-angle * 0.03*/);
     		}
     		
     		
     		else if(centerY[biggestPlace] >= ((.5 * imgHeight) - 55) && centerY[biggestPlace] <= ((.5 * imgHeight) + 55)){
-    			switchStateDistance = true;
     			System.out.println("HERE DISTANCE");
-    			move(0, 0);
+    			checkRobotMode();
     		}
     		else{
-    			move(0.35, 0);
+    			setInitSysTime();
+    			move(0.20, 0/*-angle * 0.03*/);
     		}
 		}catch(Exception e){
-			move(0.35, 0);
+			setInitSysTime();
+			double angle = getGyroAngle();
+			move(0.20, 0/*-angle * 0.03*/);
 			printException(e);
 			resetValues();
 		}
@@ -129,7 +142,38 @@ public class DistanceVision extends Subsystem{
 		RobotMap.myRobot.drive(spd, turn);
 	}
 	
+	private double getGyroAngle() {
+		double angle = (Robot.gyro.getGyroAngle() - initAngle);
+		return angle;
+	}
 	
+	private void setInitSysTime(){
+		sysTimeInit = System.currentTimeMillis();
+	}
+	
+	private void compareSysTime(){
+		if((System.currentTimeMillis() - sysTimeInit) >= 100){
+			switchStateDistance = true;
+		}
+	}
+	/*
+	private void setInitAngle(){
+		if(setGyro = false){
+			initAngle = 0; //Robot.gyro.getGyroAngle();
+			setGyro = true;
+		}
+	
+	}*/
+	
+	private void checkRobotMode(){
+		if(Robot.mode == true){
+			compareSysTime();
+			move(0, 0);
+		}
+		else if(Robot.mode == false){
+			move(0, 0);
+		}
+	}
 	
 	
 	

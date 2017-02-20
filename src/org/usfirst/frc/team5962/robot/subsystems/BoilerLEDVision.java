@@ -18,6 +18,7 @@ public class BoilerLEDVision extends Subsystem{
 	private int biggestPlace = 0;
 	private int imgWidth = 640;
 	
+	private double sysTimeInit = 0.0;
 	private double biggestValue = 0.0;
 	
 	
@@ -70,6 +71,7 @@ public class BoilerLEDVision extends Subsystem{
 				biggestPlace = place;
 			}
 		}catch(Exception e){
+			setSysInitTime();
 			move(-0.4, 1);
 			printException(e);
 		}
@@ -80,36 +82,44 @@ public class BoilerLEDVision extends Subsystem{
 			//avgCenterX = (centerX[biggestPlace] + centerX[biggestPlaceTwo]) / 2;
 			
 			if(centerX[biggestPlace] < ((.5*(imgWidth)) - 270)){
+				setSysInitTime();
 				move(-0.35, -1);
 			}
 			else if(centerX[biggestPlace] > ((.5*(imgWidth)) + 270)){
+				setSysInitTime();
 				move(-0.35, 1);
 			}
 			
 			
 			else if(centerX[biggestPlace] >= ((.5*(imgWidth)) - 270) && centerX[biggestPlace] < ((.5*(imgWidth)) - 90)){
+				setSysInitTime();
 				move(-0.20, -1);
 			}
 			else if(centerX[biggestPlace] <= ((.5*(imgWidth)) + 270) && centerX[biggestPlace] > ((.5*(imgWidth)) + 90)){
+				setSysInitTime();
 				move(-0.20, 1);
 			}
 			
 			
 			else if(centerX[biggestPlace] >= ((.5*(imgWidth)) - 90) && centerX[biggestPlace] < ((.5*(imgWidth)) - 50)){
+				setSysInitTime();
 				move(-0.125, -1);
 			}
 			else if(centerX[biggestPlace] <= ((.5*(imgWidth)) + 90) && centerX[biggestPlace] > ((.5*(imgWidth)) + 50)){
+				setSysInitTime();
 				move(-0.125, 1);
 			}
 			
 			
 			else if(centerX[biggestPlace] >= ((.5*(imgWidth)) - 50) && centerX[biggestPlace] <= ((.5*(imgWidth)) + 50)){
-				move(0, 0);
+				checkRobotMode();
 			}
 			else{
+				setSysInitTime();
 				move(-0.4, 1);
 			}
 		}catch(Exception e){
+			setSysInitTime();
 			move(-0.4, 1);
 			printException(e);
 			resetValues();
@@ -131,6 +141,26 @@ public class BoilerLEDVision extends Subsystem{
 	
 	private void move(double spd, double turn){
 		RobotMap.myRobot.drive(spd, turn);
+	}
+	
+	private void compareSysTime(){
+		if((System.currentTimeMillis() - sysTimeInit) >= 200){
+			
+		}
+	}
+	
+	private void checkRobotMode(){
+		if(Robot.mode == true){
+			compareSysTime();
+			move(0, 0);
+		}
+		else if(Robot.mode == false){
+			move(0, 0);
+		}
+	}
+	
+	private void setSysInitTime(){
+		sysTimeInit = System.currentTimeMillis();
 	}
 	
 	

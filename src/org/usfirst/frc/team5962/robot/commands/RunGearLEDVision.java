@@ -19,7 +19,7 @@ public class RunGearLEDVision extends Command {
     }
 
     protected void execute() {
-    	Robot.gearVision.runGearVision();
+    	Robot.gearVision.runGearVision(0, 0);
     }
 
     protected boolean isFinished() {
