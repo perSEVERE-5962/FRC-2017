@@ -10,7 +10,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class RunAutonomous extends Command {
 
 	private Robot.AutonomousTarget target;
-	private Robot.AutonomousVision autoVision;
+	public static Robot.AutonomousVision autoVision;
 
 	private Autonomous autonomousSubsystem = new Autonomous();
 	private boolean reachedTarget = false;
@@ -23,7 +23,15 @@ public class RunAutonomous extends Command {
 
 		this.target = target;
 		this.autoVision = autoVision;
-		autonomousSubsystem.setPosition(position);
+		
+		if(this.autoVision == Robot.AutonomousVision.NotUsingVision){
+			autonomousSubsystem.vision = false;
+			autonomousSubsystem.setPosition(position);
+		}
+		else if(this.autoVision == Robot.AutonomousVision.UsingVision){
+			autonomousSubsystem.vision = true;
+			autonomousSubsystem.setPosition(position);
+		}
 	}
 
 
@@ -34,25 +42,18 @@ public class RunAutonomous extends Command {
 	}
 
 	private void reachTarget(){
-		if(autoVision == Robot.AutonomousVision.NotUsingVision ) 
-		{
-			switch(target){
+		switch(target){
 
-			case CrossTheLine:
-				reachedTarget = autonomousSubsystem.driveForward();
-				break;
-			case PutTheGear:
-				autonomousSubsystem.putTheGear();
-				SmartDashboard.putString("putTheGear", "true");
-				break;
-			default:
-				isFinished = true;
-				break;
-			}
-		}
-		else
-		{
-			// TODO: Add vision code here
+		case CrossTheLine:
+			reachedTarget = autonomousSubsystem.driveForward();
+			break;
+		case PutTheGear:
+			autonomousSubsystem.putTheGear();
+			SmartDashboard.putString("putTheGear", "true");
+			break;
+		default:
+			isFinished = true;
+			break;
 		}
 	}
 

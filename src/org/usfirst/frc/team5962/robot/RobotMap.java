@@ -6,6 +6,7 @@ import com.ctre.CANTalon.TalonControlMode;
 
 import edu.wpi.first.wpilibj.RobotDrive;
 import edu.wpi.first.wpilibj.Servo;
+import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.Talon;
 //import com.ctre.CANTalon;
@@ -58,7 +59,10 @@ public class RobotMap {
 
 	public static Servo axisCameraServoViewHorizontal;
 	public static Servo axisCameraServoViewVertical;
-
+	
+	public static SpeedController leftDrive;
+	public static SpeedController rightDrive;
+	
 	public static void init() {
 		inTakeVictor = new Victor(PWM_CHANNEL_3);
 		inTakeVictor.setSafetyEnabled(false);
@@ -66,9 +70,6 @@ public class RobotMap {
 		ballShootingVictor.setSafetyEnabled(false);
 		scalingVictor = new Victor(PWM_CHANNEL_5);
 		scalingVictor.setSafetyEnabled(false);
-		
-		SpeedController leftDrive;
-		SpeedController rightDrive;
 
 		robotLeftVictor1 = new Victor(PWM_CHANNEL_0);
 		robotLeftVictor2 = new Victor(PWM_CHANNEL_1);
@@ -84,8 +85,8 @@ public class RobotMap {
 				
 	    leftDrive = new MultiSpeedController(robotLeftVictor1, robotLeftVictor2);
 	    rightDrive = new MultiSpeedController(robotRightVictor1, robotRightVictor2);
-	    leftDrive.setInverted(false);
-	    rightDrive.setInverted(false);
+	    leftDrive.setInverted(true);
+	    rightDrive.setInverted(true);
 		myRobot = new RobotDrive(leftDrive, rightDrive);
 	}
 }

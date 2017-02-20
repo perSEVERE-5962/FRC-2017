@@ -20,6 +20,7 @@ public class GearLEDVision extends Subsystem{
 	private int biggestPlaceTwo = 0;
 	private int imgWidth = 640;
 	
+	private double sysTimeInit = 0.0;
 	private double biggestValueOne = 0.0;
 	private double biggestValueTwo = 0.0;
 	private double avgCenterX = 0.0;
@@ -33,18 +34,18 @@ public class GearLEDVision extends Subsystem{
 		
 	}
 	
-	public void runGearVision(){
+	public void runGearVision(double setSpd, double setTurn){
 		if(got == false && sense == true){
 			getTableValues();
 		}
 		else if(got == true && sense == true){
-			comparePlaceToLength();
+			comparePlaceToLength(setSpd, setTurn);
 		}
 	}
 	
 	private void getTableValues(){
-		areas = Robot.LEDBoiler.getNumberArray("area");
-		centerX = Robot.LEDBoiler.getNumberArray("centerX");
+		areas = Robot.LEDGear.getNumberArray("area");
+		centerX = Robot.LEDGear.getNumberArray("centerX");
 		
 		length = areas.length;
 		place = 0;
@@ -52,14 +53,14 @@ public class GearLEDVision extends Subsystem{
 		got = true;
 	}
 	
-	private void comparePlaceToLength(){
+	private void comparePlaceToLength(double setSpd, double setTurn){
 		if(place < length){
 			//increasePlace();
 			updateBiggest();
 			increasePlace();
 		}
 		if(place >= length){
-			centerContours();
+			centerContours(setSpd, setTurn);
 		}
 	}
 	
@@ -77,51 +78,59 @@ public class GearLEDVision extends Subsystem{
 				biggestPlaceOne = place;
 			}
 		}catch(Exception e){
-			move(-0.32, -1);
+			setInitSysTime();
+			move(-0.4, -1);
 			printException(e);
 			resetValues();
 		}
 	}
 	
-	private void centerContours(){
+	private void centerContours(double setSpd, double setTurn){
 		try{
 			avgCenterX = (centerX[biggestPlaceOne] + centerX[biggestPlaceTwo]) / 2;
 			
-			if(avgCenterX < ((.5*(imgWidth)) - 270)){
+			if(avgCenterX < ((.5*(imgWidth)) - (270))){
+				setInitSysTime();
 				move(-0.30, -1);
 			}
-			else if(avgCenterX > ((.5*(imgWidth)) + 270)){
+			else if(avgCenterX > ((.5*(imgWidth)) + (270))){
+				setInitSysTime();
 				move(-0.30, 1);
 			}
 			
 			
-			else if(avgCenterX >= ((.5*(imgWidth)) - 270) && avgCenterX < ((.5*(imgWidth)) - 90)){
+			else if(avgCenterX >= ((.5*(imgWidth)) - (270)) && avgCenterX < ((.5*(imgWidth)) - (90))){
+				setInitSysTime();
 				move(-0.20, -1);
 			}
-			else if(avgCenterX <= ((.5*(imgWidth)) + 270) && avgCenterX > ((.5*(imgWidth)) + 90)){
+			else if(avgCenterX <= ((.5*(imgWidth)) + (270)) && avgCenterX > ((.5*(imgWidth)) + (90))){
+				setInitSysTime();
 				move(-0.20, 1);
 			}
 			
 			
-			else if(avgCenterX >= ((.5*(imgWidth)) - 90) && avgCenterX < ((.5*(imgWidth)) - 50)){
+			else if(avgCenterX >= ((.5*(imgWidth)) - (90)) && avgCenterX < ((.5*(imgWidth)) - (50))){
+				setInitSysTime();
 				move(-0.125, -1);
 			}
-			else if(avgCenterX <= ((.5*(imgWidth)) + 90) && avgCenterX > ((.5*(imgWidth)) + 50)){
+			else if(avgCenterX <= ((.5*(imgWidth)) + (90)) && avgCenterX > ((.5*(imgWidth)) + (50))){
+				setInitSysTime();
 				move(-0.125, 1);
 			}
 			
 			
-			else if(avgCenterX >= ((.5*(imgWidth)) - 50) && avgCenterX <= ((.5*(imgWidth)) + 50)){
-				switchStateGear = true;
+			else if(avgCenterX >= ((.5*(imgWidth)) - (50)) && avgCenterX <= ((.5*(imgWidth)) + (50))){
 				System.out.println(switchStateGear + "GEAR GEAR");
 				System.out.println("HERE GEAR");
-				move(0, 0);
+				checkRobotMode(setSpd, setTurn);
 			}
 			else{
-				move(-0.32, -1);
+				setInitSysTime();
+				move(-0.4, -1);
 			}
 		}catch(Exception e){
-			move(-0.32, -1);
+			setInitSysTime();
+			move(-0.4, -1);
 			printException(e);
 			resetValues();
 		}
@@ -142,6 +151,27 @@ public class GearLEDVision extends Subsystem{
 	
 	private void move(double spd, double turn){
 		RobotMap.myRobot.drive(spd, turn);
+	}
+	
+	private void setInitSysTime(){
+		sysTimeInit = System.currentTimeMillis();
+	}
+	
+	private void compareSysTime(){
+		if((System.currentTimeMillis() - sysTimeInit) >= 200){
+			//Robot.distanceVision.runDistanceVision();
+			switchStateGear = true;
+		}
+	}
+	
+	private void checkRobotMode(double setSpd, double setTurn){
+		if(Robot.mode == true){
+			compareSysTime();
+			move(setSpd, setTurn);
+		}
+		else if(Robot.mode == false){
+			move(setSpd, setTurn);
+		}
 	}
 	
 	

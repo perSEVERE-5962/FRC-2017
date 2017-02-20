@@ -3,7 +3,6 @@ package org.usfirst.frc.team5962.robot;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-
 import org.usfirst.frc.team5962.robot.commands.*;
 
 /**
@@ -46,6 +45,8 @@ public class OI {
 	
 	public JoystickButton joystickTankMode;
 
+	ChangeDriveDirection changeDriveDirection = new ChangeDriveDirection();
+
 	
 	private String currentDriveMode = "";
 	public Joystick gamePad1;
@@ -56,6 +57,7 @@ public class OI {
 	private JoystickButton buttonThree;
 	private JoystickButton buttonFour;
 	private JoystickButton buttonFive;
+	private JoystickButton buttonSix;
 
 	public OI() {
 		// add game controllers
@@ -69,18 +71,17 @@ public class OI {
 		buttonThree = new JoystickButton(gamePad1, 3);
 		buttonFour = new JoystickButton(gamePad1, 4);
 		buttonFive = new JoystickButton(gamePad1, 5);
+		buttonSix = new JoystickButton(gamePad1, 6);
+		// assign buttons
 		buttonOne.toggleWhenPressed(solenoidZeroOne);
 		buttonTwo.toggleWhenPressed(runBoilerVision);
 		buttonThree.toggleWhenPressed(runGearVision);
 		buttonFour.toggleWhenPressed(runDistanceVision);
 		buttonFive.toggleWhenPressed(runPID);
+		buttonSix.toggleWhenPressed(changeDriveDirection);
+		
 		joystickTankMode = new JoystickButton(joystickRight, 8);
-		
-		
-		
 		joystickTankMode.whenPressed(new RunJoystickTank());
-		
-		
 	}
 	public double getCoPilotRightTrigger() {
 		double value = gamePad1.getRawAxis(3);
