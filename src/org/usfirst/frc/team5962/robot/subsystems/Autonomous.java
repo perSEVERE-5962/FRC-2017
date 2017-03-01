@@ -71,9 +71,9 @@ public class Autonomous extends Subsystem  {
 	private boolean isWithinRange() {
 		boolean isWithinRange = false;
 
-		boolean ultrasonicEnabled = Robot.ultrasonic.isEnabled();
+		boolean ultrasonicEnabled = Robot.ultrasonicRight.isEnabled();
 		if (ultrasonicEnabled) {
-			isWithinRange = Robot.ultrasonic.getRange() <= ULTRASONIC_RANGE_VALUE;
+			isWithinRange = Robot.ultrasonicRight.getRange() <= ULTRASONIC_RANGE_VALUE;
 		} // otherwise just return the default (true)
 		return isWithinRange;
 	}

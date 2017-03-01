@@ -24,6 +24,7 @@ public class RunPID extends Command{
     		System.out.println("execute");
     		
     	Robot.pidEncoders.teleopPeriodic();
+    	//Robot.scaling.scaling();
     	}   	
     	//System.out.println("start");
     }

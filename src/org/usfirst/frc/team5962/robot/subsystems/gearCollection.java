@@ -12,7 +12,7 @@ public class gearCollection extends Subsystem {
     }
     
     public void ultrasonicCollection(){
-    	if(Robot.ultrasonic.getRange() >= 7){
+    	if(Robot.ultrasonicRight.getRange() >= 7){
     		
     	}
     }

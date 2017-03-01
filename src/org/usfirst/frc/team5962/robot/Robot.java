@@ -22,6 +22,7 @@ import org.usfirst.frc.team5962.robot.subsystems.GearMechanism;
 import org.usfirst.frc.team5962.robot.subsystems.PIDEncoders;
 import org.usfirst.frc.team5962.robot.subsystems.ShootingMechansim;
 import org.usfirst.frc.team5962.robot.subsystems.SolenoidSubsystem;
+import org.usfirst.frc.team5962.robot.subsystems.LineUpWithWall;
 import org.usfirst.frc.team5962.robot.subsystems.Autonomous.State;
 import org.usfirst.frc.team5962.robot.subsystems.ScalingMechanism;
 import org.usfirst.frc.team5962.robot.subsystems.Autonomous;
@@ -81,7 +82,7 @@ public class Robot extends IterativeRobot {
 	public static BallIntake intake;
 	public static ShootingMechansim ballshooting;
 	public static ScalingMechanism scaling;
-
+	public static LineUpWithWall lineUpWithWall;
 	// Gear Manipulator
 	public static GearMechanism gearmechanism;
 
@@ -90,7 +91,8 @@ public class Robot extends IterativeRobot {
 	//	public static GripPipeline gripPipeline;
 	public static Drive drive;
 
-	public static RobotUltrasonicAnalog ultrasonic;
+	public static RobotUltrasonicAnalog ultrasonicRight;
+	public static  RobotUltrasonicAnalog ultrasonicLeft;
 	public static RobotGyro gyro= new RobotGyro();
 	public static RobotEncoder encoder = new RobotEncoder();
 
@@ -114,13 +116,16 @@ public class Robot extends IterativeRobot {
 		camera = new Camera();
 		
 		drive = new Drive();
-		ultrasonic = new RobotUltrasonicAnalog(0);
+		ultrasonicRight = new RobotUltrasonicAnalog(1);
+		ultrasonicLeft = new RobotUltrasonicAnalog(0);
 		solSub = new SolenoidSubsystem();
 		oi = new OI();
 		gyro.resetGyro();
 		intake = new BallIntake();
 		ballshooting = new ShootingMechansim();
 		scaling = new ScalingMechanism();
+		lineUpWithWall = new LineUpWithWall(ultrasonicLeft, ultrasonicRight);
+		
 		
 		
 		gearmechanism = new GearMechanism();
@@ -186,7 +191,7 @@ public class Robot extends IterativeRobot {
 		
 		encoder.reset();		
 		SmartDashboard.putString("Starting Gyro Angle", gyro.getGyroAngle()+"");
-//		drive.invert();
+		//drive.invert();
 		autonomousSubsystem = new Autonomous();
 
 		AutonomousVision autoVision = (AutonomousVision) autonomousVision.getSelected();
@@ -216,24 +221,24 @@ public class Robot extends IterativeRobot {
 
 		mode = false;
 		
-//		drive.uninvert();
+		//drive.uninvert();
 		
 		command.start();
 		
 	}
 	
-	//	private void pidcontrol()
-	//	{	
+		private void pidcontrol()
+		{	
+			
+			if(oi.lol() == true )
+			{
+				lineUpWithWall.lineUp();
+			}
+			
 	//		
-	//		if(oi.pidEncoders() == true )
-	//		{
-	//			pidencoder.teleopPeriodic();
-	//		}
 	//		
 	//		
-	//		
-	//		
-	//	}
+		}
 	//	private void pidcontrolstop()
 	//	{
 	//
@@ -282,7 +287,8 @@ public class Robot extends IterativeRobot {
 	 */
 	public void teleopPeriodic() {
 		Scheduler.getInstance().run();
-		SmartDashboard.putNumber("Ultrasonic", ultrasonic.getRange());
+		SmartDashboard.putNumber("Ultrasonicright", ultrasonicRight.getRange());
+		SmartDashboard.putNumber("Ultrasonicleft", ultrasonicLeft.getRange());
 		SmartDashboard.putNumber("Encoder", encoder.getDistance());
 
 		cameraPOV.execute();
@@ -290,7 +296,7 @@ public class Robot extends IterativeRobot {
 		intakeBalls();
 		shootBalls();
 		climbTheRope();
-		//pidcontrol();
+		pidcontrol();
 		//pidcontrolstop();
 
 	}
