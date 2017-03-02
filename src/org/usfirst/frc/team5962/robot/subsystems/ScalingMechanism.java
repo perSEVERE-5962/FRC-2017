@@ -11,12 +11,11 @@ public class ScalingMechanism extends Subsystem {
 	//Victor scalingvictor = RobotMap.scalingVictor;
 	
 	CANTalon scalingtalon = RobotMap.scalingtalon;
-	public void scaling()
-	{
+	public void scaling(){
 		scalingtalon.set(-1);
 	}
 
-	public void stop (){
+	public void stop(){
 		scalingtalon.set(0);
 	}
 	

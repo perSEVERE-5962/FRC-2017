@@ -2,8 +2,6 @@ package org.usfirst.frc.team5962.robot.subsystems;
 
 import org.usfirst.frc.team5962.robot.Robot;
 import org.usfirst.frc.team5962.robot.RobotMap;
-import org.usfirst.frc.team5962.robot.subsystems.Autonomous.State;
-
 import edu.wpi.first.wpilibj.command.Subsystem;
 
 public class GearLEDVision extends Subsystem{
@@ -20,9 +18,11 @@ public class GearLEDVision extends Subsystem{
 	private int biggestPlaceTwo = 0;
 	private int imgWidth = 640;
 	
+	public static int direction = -1;
+	
 	private double sysTimeInit = 0.0;
 	private double biggestValueOne = 0.0;
-	private double biggestValueTwo = 0.0;
+	//private double biggestValueTwo = 0.0;
 	private double avgCenterX = 0.0;
 	
 	public static boolean switchStateGear = false;
@@ -43,6 +43,7 @@ public class GearLEDVision extends Subsystem{
 		}
 	}
 	
+	@SuppressWarnings("deprecation")
 	private void getTableValues(){
 		areas = Robot.LEDGear.getNumberArray("area");
 		centerX = Robot.LEDGear.getNumberArray("centerX");
@@ -71,7 +72,7 @@ public class GearLEDVision extends Subsystem{
 	private void updateBiggest(){
 		try{
 			if(areas[place] > biggestValueOne){
-				biggestValueTwo = biggestValueOne;
+				//biggestValueTwo = biggestValueOne;
 				biggestPlaceTwo = biggestPlaceOne;
 			
 				biggestValueOne = areas[place];
@@ -79,7 +80,7 @@ public class GearLEDVision extends Subsystem{
 			}
 		}catch(Exception e){
 			setInitSysTime();
-			move(-0.4, -1);
+			move(-0.4, direction);
 			printException(e);
 			resetValues();
 		}
@@ -126,11 +127,11 @@ public class GearLEDVision extends Subsystem{
 			}
 			else{
 				setInitSysTime();
-				move(-0.4, -1);
+				move(-0.4, direction);
 			}
 		}catch(Exception e){
 			setInitSysTime();
-			move(-0.4, -1);
+			move(-0.4, direction);
 			printException(e);
 			resetValues();
 		}
@@ -145,7 +146,7 @@ public class GearLEDVision extends Subsystem{
 		biggestPlaceOne = 0;
 		biggestPlaceTwo = 0;
 		biggestValueOne = 0;
-		biggestValueTwo = 0;
+		//biggestValueTwo = 0;
 		got = false;
 	}
 	
@@ -172,6 +173,19 @@ public class GearLEDVision extends Subsystem{
 		else if(Robot.mode == false){
 			move(setSpd, setTurn);
 		}
+	}
+	
+	public void setDirection(Robot.AutonomousPosition position){
+		if(position == Robot.AutonomousPosition.LeftStartingPosition || position == Robot.AutonomousPosition.MiddleStartingPosition){
+			direction = 1;
+		}
+		else if(position == Robot.AutonomousPosition.RightStartingPosition){
+			direction = -1;
+		}
+	}
+	
+	public boolean getSwitchStateGear(){
+		return switchStateGear;
 	}
 	
 	

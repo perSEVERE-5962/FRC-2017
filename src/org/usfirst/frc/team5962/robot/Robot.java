@@ -22,7 +22,6 @@ import org.usfirst.frc.team5962.robot.subsystems.GearMechanism;
 import org.usfirst.frc.team5962.robot.subsystems.PIDEncoders;
 import org.usfirst.frc.team5962.robot.subsystems.ShootingMechansim;
 import org.usfirst.frc.team5962.robot.subsystems.SolenoidSubsystem;
-import org.usfirst.frc.team5962.robot.subsystems.Autonomous.State;
 import org.usfirst.frc.team5962.robot.subsystems.ScalingMechanism;
 import org.usfirst.frc.team5962.robot.subsystems.Autonomous;
 import org.usfirst.frc.team5962.robot.subsystems.BallIntake;
@@ -258,14 +257,16 @@ public class Robot extends IterativeRobot {
 	private void shootBalls() {
 		if (oi.getShootingBall() == true)
 		{
-			ballshooting.shootingBall();   		
+			//ballshooting.shootingBall(); 
+			oi.runPID.start();
 		}
 		else 
 		{
-			ballshooting.stop();
+			//ballshooting.stop();
+			oi.runPID.cancel();
 		}
 	}
-
+/*
 	private void climbTheRope() {
 		if (oi.getScaling() == true)
 		{
@@ -276,7 +277,7 @@ public class Robot extends IterativeRobot {
 			scaling.stop();
 		}
 	}
-
+*/
 	/**
 	 * This function is called periodically during operator control
 	 */
@@ -289,7 +290,7 @@ public class Robot extends IterativeRobot {
 
 		intakeBalls();
 		shootBalls();
-		climbTheRope();
+		//climbTheRope();
 		//pidcontrol();
 		//pidcontrolstop();
 

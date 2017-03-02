@@ -41,6 +41,8 @@ public class OI {
 	RunBoilerLEDVision runBoilerVision = new RunBoilerLEDVision();
 	RunGearLEDVision runGearVision = new RunGearLEDVision();
 	RunDistanceVision runDistanceVision = new RunDistanceVision();
+	RunGearCollection runGearCollection = new RunGearCollection();
+	RunScaling runScaling = new RunScaling();
 	public RunPID runPID = new RunPID();
 	
 	public JoystickButton joystickTankMode;
@@ -52,36 +54,58 @@ public class OI {
 	public Joystick gamePad1;
 	public Joystick joystickLeft;
 	public Joystick joystickRight;
-	private JoystickButton buttonOne;
-	private JoystickButton buttonTwo;
-	private JoystickButton buttonThree;
-	private JoystickButton buttonFour;
-	private JoystickButton buttonFive;
-	private JoystickButton buttonSix;
+	private JoystickButton gPButtonOne;
+	private JoystickButton gPButtonTwo;
+	private JoystickButton gPButtonThree;
+	//private JoystickButton gPButtonFour;
+	private JoystickButton gPButtonFive;
+	private JoystickButton gPButtonSix;
+	
+	private JoystickButton jRButtonOne;
+	
+	private JoystickButton jLButtonOne;
 
 	public OI() {
 		// add game controllers
 		gamePad1 = new Joystick(0);
 		joystickLeft = new Joystick(1);
 		joystickRight = new Joystick(2);
-
+		
 		// add buttons
-		buttonOne = new JoystickButton(gamePad1, 1);
-		buttonTwo = new JoystickButton(gamePad1, 2);
-		buttonThree = new JoystickButton(gamePad1, 3);
-		buttonFour = new JoystickButton(gamePad1, 4);
-		buttonFive = new JoystickButton(gamePad1, 5);
-		buttonSix = new JoystickButton(gamePad1, 6);
+		gPButtonOne = new JoystickButton(gamePad1, 1);
+		gPButtonTwo = new JoystickButton(gamePad1, 2);
+		gPButtonThree = new JoystickButton(gamePad1, 3);
+		//gPButtonFour = new JoystickButton(gamePad1, 4);
+		gPButtonFive = new JoystickButton(gamePad1, 5);
+		gPButtonSix = new JoystickButton(gamePad1, 6);
+		
+		jRButtonOne = new JoystickButton(joystickRight, 1);
+		
+		jLButtonOne = new JoystickButton(joystickLeft, 1);
 		// assign buttons
-		buttonOne.toggleWhenPressed(solenoidZeroOne);
-		buttonTwo.toggleWhenPressed(runBoilerVision);
-		buttonThree.toggleWhenPressed(runGearVision);
-		buttonFour.toggleWhenPressed(runDistanceVision);
-		buttonFive.toggleWhenPressed(runPID);
-		buttonSix.toggleWhenPressed(changeDriveDirection);
+		
+		/* TESTING DRIVER CONFIGURATION
+		gPButtonOne.toggleWhenPressed(solenoidZeroOne);
+		gPButtonTwo.toggleWhenPressed(runBoilerVision);
+		gPButtonThree.toggleWhenPressed(runGearVision);
+		gPButtonFour.toggleWhenPressed(runDistanceVision);
+		gPButtonFive.toggleWhenPressed(runPID);
+		gPButtonSix.toggleWhenPressed(changeDriveDirection);
 		
 		joystickTankMode = new JoystickButton(joystickRight, 8);
 		joystickTankMode.whenPressed(new RunJoystickTank());
+		*/
+		
+		// COMPETITION BUTTON CONFIGURATION
+		
+		gPButtonOne.toggleWhenPressed(solenoidZeroOne);
+		gPButtonTwo.whenPressed(runGearCollection);
+		gPButtonThree.whenPressed(runGearVision);
+		gPButtonFive.whenPressed(runBoilerVision);
+		gPButtonSix.whenPressed(runDistanceVision);
+		
+		jRButtonOne.toggleWhenActive(runScaling);
+		jLButtonOne.toggleWhenActive(runScaling);
 	}
 	public double getCoPilotRightTrigger() {
 		double value = gamePad1.getRawAxis(3);
@@ -91,19 +115,19 @@ public class OI {
 	public boolean getIntakeButton()
 	{
 		// TODO: These need to be moved to the co-pilot controller
-		return joystickLeft.getRawButton(3);
+		return gamePad1.getRawAxis(2) > 0.1;
 	}
 
 	public boolean getShootingBall()
 	{
 		// TODO: These need to be moved to the co-pilot controller
-		return joystickLeft.getRawButton(4);
+		return gamePad1.getRawAxis(3) > 0.1;
 	}
 
 	public boolean getScaling()
 	{
 		// TODO: These need to be moved to the co-pilot controller
-		return joystickLeft.getRawButton(5);
+		return joystickRight.getRawButton(1);
 	}
 	
 	

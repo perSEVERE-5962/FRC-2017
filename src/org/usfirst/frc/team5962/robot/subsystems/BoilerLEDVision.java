@@ -23,8 +23,7 @@ public class BoilerLEDVision extends Subsystem{
 	
 	
 	@Override
-	protected void initDefaultCommand() {
-		// TODO Auto-generated method stub		
+	protected void initDefaultCommand() {	
 	}
 	
 	public void runBoilerVision(){
@@ -36,6 +35,7 @@ public class BoilerLEDVision extends Subsystem{
 		}
 	}
 	
+	@SuppressWarnings("deprecation")
 	private void getTableValues(){
 		areas = Robot.LEDBoiler.getNumberArray("area");
 		centerX = Robot.LEDBoiler.getNumberArray("centerX");

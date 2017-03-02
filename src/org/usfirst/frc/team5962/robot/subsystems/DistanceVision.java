@@ -2,13 +2,12 @@ package org.usfirst.frc.team5962.robot.subsystems;
 
 import org.usfirst.frc.team5962.robot.Robot;
 import org.usfirst.frc.team5962.robot.RobotMap;
-import org.usfirst.frc.team5962.robot.subsystems.Autonomous.State;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
 
 public class DistanceVision extends Subsystem{
 
-	private boolean setGyro = false;
+	//private boolean setGyro = false;
 	private boolean got = false;
 	public boolean sense = true;
 	
@@ -20,7 +19,7 @@ public class DistanceVision extends Subsystem{
 	private int biggestPlace = 0;
 	private int imgHeight = 480;
 	
-	private double initAngle = 0.0;
+	//private double initAngle = 0.0;
 	private double sysTimeInit = 0.0;
 	private double biggestValue = 0.0;
 	
@@ -40,6 +39,7 @@ public class DistanceVision extends Subsystem{
 		}
 	}
 	
+	@SuppressWarnings("deprecation")
 	private void getTableValues(){
 		areas = Robot.LEDBoiler.getNumberArray("area");
 		centerY = Robot.LEDBoiler.getNumberArray("centerY");
@@ -77,7 +77,7 @@ public class DistanceVision extends Subsystem{
 			}
 		}catch(Exception e){
 			setInitSysTime();
-			double angle = getGyroAngle();
+			//double angle = getGyroAngle();
 			move(0.20, 0/*-angle * 0.03*/);
 			printException(e);
 		}
@@ -85,7 +85,7 @@ public class DistanceVision extends Subsystem{
 	
 	private void centerContours(){
 		try{
-			double angle = getGyroAngle();
+			//double angle = getGyroAngle();
 			//avgCenterX = (centerX[biggestPlace] + centerX[biggestPlaceTwo]) / 2;
 			
 			if(centerY[biggestPlace] < ((.5 * imgHeight) - 120)){
@@ -118,7 +118,7 @@ public class DistanceVision extends Subsystem{
     		}
 		}catch(Exception e){
 			setInitSysTime();
-			double angle = getGyroAngle();
+			//double angle = getGyroAngle();
 			move(0.20, 0/*-angle * 0.03*/);
 			printException(e);
 			resetValues();
@@ -141,12 +141,12 @@ public class DistanceVision extends Subsystem{
 	private void move(double spd, double turn){
 		RobotMap.myRobot.drive(spd, turn);
 	}
-	
+	/*
 	private double getGyroAngle() {
 		double angle = (Robot.gyro.getGyroAngle() - initAngle);
 		return angle;
 	}
-	
+	*/
 	private void setInitSysTime(){
 		sysTimeInit = System.currentTimeMillis();
 	}
