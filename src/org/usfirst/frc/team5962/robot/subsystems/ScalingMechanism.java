@@ -75,6 +75,15 @@ public class ScalingMechanism extends Subsystem {
         	RobotMap.talon.set(targetSpeed); /* 1500 RPM in either direction */
         }
 	}
+        /*
+	public void scaling(){
+		scalingtalon.set(-1);
+	}
+
+	public void stop(){
+		scalingtalon.set(0);
+	}
+	*/
 	
 	@Override
 	protected void initDefaultCommand() {

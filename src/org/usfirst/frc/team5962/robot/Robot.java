@@ -263,14 +263,16 @@ public class Robot extends IterativeRobot {
 	private void shootBalls() {
 		if (oi.getShootingBall() == true)
 		{
-			ballshooting.shootingBall();   		
+			//ballshooting.shootingBall(); 
+			oi.runPID.start();
 		}
 		else 
 		{
-			ballshooting.stop();
+			//ballshooting.stop();
+			oi.runPID.cancel();
 		}
 	}
-
+/*
 	private void climbTheRope() {
 		if (oi.getScaling() == true)
 		{
@@ -281,7 +283,7 @@ public class Robot extends IterativeRobot {
 			scaling.stop();
 		}
 	}
-
+*/
 	/**
 	 * This function is called periodically during operator control
 	 */
@@ -295,8 +297,10 @@ public class Robot extends IterativeRobot {
 
 		intakeBalls();
 		shootBalls();
-		climbTheRope();
-		pidcontrol();
+
+		//climbTheRope();
+		//pidcontrol();
+
 		//pidcontrolstop();
 
 	}

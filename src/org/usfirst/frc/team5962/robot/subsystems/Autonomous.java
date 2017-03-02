@@ -200,8 +200,11 @@ public class Autonomous extends Subsystem  {
 			break;
 		
 		case turnV:
+			Robot.gearVision.setDirection(position);
+			
 			Robot.gearVision.runGearVision(0, 0);
-			if(Robot.gearVision.switchStateGear == true){
+			
+			if(Robot.gearVision.getSwitchStateGear() == true){
 				state = State.driveToHookV;
 			}
 			break;

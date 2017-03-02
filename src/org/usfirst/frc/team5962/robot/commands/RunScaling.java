@@ -1,17 +1,18 @@
 package org.usfirst.frc.team5962.robot.commands;
 
-import org.usfirst.frc.team5962.robot.Robot;
-
 import edu.wpi.first.wpilibj.command.Command;
-
+import org.usfirst.frc.team5962.robot.subsystems.ScalingMechanism;
 /**
  *
  */
-public class ChangeDriveDirection extends Command {
+public class RunScaling extends Command {
+	
+	ScalingMechanism scaling = new ScalingMechanism();
 
-    public ChangeDriveDirection() {
-        //requires(Robot.drive);
-        Robot.drive.uninvert();
+    public RunScaling() {
+        // Use requires() here to declare subsystem dependencies
+        // eg. requires(chassis);
+    	requires(scaling);
     }
 
     // Called just before this Command runs the first time
@@ -20,7 +21,7 @@ public class ChangeDriveDirection extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	//Robot.drive.invert();
+    	scaling.scaling();
     }
 
     // Make this return true when this Command no longer needs to run execute()
@@ -30,12 +31,12 @@ public class ChangeDriveDirection extends Command {
 
     // Called once after isFinished returns true
     protected void end() {
-    	//Robot.drive.uninvert();
+    	scaling.stop();
     }
 
     // Called when another command which requires one or more of the same
     // subsystems is scheduled to run
     protected void interrupted() {
-    	
+    	end();
     }
 }
