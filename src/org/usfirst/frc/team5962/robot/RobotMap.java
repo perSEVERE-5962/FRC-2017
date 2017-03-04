@@ -64,8 +64,8 @@ public class RobotMap {
 	
 	public static void init() {
 		
-		SpeedController leftDrive;
-		SpeedController rightDrive;
+		//SpeedController leftDrive;
+		//SpeedController rightDrive;
 
 		robotLeftVictor1 = new Victor(PWM_CHANNEL_0);
 		robotLeftVictor2 = new Victor(PWM_CHANNEL_1);

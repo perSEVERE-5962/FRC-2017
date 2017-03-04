@@ -8,7 +8,7 @@ public class RobotEncoder {
 Encoder encoderLeft;
 Encoder encoderRight;
 	
-	int numberOfEncoders = 2;
+	int numberOfEncoders = 1;
 
 	public RobotEncoder() {
 		encoderLeft = new Encoder(0, 1, true, Encoder.EncodingType.k4X);

@@ -41,8 +41,12 @@ public class DistanceVision extends Subsystem{
 	
 	@SuppressWarnings("deprecation")
 	private void getTableValues(){
-		areas = Robot.LEDBoiler.getNumberArray("area");
-		centerY = Robot.LEDBoiler.getNumberArray("centerY");
+		try{
+			areas = Robot.LEDBoiler.getNumberArray("area");
+			centerY = Robot.LEDBoiler.getNumberArray("centerY");
+		}catch(Exception e){
+			System.out.println("ERROR: " + e);
+		}
 		
 		length = areas.length;
 		place = 0;

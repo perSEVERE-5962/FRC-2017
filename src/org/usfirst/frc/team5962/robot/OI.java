@@ -16,12 +16,11 @@ public class OI {
 	RunGearLEDVision runGearVision = new RunGearLEDVision();
 	RunDistanceVision runDistanceVision = new RunDistanceVision();
 	RunGearCollection runGearCollection = new RunGearCollection();
+	ChangeDriveDirection changeDriveDirection = new ChangeDriveDirection();
 	RunScaling runScaling = new RunScaling();
 	public RunPID runPID = new RunPID();
 	
 	public JoystickButton joystickTankMode;
-
-	ChangeDriveDirection changeDriveDirection = new ChangeDriveDirection();
 
 
 	private String currentDriveMode = "";
@@ -40,7 +39,7 @@ public class OI {
 	private JoystickButton gPButtonOne;
 	private JoystickButton gPButtonTwo;
 	private JoystickButton gPButtonThree;
-	//private JoystickButton gPButtonFour;
+	private JoystickButton gPButtonFour;
 	private JoystickButton gPButtonFive;
 	private JoystickButton gPButtonSix;
 	
@@ -70,12 +69,12 @@ public class OI {
 		//buttonThree.toggleWhenPressed(runGearVision);
 		//buttonFour.toggleWhenPressed(runDistanceVision);
 		//buttonFive.toggleWhenPressed(runPID);
-		buttonSix.toggleWhenPressed(changeDriveDirection);
+		//////buttonSix.toggleWhenPressed(changeDriveDirection);
 
 		gPButtonOne = new JoystickButton(gamePad1, 1);
 		gPButtonTwo = new JoystickButton(gamePad1, 2);
 		gPButtonThree = new JoystickButton(gamePad1, 3);
-		//gPButtonFour = new JoystickButton(gamePad1, 4);
+		gPButtonFour = new JoystickButton(gamePad1, 4);
 		gPButtonFive = new JoystickButton(gamePad1, 5);
 		gPButtonSix = new JoystickButton(gamePad1, 6);
 		
@@ -102,6 +101,7 @@ public class OI {
 		gPButtonOne.toggleWhenPressed(solenoidZeroOne);
 		gPButtonTwo.whenPressed(runGearCollection);
 		gPButtonThree.whenPressed(runGearVision);
+		gPButtonFour.toggleWhenPressed(changeDriveDirection);
 		gPButtonFive.whenPressed(runBoilerVision);
 		gPButtonSix.whenPressed(runDistanceVision);
 		

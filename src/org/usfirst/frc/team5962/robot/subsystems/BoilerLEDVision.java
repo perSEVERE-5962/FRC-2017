@@ -37,9 +37,12 @@ public class BoilerLEDVision extends Subsystem{
 	
 	@SuppressWarnings("deprecation")
 	private void getTableValues(){
-		areas = Robot.LEDBoiler.getNumberArray("area");
-		centerX = Robot.LEDBoiler.getNumberArray("centerX");
-		
+		try{
+			areas = Robot.LEDBoiler.getNumberArray("area");
+			centerX = Robot.LEDBoiler.getNumberArray("centerX");
+		}catch(Exception e){
+			System.out.println("Error: " + e);
+		}
 		length = areas.length;
 		place = 0;
 		

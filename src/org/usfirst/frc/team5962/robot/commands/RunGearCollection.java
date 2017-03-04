@@ -1,22 +1,24 @@
 package org.usfirst.frc.team5962.robot.commands;
 
 import org.usfirst.frc.team5962.robot.Robot;
+import org.usfirst.frc.team5962.robot.subsystems.LineUpWithWall;
 
 import edu.wpi.first.wpilibj.command.Command;
 
 public class RunGearCollection extends Command {
-	static boolean stop = false;
+	LineUpWithWall lineUpWithWall = new LineUpWithWall(Robot.ultrasonicLeft, Robot.ultrasonicRight);
+	
 	public RunGearCollection() {
-	    	requires(Robot.lineUpWithWall);
+	    	requires(lineUpWithWall);
 	    }
 
 	    protected void initialize() {
-	    	stop = false;
+	    	
 	    	
 	    }
 
 	    protected void execute() {
-	    	Robot.lineUpWithWall.lineUp();
+	    	lineUpWithWall.lineUp();
 	    }
 
 	    protected boolean isFinished() {
@@ -24,7 +26,7 @@ public class RunGearCollection extends Command {
 	    }
 
 	    protected void end() {
-	    	stop = true;
+	    	
 	    }
 
 	    protected void interrupted() {

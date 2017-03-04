@@ -82,7 +82,7 @@ public class Robot extends IterativeRobot {
 	public static BallIntake intake;
 	public static ShootingMechansim ballshooting;
 	public static ScalingMechanism scaling;
-	public static LineUpWithWall lineUpWithWall;
+	//public static LineUpWithWall lineUpWithWall;
 	// Gear Manipulator
 	public static GearMechanism gearmechanism;
 
@@ -115,16 +115,19 @@ public class Robot extends IterativeRobot {
 
 		camera = new Camera();
 		
-		drive = new Drive();
+		
 		ultrasonicRight = new RobotUltrasonicAnalog(1);
 		ultrasonicLeft = new RobotUltrasonicAnalog(0);
 		solSub = new SolenoidSubsystem();
-		oi = new OI();
 		gyro.resetGyro();
 		intake = new BallIntake();
 		ballshooting = new ShootingMechansim();
 		scaling = new ScalingMechanism();
-		lineUpWithWall = new LineUpWithWall(ultrasonicLeft, ultrasonicRight);
+		//lineUpWithWall = new LineUpWithWall(ultrasonicLeft, ultrasonicRight);
+		
+		drive = new Drive();
+		
+		oi = new OI();
 		
 		
 		
@@ -216,8 +219,8 @@ public class Robot extends IterativeRobot {
 	}
 
 	public void teleopInit() {
-		Command command = new RunJoystickTank(); 
-		// Command command = new RunArcadeGame();
+		//Command command = new RunJoystickTank(); 
+		Command command = new RunArcadeGame();
 
 		mode = false;
 		
@@ -230,10 +233,10 @@ public class Robot extends IterativeRobot {
 		private void pidcontrol()
 		{	
 			
-			if(oi.lol() == true )
-			{
-				lineUpWithWall.lineUp();
-			}
+//			if(oi.lol() == true )
+//			{
+//				lineUpWithWall.lineUp();
+//			}
 			
 	//		
 	//		
