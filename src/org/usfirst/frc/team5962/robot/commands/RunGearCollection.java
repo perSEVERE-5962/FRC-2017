@@ -1,6 +1,7 @@
 package org.usfirst.frc.team5962.robot.commands;
 
 import org.usfirst.frc.team5962.robot.Robot;
+import org.usfirst.frc.team5962.robot.RobotMap;
 import org.usfirst.frc.team5962.robot.subsystems.LineUpWithWall;
 
 import edu.wpi.first.wpilibj.command.Command;
@@ -26,6 +27,7 @@ public class RunGearCollection extends Command {
 	    }
 
 	    protected void end() {
+	    	RobotMap.myRobot.drive(0,0);
 	    	
 	    }
 

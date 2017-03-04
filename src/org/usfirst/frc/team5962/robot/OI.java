@@ -99,7 +99,7 @@ public class OI {
 		// COMPETITION BUTTON CONFIGURATION
 		
 		gPButtonOne.toggleWhenPressed(solenoidZeroOne);
-		gPButtonTwo.whenPressed(runGearCollection);
+		gPButtonTwo.toggleWhenPressed(runGearCollection);
 		gPButtonThree.whenPressed(runGearVision);
 		gPButtonFour.toggleWhenPressed(changeDriveDirection);
 		gPButtonFive.whenPressed(runBoilerVision);

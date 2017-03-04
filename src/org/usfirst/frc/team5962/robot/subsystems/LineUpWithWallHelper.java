@@ -12,7 +12,7 @@ public class LineUpWithWallHelper {
 	public void lineUp(RobotUltrasonicBase ultrasonicLeft, RobotUltrasonicBase ultrasonicRight) {
 
 		if (ultrasonicLeft.getRange() > 8 || ultrasonicRight.getRange() > 8) {
-			driveRobot(-0.6, 0);
+			driveRobot(-0.25, 0);
 		} else if ((ultrasonicLeft.getRange() - ultrasonicRight.getRange()) > 1) {
 			driveRobot(-0.25, 1); // turn left
 		} else if ((ultrasonicRight.getRange() - ultrasonicLeft.getRange()) > 1) {
@@ -20,9 +20,10 @@ public class LineUpWithWallHelper {
 		} else if (ultrasonicLeft.getRange() < 5 && ultrasonicRight.getRange() < 5) {
 			driveRobot(0, 0);
 		} else {
-			driveRobot(-0.6, 0);
+			driveRobot(-0.25, 0);
 		}
 
 	}
 
+	
 }
