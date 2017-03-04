@@ -115,20 +115,13 @@ public class Autonomous extends Subsystem  {
 
 		case turnNV:
 			// TODO: change turn based on position
-					if (this.position == AutonomousPosition.LeftStartingPosition) {
-						
-						if(angle <= lefttargetAngle)
-						{
-							RobotMap.myRobot.drive(0.25,-1);//need to try on robot; need to change left value every time, for left right turn chek + (left) or -(right) value 
-							System.out.println("STUCK TO THE LEFT");
-						}
+					if (this.position == AutonomousPosition.LeftStartingPosition && angle <= lefttargetAngle) {
+						RobotMap.myRobot.drive(0.25,-1);//need to try on robot; need to change left value every time, for left right turn chek + (left) or -(right) value 
+						System.out.println("STUCK TO THE LEFT");
 					} 
-					else if (this.position == AutonomousPosition.RightStartingPosition){
-						if(angle >= righttargetAngle)
-						{
-							RobotMap.myRobot.drive(0.25,1);//need to try on robot; need to change left value every time, for left right turn chek + (left) or -(right) value
-							System.out.println("STUCK TO THE RIGHT");
-						}
+					else if (this.position == AutonomousPosition.RightStartingPosition && angle >= righttargetAngle){
+						RobotMap.myRobot.drive(0.25,1);//need to try on robot; need to change left value every time, for left right turn chek + (left) or -(right) value
+						System.out.println("STUCK TO THE RIGHT");
 					}
 					else 
 					{
@@ -136,7 +129,9 @@ public class Autonomous extends Subsystem  {
 						RobotMap.myRobot.drive(0,0);
 						System.out.println("STUCK ON ELSE");
 					}
-						
+					
+					System.out.println("OUTSIDE THE IFS");
+					System.out.println(angle + righttargetAngle + lefttargetAngle);
 
 			
 
@@ -145,7 +140,7 @@ public class Autonomous extends Subsystem  {
 		case driveToHookNV:
 			
 			if(isWithinRange() == false){
-				RobotMap.myRobot.drive(0/*-0.50*/, -angle * 0.03);
+				RobotMap.myRobot.drive(0.25, 0/*-0.50, -angle * 0.03*/);
 				System.out.println("RANGE IS FALSE, BUT WE MADE IT!!!");
 			}
 			else
