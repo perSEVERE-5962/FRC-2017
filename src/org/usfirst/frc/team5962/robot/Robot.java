@@ -133,6 +133,7 @@ public class Robot extends IterativeRobot {
 		
 		gearmechanism = new GearMechanism();
 		pidencoder = new PIDEncoders();
+		
 		initAutonomousPositionChooser();
 		initAutonomousTargetChooser();
 		initAutonomousVision();
@@ -215,7 +216,7 @@ public class Robot extends IterativeRobot {
 	 */
 	public void autonomousPeriodic() {
 		Scheduler.getInstance().run();
-		SmartDashboard.putNumber("Encoder - Auto", encoder.getDistance());
+		//SmartDashboard.putNumber("Encoder - Auto", encoder.getDistance());
 	}
 
 	public void teleopInit() {
@@ -223,7 +224,7 @@ public class Robot extends IterativeRobot {
 		Command command = new RunArcadeGame();
 
 		mode = false;
-		
+		drive.invert();
 		//drive.uninvert();
 		
 		command.start();
@@ -294,7 +295,7 @@ public class Robot extends IterativeRobot {
 		Scheduler.getInstance().run();
 		SmartDashboard.putNumber("Ultrasonicright", ultrasonicRight.getRange());
 		SmartDashboard.putNumber("Ultrasonicleft", ultrasonicLeft.getRange());
-		SmartDashboard.putNumber("Encoder", encoder.getDistance());
+		//SmartDashboard.putNumber("Encoder", encoder.getDistance());
 
 		cameraPOV.execute();
 
