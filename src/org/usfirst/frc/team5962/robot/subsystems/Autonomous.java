@@ -140,7 +140,7 @@ public class Autonomous extends Subsystem  {
 		case driveToHookNV:
 			
 			if(isWithinRange() == false){
-				RobotMap.myRobot.drive(0.25, 0/*-0.50, -angle * 0.03*/);
+				RobotMap.myRobot.drive(-0.50, -angle * 0.03);
 				System.out.println("RANGE IS FALSE, BUT WE MADE IT!!!");
 			}
 			else
