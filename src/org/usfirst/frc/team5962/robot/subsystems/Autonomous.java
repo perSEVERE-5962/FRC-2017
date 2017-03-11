@@ -14,12 +14,12 @@ public class Autonomous extends Subsystem  {
 	private final double DISTANCETOLINE = 100; //50, 192
 	private final double DISTANCETOGEARMIDDLE = 160; //70, 160
 	private final int ULTRASONIC_RANGE_VALUE = 7;
-	private double lefttargetAngle = 45;
+	private double lefttargetAngle = 38;
 	private double righttargetAngle = -38;
 	private int distance = 0;
 	public static boolean vision = false;
-	private static RobotUltrasonicBase ultrasonicRight;
-	private static RobotUltrasonicBase ultrasonicLeft;
+	//private static RobotUltrasonicBase ultrasonicRight;
+	//private static RobotUltrasonicBase ultrasonicLeft;
 	
 	
 	private double targetDistance = DISTANCETOLINE;
@@ -73,13 +73,13 @@ public class Autonomous extends Subsystem  {
 	private boolean isWithinRange() {
 		boolean isWithinRange = false;
 
-		if (ultrasonicLeft.getRange() > ULTRASONIC_RANGE_VALUE || ultrasonicRight.getRange() > ULTRASONIC_RANGE_VALUE) {
-			RobotMap.myRobot.drive(-0.15, 0);
-		} else if ((ultrasonicLeft.getRange() - ultrasonicRight.getRange()) > 1.5) {
-			RobotMap.myRobot.drive(-0.15, 1); // turn left-
-		} else if ((ultrasonicRight.getRange() - ultrasonicLeft.getRange()) > 1.5){
-			RobotMap.myRobot.drive(-0.15, -1); // turn right
-		} else if (ultrasonicLeft.getRange() <= ULTRASONIC_RANGE_VALUE && ultrasonicRight.getRange() <= ULTRASONIC_RANGE_VALUE) {
+		if (Robot.ultrasonicLeft.getRange() > ULTRASONIC_RANGE_VALUE || Robot.ultrasonicRight.getRange() > ULTRASONIC_RANGE_VALUE) {
+			RobotMap.myRobot.drive(-0.25, 0);
+		} else if ((Robot.ultrasonicLeft.getRange() - Robot.ultrasonicRight.getRange()) > 1.5) {
+			RobotMap.myRobot.drive(-0.25, 1); // turn left-
+		} else if ((Robot.ultrasonicRight.getRange() - Robot.ultrasonicLeft.getRange()) > 1.5){
+			RobotMap.myRobot.drive(-0.25, -1); // turn right
+		} else if (Robot.ultrasonicLeft.getRange() <= ULTRASONIC_RANGE_VALUE && Robot.ultrasonicRight.getRange() <= ULTRASONIC_RANGE_VALUE) {
 			isWithinRange = true;
 			RobotMap.myRobot.drive(0, 0);
 		} else {
@@ -150,7 +150,7 @@ public class Autonomous extends Subsystem  {
 		case driveToHookNV:
 			
 			if(isWithinRange() == false){
-				RobotMap.myRobot.drive(-0.25, 0); // angle
+				//RobotMap.myRobot.drive(-0.25, 0); // angle
 				System.out.println("RANGE IS FALSE, BUT WE MADE IT!!!");
 			}
 			else
