@@ -10,6 +10,7 @@ public class SolenoidSubsystem extends Subsystem {
 
 	static Solenoid s0 = new Solenoid(0);
 	static Solenoid s1 = new Solenoid(1);
+	static Solenoid s2 = new Solenoid(2);
 	
     // Put methods for controlling this subsystem
     // here. Call these from Commands.
@@ -30,6 +31,12 @@ public class SolenoidSubsystem extends Subsystem {
     	s1.set(true);
     }
     
+    public void activateTwo(){
+    	s2.set(true);
+    }
     
+    public void deactivateTwo(){
+    	s2.set(false);
+    }
 }
 

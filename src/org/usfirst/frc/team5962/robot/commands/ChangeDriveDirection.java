@@ -11,7 +11,7 @@ public class ChangeDriveDirection extends Command {
 	
     public ChangeDriveDirection() {
         //requires(Robot.drive);
-        Robot.drive.uninvert();
+       // Robot.drive.uninvert();
     }
 
     // Called just before this Command runs the first time

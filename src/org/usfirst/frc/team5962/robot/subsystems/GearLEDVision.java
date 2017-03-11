@@ -83,7 +83,7 @@ public class GearLEDVision extends Subsystem{
 			}
 		}catch(Exception e){
 			setInitSysTime();
-			move(-0.4, direction);
+			move(-0.3, direction);
 			printException(e);
 			resetValues();
 		}
@@ -130,11 +130,11 @@ public class GearLEDVision extends Subsystem{
 			}
 			else{
 				setInitSysTime();
-				move(-0.4, direction);
+				move(-0.3, direction);
 			}
 		}catch(Exception e){
 			setInitSysTime();
-			move(-0.4, direction);
+			move(-0.3, direction);
 			printException(e);
 			resetValues();
 		}

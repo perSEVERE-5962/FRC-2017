@@ -101,7 +101,7 @@ public class OI {
 		gPButtonOne.toggleWhenPressed(solenoidZeroOne);
 		gPButtonTwo.toggleWhenPressed(runGearCollection);
 		gPButtonThree.whenPressed(runGearVision);
-		gPButtonFour.toggleWhenPressed(changeDriveDirection);
+		gPButtonFour.toggleWhenPressed(/*changeDriveDirection*/ runScaling);
 		gPButtonFive.whenPressed(runBoilerVision);
 		gPButtonSix.whenPressed(runDistanceVision);
 		

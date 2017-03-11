@@ -18,7 +18,6 @@ import org.usfirst.frc.team5962.robot.subsystems.BoilerLEDVision;
 import org.usfirst.frc.team5962.robot.subsystems.Camera;
 import org.usfirst.frc.team5962.robot.subsystems.DistanceVision;
 import org.usfirst.frc.team5962.robot.subsystems.Drive;
-import org.usfirst.frc.team5962.robot.subsystems.GearMechanism;
 import org.usfirst.frc.team5962.robot.subsystems.PIDEncoders;
 import org.usfirst.frc.team5962.robot.subsystems.ShootingMechansim;
 import org.usfirst.frc.team5962.robot.subsystems.SolenoidSubsystem;
@@ -84,7 +83,6 @@ public class Robot extends IterativeRobot {
 	public static ScalingMechanism scaling;
 	//public static LineUpWithWall lineUpWithWall;
 	// Gear Manipulator
-	public static GearMechanism gearmechanism;
 
 	public static Camera camera;
 
@@ -129,9 +127,6 @@ public class Robot extends IterativeRobot {
 		
 		oi = new OI();
 		
-		
-		
-		gearmechanism = new GearMechanism();
 		pidencoder = new PIDEncoders();
 		
 		initAutonomousPositionChooser();
@@ -139,6 +134,8 @@ public class Robot extends IterativeRobot {
 		initAutonomousVision();
 
 		cameraPOV = new CameraControlPOV();
+		
+		solSub.deactivateTwo();
 	}
 
 	private void initAutonomousVision()
@@ -192,6 +189,8 @@ public class Robot extends IterativeRobot {
 	 */
 	public void autonomousInit() {
 		mode = true;
+		
+		drive.invert();
 		
 		encoder.reset();		
 		SmartDashboard.putString("Starting Gyro Angle", gyro.getGyroAngle()+"");

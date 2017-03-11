@@ -2,6 +2,7 @@ package org.usfirst.frc.team5962.robot.subsystems;
 
 import org.usfirst.frc.team5962.robot.Robot;
 import org.usfirst.frc.team5962.robot.RobotMap;
+import org.usfirst.frc.team5962.robot.sensors.RobotUltrasonicBase;
 import org.usfirst.frc.team5962.robot.Robot.AutonomousPosition;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
@@ -10,14 +11,15 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class Autonomous extends Subsystem  {
 
 	private boolean reachedTargetDistance = false;
-	private final double DISTANCETOLINE = 192;
-	private final double DISTANCETOGEARMIDDLE = 160;
+	private final double DISTANCETOLINE = 100; //50, 192
+	private final double DISTANCETOGEARMIDDLE = 160; //70, 160
 	private final int ULTRASONIC_RANGE_VALUE = 7;
-	private double lefttargetAngle = 40;
-	private double righttargetAngle = -40;
+	private double lefttargetAngle = 45;
+	private double righttargetAngle = -38;
 	private int distance = 0;
 	public static boolean vision = false;
-	
+	private static RobotUltrasonicBase ultrasonicRight;
+	private static RobotUltrasonicBase ultrasonicLeft;
 	
 	
 	private double targetDistance = DISTANCETOLINE;
@@ -71,10 +73,18 @@ public class Autonomous extends Subsystem  {
 	private boolean isWithinRange() {
 		boolean isWithinRange = false;
 
-		boolean ultrasonicEnabled = Robot.ultrasonicRight.isEnabled();
-		if (ultrasonicEnabled) {
-			isWithinRange = Robot.ultrasonicRight.getRange() <= ULTRASONIC_RANGE_VALUE;
-		} // otherwise just return the default (true)
+		if (ultrasonicLeft.getRange() > ULTRASONIC_RANGE_VALUE || ultrasonicRight.getRange() > ULTRASONIC_RANGE_VALUE) {
+			RobotMap.myRobot.drive(-0.15, 0);
+		} else if ((ultrasonicLeft.getRange() - ultrasonicRight.getRange()) > 1.5) {
+			RobotMap.myRobot.drive(-0.15, 1); // turn left-
+		} else if ((ultrasonicRight.getRange() - ultrasonicLeft.getRange()) > 1.5){
+			RobotMap.myRobot.drive(-0.15, -1); // turn right
+		} else if (ultrasonicLeft.getRange() <= ULTRASONIC_RANGE_VALUE && ultrasonicRight.getRange() <= ULTRASONIC_RANGE_VALUE) {
+			isWithinRange = true;
+			RobotMap.myRobot.drive(0, 0);
+		} else {
+			RobotMap.myRobot.drive(-0.15, 0);
+		}
 		return isWithinRange;
 	}
 
@@ -82,9 +92,9 @@ public class Autonomous extends Subsystem  {
 	{		
 		double angle = getGyroAngle();
 		// drive to obstacle
-		if (Robot.encoder.getDistance() <= targetDistance)
+		if (Math.abs(Robot.encoder.getDistance()) <= targetDistance)
 		{
-			RobotMap.myRobot.drive(-0.75, -angle * 0.03);			
+			RobotMap.myRobot.drive(-0.25, RobotMap.inverted*(-angle * 0.03));			
 		}
 		else {		
 			RobotMap.myRobot.drive(0, 0);
@@ -116,11 +126,11 @@ public class Autonomous extends Subsystem  {
 		case turnNV:
 			// TODO: change turn based on position
 					if (this.position == AutonomousPosition.LeftStartingPosition && angle <= lefttargetAngle) {
-						RobotMap.myRobot.drive(0.25,-1);//need to try on robot; need to change left value every time, for left right turn chek + (left) or -(right) value 
+						RobotMap.myRobot.drive(0.25,1);//need to try on robot; need to change left value every time, for left right turn chek + (left) or -(right) value 
 						System.out.println("STUCK TO THE LEFT");
 					} 
 					else if (this.position == AutonomousPosition.RightStartingPosition && angle >= righttargetAngle){
-						RobotMap.myRobot.drive(0.25,1);//need to try on robot; need to change left value every time, for left right turn chek + (left) or -(right) value
+						RobotMap.myRobot.drive(0.25,-1);//need to try on robot; need to change left value every time, for left right turn chek + (left) or -(right) value
 						System.out.println("STUCK TO THE RIGHT");
 					}
 					else 
@@ -140,7 +150,7 @@ public class Autonomous extends Subsystem  {
 		case driveToHookNV:
 			
 			if(isWithinRange() == false){
-				RobotMap.myRobot.drive(-0.50, -angle * 0.03);
+				RobotMap.myRobot.drive(-0.25, 0); // angle
 				System.out.println("RANGE IS FALSE, BUT WE MADE IT!!!");
 			}
 			else
@@ -170,20 +180,28 @@ public class Autonomous extends Subsystem  {
 			break;
 
 		case turnDriveBackwardsNV:
-			if(distance <= 10){
-				RobotMap.myRobot.drive(-0.50,1);//check the sign
+			if(distance <= 20){
+				RobotMap.myRobot.drive(0.25, 0);//check the sign
 				distance++;
 			}
-			state = State.driveToMiddleNV;
+			else if(distance > 20 && distance <= 30){
+				RobotMap.myRobot.drive(-0.25, -1);
+				distance++;
+			}
+			else{
+				state = State.driveToMiddleNV;
+			}
 			break;
 
 		case driveToMiddleNV:
-			if(distance <= 40)
+			if(distance <= 45)
 			{
-				RobotMap.myRobot.drive(-0.75, -angle * 0.03);
+				RobotMap.myRobot.drive(-0.25, RobotMap.inverted*(-angle * 0.03));
 				distance ++;
 			}
-			state = State.stop;
+			else{
+				state = State.stop;
+			}
 			break;
 			
 		case crossLineV:
@@ -214,7 +232,7 @@ public class Autonomous extends Subsystem  {
 				//	RobotMap.myRobot.drive(-0.25, -angle * 0.03);
 					System.out.println("driveToHook FALSE");
 					
-					Robot.gearVision.runGearVision(-0.50, 0);
+					Robot.gearVision.runGearVision(-0.25, 0);
 				}
 				else
 				{
@@ -230,20 +248,28 @@ public class Autonomous extends Subsystem  {
 			break;
 			
 		case turnDriveBackwardsV:
-			if(distance <= 10){
-				RobotMap.myRobot.drive(-0.50,1);//check the sign
+			if(distance <= 20 && this.position != AutonomousPosition.MiddleStartingPosition){
+				RobotMap.myRobot.drive(0.25, 0);//check the sign
 				distance++;
 			}
-			state = State.driveToMiddleV;
+			else if(distance > 20 && distance <= 30 && this.position != AutonomousPosition.MiddleStartingPosition){
+				RobotMap.myRobot.drive(-0.25, -1);
+				distance++;
+			}
+			else{
+				state = State.driveToMiddleV;
+			}
 			break;
 			
 		case driveToMiddleV:
-			if(distance <= 40)
+			if(distance <= 45 && this.position != AutonomousPosition.MiddleStartingPosition)
 			{
-				RobotMap.myRobot.drive(-0.50, -angle * 0.03);
+				RobotMap.myRobot.drive(-0.50, RobotMap.inverted*(-angle * 0.03));
 				distance ++;
 			}
-			state = State.stop;
+			else{
+				state = State.stop;
+			}
 			break;
 
 		case stop:

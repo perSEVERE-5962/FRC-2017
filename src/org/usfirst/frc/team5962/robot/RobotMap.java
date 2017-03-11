@@ -62,6 +62,8 @@ public class RobotMap {
 	public static SpeedController leftDrive;
 	public static SpeedController rightDrive;
 	
+	public static int inverted = 1;
+	
 	public static void init() {
 		
 		//SpeedController leftDrive;
@@ -76,15 +78,15 @@ public class RobotMap {
 		scalingtalon = new CANTalon(13);
 		ballfeedertalon = new CANTalon(10);
 		agitatortalon = new CANTalon(12);
-		//talon.setInverted(true);
+		talon.setInverted(false);
 		
 		axisCameraServoViewHorizontal = new Servo(PWM_CHANNEL_8);
 		axisCameraServoViewVertical = new Servo(PWM_CHANNEL_9);
 				
 	    leftDrive = new MultiSpeedController(robotLeftVictor1, robotLeftVictor2);
 	    rightDrive = new MultiSpeedController(robotRightVictor1, robotRightVictor2);
-	    leftDrive.setInverted(true);
-	    rightDrive.setInverted(true);
+//	    leftDrive.setInverted(true);
+//	    rightDrive.setInverted(true);
 		myRobot = new RobotDrive(leftDrive, rightDrive);
 	}
 }

@@ -23,12 +23,12 @@ public class RunGearCollection extends Command {
 	    }
 
 	    protected boolean isFinished() {
-	     return false;   
+	     return false;
 	    }
 
 	    protected void end() {
 	    	RobotMap.myRobot.drive(0,0);
-	    	
+	    	Robot.solSub.deactivateTwo();
 	    }
 
 	    protected void interrupted() {
