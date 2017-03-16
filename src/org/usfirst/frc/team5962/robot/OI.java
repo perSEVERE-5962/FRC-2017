@@ -101,12 +101,12 @@ public class OI {
 		gPButtonOne.toggleWhenPressed(solenoidZeroOne);
 		gPButtonTwo.toggleWhenPressed(runGearCollection);
 		gPButtonThree.whenPressed(runGearVision);
-		gPButtonFour.toggleWhenPressed(/*changeDriveDirection*/ runScaling);
+		gPButtonFour.toggleWhenPressed(changeDriveDirection);
 		gPButtonFive.whenPressed(runBoilerVision);
 		gPButtonSix.whenPressed(runDistanceVision);
 		
-		jRButtonOne.toggleWhenActive(runScaling);
-		jLButtonOne.toggleWhenActive(runScaling);
+		//jRButtonOne.toggleWhenActive(runScaling);
+		//jLButtonOne.toggleWhenActive(runScaling);
 	}
 	public double getCoPilotRightTrigger() {
 		double value = gamePad1.getRawAxis(3);
