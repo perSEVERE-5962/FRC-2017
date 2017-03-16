@@ -42,7 +42,7 @@ public class Drive extends Subsystem {
 //	public void arcadeXGame() {
 //		RobotMap.myRobot.arcadeDrive(Robot.oi.gamePad2);
 //	}
-	
+	/*
 	public void invert(){
 		RobotMap.leftDrive.setInverted(true);
 		RobotMap.rightDrive.setInverted(true);
@@ -54,7 +54,7 @@ public class Drive extends Subsystem {
 		RobotMap.rightDrive.setInverted(false);
 		RobotMap.inverted = 1;
 	}
-
+	*/
 
 
 
