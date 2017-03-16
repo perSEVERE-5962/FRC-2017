@@ -7,6 +7,7 @@ import edu.wpi.first.wpilibj.command.Command;
 
 public class RunJoystickTank extends Command {
 
+	//private JoystickThrottle throttle = new JoystickThrottle();
 	public  RunJoystickTank() {
         // Use requires() here to declare subsystem dependencies
         requires(Robot.drive);
@@ -30,7 +31,7 @@ public class RunJoystickTank extends Command {
         		// || Robot.oi.joystickArcadeModeRight.get()
         		 //|| Robot.oi.joystickArcadeModeLeft.get()
         		 //|| Robot.oi.gameXTankMode.get()
-        return  Robot.oi.joystickTankMode.get();
+       return false;// return  Robot.oi.joystickTankMode.get();
     }
 
     // Called once after isFinished returns true

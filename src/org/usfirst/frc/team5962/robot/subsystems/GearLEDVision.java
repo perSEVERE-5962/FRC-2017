@@ -83,7 +83,7 @@ public class GearLEDVision extends Subsystem{
 			}
 		}catch(Exception e){
 			setInitSysTime();
-			move(-0.3, direction);
+			move(-0.2, direction); //-0.4
 			printException(e);
 			resetValues();
 		}
@@ -95,21 +95,21 @@ public class GearLEDVision extends Subsystem{
 			
 			if(avgCenterX < ((.5*(imgWidth)) - (270))){
 				setInitSysTime();
-				move(-0.30, -1);
+				move(-0.30, -1); //-0.40
 			}
 			else if(avgCenterX > ((.5*(imgWidth)) + (270))){
 				setInitSysTime();
-				move(-0.30, 1);
+				move(-0.30, 1); //-0.40
 			}
 			
 			
 			else if(avgCenterX >= ((.5*(imgWidth)) - (270)) && avgCenterX < ((.5*(imgWidth)) - (90))){
 				setInitSysTime();
-				move(-0.20, -1);
+				move(-0.20, -1); //-0.30
 			}
 			else if(avgCenterX <= ((.5*(imgWidth)) + (270)) && avgCenterX > ((.5*(imgWidth)) + (90))){
 				setInitSysTime();
-				move(-0.20, 1);
+				move(-0.20, 1); //-0.30
 			}
 			
 			
@@ -130,11 +130,11 @@ public class GearLEDVision extends Subsystem{
 			}
 			else{
 				setInitSysTime();
-				move(-0.3, direction);
+				move(-0.2, direction); //-0.4
 			}
 		}catch(Exception e){
 			setInitSysTime();
-			move(-0.3, direction);
+			move(-0.2, direction); //-0.4
 			printException(e);
 			resetValues();
 		}
@@ -180,10 +180,10 @@ public class GearLEDVision extends Subsystem{
 	
 	public void setDirection(Robot.AutonomousPosition position){
 		if(position == Robot.AutonomousPosition.LeftStartingPosition || position == Robot.AutonomousPosition.MiddleStartingPosition){
-			direction = 1;
+			direction = -1;
 		}
 		else if(position == Robot.AutonomousPosition.RightStartingPosition){
-			direction = -1;
+			direction = 1;
 		}
 	}
 	

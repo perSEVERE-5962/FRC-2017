@@ -20,10 +20,15 @@ public class Camera extends Subsystem {
 	
 	private UsbCamera camera = CameraServer.getInstance().startAutomaticCapture();
 	
+	private CameraServer server = CameraServer.getInstance();
+	
 	public final static Object imgLock = new Object();
 	
 	public Camera() {
-        camera.setResolution(IMG_WIDTH, IMG_HEIGHT);
+		
+		server.startAutomaticCapture();
+		
+/*        camera.setResolution(IMG_WIDTH, IMG_HEIGHT);
 
         new Thread(() -> {
            UsbCamera camera = CameraServer.getInstance().startAutomaticCapture();
@@ -42,7 +47,7 @@ public class Camera extends Subsystem {
                 outputStream.putFrame(output1);
              }
         }).start();
-        
+        */
 }
 
 	@Override

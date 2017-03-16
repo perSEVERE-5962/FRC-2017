@@ -27,6 +27,7 @@ import org.usfirst.frc.team5962.robot.subsystems.ScalingMechanism;
 import org.usfirst.frc.team5962.robot.subsystems.Autonomous;
 import org.usfirst.frc.team5962.robot.subsystems.BallIntake;
 import org.usfirst.frc.team5962.robot.subsystems.GearLEDVision;
+import org.usfirst.frc.team5962.robot.subsystems.Invert;
 
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -52,6 +53,8 @@ public class Robot extends IterativeRobot {
 	public static NetworkTable LEDGear;
 	public static Autonomous autonomousSubsystem;
 	public static SolenoidSubsystem solSub;
+	
+	public static Invert invert;
 
 	public Robot(){
 		LEDBoiler = NetworkTable.getTable("GRIP/LEDBoiler");
@@ -113,7 +116,7 @@ public class Robot extends IterativeRobot {
 
 		camera = new Camera();
 		
-		
+		invert = new Invert();
 		ultrasonicRight = new RobotUltrasonicAnalog(1);
 		ultrasonicLeft = new RobotUltrasonicAnalog(0);
 		solSub = new SolenoidSubsystem();
@@ -123,11 +126,15 @@ public class Robot extends IterativeRobot {
 		scaling = new ScalingMechanism();
 		//lineUpWithWall = new LineUpWithWall(ultrasonicLeft, ultrasonicRight);
 		
-		drive = new Drive();
+		
+		
+
+		
+		pidencoder = new PIDEncoders();
 		
 		oi = new OI();
 		
-		pidencoder = new PIDEncoders();
+		drive = new Drive();
 		
 		initAutonomousPositionChooser();
 		initAutonomousTargetChooser();
@@ -189,8 +196,8 @@ public class Robot extends IterativeRobot {
 	 */
 	public void autonomousInit() {
 		mode = true;
-		
-		drive.uninvert();
+
+		invert.invert();
 		
 		encoder.reset();		
 		SmartDashboard.putString("Starting Gyro Angle", gyro.getGyroAngle()+"");
@@ -221,11 +228,11 @@ public class Robot extends IterativeRobot {
 	}
 
 	public void teleopInit() {
-		//Command command = new RunJoystickTank(); 
-		Command command = new RunArcadeGame();
+		Command command = new RunJoystickTank(); 
+		//Command command = new RunArcadeGame();
 
 		mode = false;
-		drive.invert();
+		invert.invert();
 		//drive.uninvert();
 		
 		command.start();
