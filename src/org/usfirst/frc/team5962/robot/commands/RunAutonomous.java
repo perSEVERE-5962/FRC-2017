@@ -3,6 +3,7 @@ package org.usfirst.frc.team5962.robot.commands;
 import org.usfirst.frc.team5962.robot.Robot;
 import org.usfirst.frc.team5962.robot.RobotMap;
 import org.usfirst.frc.team5962.robot.subsystems.Autonomous;
+import org.usfirst.frc.team5962.robot.subsystems.Autonomous.State;
 
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -70,7 +71,9 @@ public class RunAutonomous extends Command {
 		{
 			//SmartDashboard.putString("elseif", "!reachedTarget");
 			//SmartDashboard.putString("reachedTarget", counter++ + "");
+			//autonomousSubsystem.state = State.driveToHookNV;;
 			reachTarget();
+			
 		}
 
 		else {

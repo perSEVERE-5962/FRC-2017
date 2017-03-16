@@ -7,7 +7,7 @@ import edu.wpi.first.wpilibj.command.Command;
 
 public class RunJoystickTank extends Command {
 
-	public void RunGameTank() {
+	public  RunJoystickTank() {
         // Use requires() here to declare subsystem dependencies
         requires(Robot.drive);
     }

@@ -42,7 +42,7 @@ public class PIDEncoders extends Subsystem {
 	int targetSpeed = 3600;
 	public void robotInit() {
 		//RobotMap.talon.enableControl();
-		RobotMap.talon.setInverted(true);
+		RobotMap.talon.setInverted(false);
         /* first choose the sensor */
 		RobotMap.talon.setFeedbackDevice(FeedbackDevice.QuadEncoder);
 		RobotMap.talon.reverseSensor(false);

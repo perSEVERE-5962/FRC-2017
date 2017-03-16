@@ -141,8 +141,8 @@ public class Robot extends IterativeRobot {
 	private void initAutonomousVision()
 	{
 		autonomousVision = new SendableChooser<AutonomousVision>();
-		autonomousVision.addDefault("Using Vision ",   AutonomousVision.UsingVision);
-		autonomousVision.addObject("Not Using Vision", AutonomousVision.NotUsingVision);
+		autonomousVision.addDefault("Using Vision ",   AutonomousVision.NotUsingVision);
+		autonomousVision.addObject("Not Using Vision", AutonomousVision.UsingVision);
 		SmartDashboard.putData("Select if vision is to be used in Autonomous:", autonomousVision);
 	}
 
@@ -190,7 +190,7 @@ public class Robot extends IterativeRobot {
 	public void autonomousInit() {
 		mode = true;
 		
-		drive.invert();
+		drive.uninvert();
 		
 		encoder.reset();		
 		SmartDashboard.putString("Starting Gyro Angle", gyro.getGyroAngle()+"");
@@ -216,6 +216,8 @@ public class Robot extends IterativeRobot {
 	public void autonomousPeriodic() {
 		Scheduler.getInstance().run();
 		//SmartDashboard.putNumber("Encoder - Auto", encoder.getDistance());
+		SmartDashboard.putNumber("Auto Ultrasonicright", ultrasonicRight.getRange());
+		SmartDashboard.putNumber("Auto Ultrasonicleft", ultrasonicLeft.getRange());
 	}
 
 	public void teleopInit() {
@@ -230,8 +232,8 @@ public class Robot extends IterativeRobot {
 		
 	}
 	
-		private void pidcontrol()
-		{	
+	//	private void pidcontrol()
+		//{	
 			
 //			if(oi.lol() == true )
 //			{
@@ -241,7 +243,7 @@ public class Robot extends IterativeRobot {
 	//		
 	//		
 	//		
-		}
+		//}
 	//	private void pidcontrolstop()
 	//	{
 	//
@@ -296,6 +298,10 @@ public class Robot extends IterativeRobot {
 		SmartDashboard.putNumber("Ultrasonicleft", ultrasonicLeft.getRange());
 		//SmartDashboard.putNumber("Encoder", encoder.getDistance());
 
+		encoder.getDistance();
+		SmartDashboard.putString("Gyro Angle", "" + gyro.gyro.getAngle());
+		
+		
 		cameraPOV.execute();
 
 		intakeBalls();
