@@ -18,7 +18,7 @@ public class Camera extends Subsystem {
 	public static int IMG_WIDTH = 640;
 	public static int IMG_HEIGHT = 360;
 	
-	private UsbCamera camera = CameraServer.getInstance().startAutomaticCapture();
+	//private UsbCamera camera = CameraServer.getInstance().startAutomaticCapture();
 	
 	private CameraServer server = CameraServer.getInstance();
 	
