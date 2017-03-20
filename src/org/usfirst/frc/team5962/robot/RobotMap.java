@@ -76,12 +76,14 @@ public class RobotMap {
 		
 		talon = new CANTalon(11);
 		scalingtalon = new CANTalon(13);
-		ballfeedertalon = new CANTalon(10);
+		ballfeedertalon = new CANTalon(20);
 		agitatortalon = new CANTalon(12);
 		talon.setInverted(false);
 		
 		axisCameraServoViewHorizontal = new Servo(PWM_CHANNEL_8);
 		axisCameraServoViewVertical = new Servo(PWM_CHANNEL_9);
+		axisCameraServoViewVertical.setSpeed(0.25);
+		axisCameraServoViewHorizontal.setSpeed(0.25);
 				
 	    leftDrive = new MultiSpeedController(robotLeftVictor1, robotLeftVictor2);
 	    rightDrive = new MultiSpeedController(robotRightVictor1, robotRightVictor2);

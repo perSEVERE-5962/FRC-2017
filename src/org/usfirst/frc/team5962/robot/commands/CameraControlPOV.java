@@ -21,7 +21,11 @@ public class CameraControlPOV extends Command {
 
 	public CameraControlPOV() {
 		// Use requires() here to declare subsystem dependencies
-		requires(Robot.camera);
+		//requires(Robot.camera);
+		up = false;
+		down = false;
+		right = false;
+		left = false;
 
 	}
 

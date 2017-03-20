@@ -1,6 +1,7 @@
 
 package org.usfirst.frc.team5962.robot;
 
+import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
@@ -87,8 +88,8 @@ public class Robot extends IterativeRobot {
 	//public static LineUpWithWall lineUpWithWall;
 	// Gear Manipulator
 
-	public static Camera camera;
-
+	//public static Camera camera; //= new Camera();
+	
 	//	public static GripPipeline gripPipeline;
 	public static Drive drive;
 
@@ -114,8 +115,9 @@ public class Robot extends IterativeRobot {
 	public void robotInit() {
 		RobotMap.init();
 
-		camera = new Camera();
-		
+		//camera = new Camera();
+		CameraServer.getInstance().startAutomaticCapture();
+
 		invert = new Invert();
 		ultrasonicRight = new RobotUltrasonicAnalog(1);
 		ultrasonicLeft = new RobotUltrasonicAnalog(0);
@@ -148,8 +150,8 @@ public class Robot extends IterativeRobot {
 	private void initAutonomousVision()
 	{
 		autonomousVision = new SendableChooser<AutonomousVision>();
-		autonomousVision.addDefault("Using Vision ",   AutonomousVision.NotUsingVision);
-		autonomousVision.addObject("Not Using Vision", AutonomousVision.UsingVision);
+		autonomousVision.addDefault("Using Vision ",   AutonomousVision.UsingVision);
+		autonomousVision.addObject("Not Using Vision", AutonomousVision.NotUsingVision);
 		SmartDashboard.putData("Select if vision is to be used in Autonomous:", autonomousVision);
 	}
 
@@ -228,8 +230,10 @@ public class Robot extends IterativeRobot {
 	}
 
 	public void teleopInit() {
-		Command command = new RunJoystickTank(); 
-		//Command command = new RunArcadeGame();
+		//Command command = new RunJoystickTank(); 
+		Command command = new RunArcadeGame();
+		
+		solSub.deactivateTwo();
 
 		mode = false;
 		invert.invert();
@@ -311,8 +315,8 @@ public class Robot extends IterativeRobot {
 		
 		cameraPOV.execute();
 
-		intakeBalls();
-		shootBalls();
+		//intakeBalls();
+		//shootBalls();
 
 		//climbTheRope();
 		//pidcontrol();

@@ -17,6 +17,7 @@ public class OI {
 	RunDistanceVision runDistanceVision = new RunDistanceVision();
 	RunGearCollection runGearCollection = new RunGearCollection();
 	ChangeDriveDirection changeDriveDirection = new ChangeDriveDirection();
+	SwitchGearCollectionLight switchGearLight = new SwitchGearCollectionLight();
 	RunScaling runScaling = new RunScaling();
 	public RunPID runPID = new RunPID();
 	
@@ -27,6 +28,7 @@ public class OI {
 	public Joystick gamePad1;
 	public Joystick joystickLeft;
 	public Joystick joystickRight;
+	public Joystick driverPad;
 
 	private JoystickButton buttonOne;
 	private JoystickButton buttonTwo;
@@ -46,6 +48,10 @@ public class OI {
 	private JoystickButton jRButtonOne;
 	
 	private JoystickButton jLButtonOne;
+	
+	private JoystickButton dpButtonOne;
+	private JoystickButton dpButtonTwo;
+	//private JoystickButton dpButtonSix;
 
 
 	public OI() {
@@ -53,18 +59,19 @@ public class OI {
 		gamePad1 = new Joystick(0);
 		joystickLeft = new Joystick(1);
 		joystickRight = new Joystick(2);
+		driverPad = new Joystick(3);
 		
 		// add buttons
 
-		buttonOne = new JoystickButton(gamePad1, 1);
-		buttonTwo = new JoystickButton(gamePad1, 2);
-		buttonThree = new JoystickButton(gamePad1, 3);
-		buttonFour = new JoystickButton(gamePad1, 4);
+		//buttonOne = new JoystickButton(gamePad1, 1);
+		//buttonTwo = new JoystickButton(gamePad1, 2);
+		//buttonThree = new JoystickButton(gamePad1, 3);
+		//buttonFour = new JoystickButton(gamePad1, 4);
 		//buttonFive = new JoystickButton(gamePad1, 5);
-		buttonSix = new JoystickButton(gamePad1, 6);
+		//buttonSix = new JoystickButton(gamePad1, 6);
 	
 		// assign buttons
-		buttonOne.toggleWhenPressed(solenoidZeroOne);// A
+		//buttonOne.toggleWhenPressed(solenoidZeroOne);// A
 		//buttonTwo.toggleWhenPressed(runBoilerVision);
 		//buttonThree.toggleWhenPressed(runGearVision);
 		//buttonFour.toggleWhenPressed(runDistanceVision);
@@ -81,6 +88,11 @@ public class OI {
 		jRButtonOne = new JoystickButton(joystickRight, 1);
 		
 		jLButtonOne = new JoystickButton(joystickLeft, 1);
+		
+		dpButtonOne = new JoystickButton(driverPad, 1);
+		dpButtonTwo = new JoystickButton(driverPad, 2);
+		//dpButtonSix = new JoystickButton(driverPad, 6);
+		
 		// assign buttons
 		
 		/* TESTING DRIVER CONFIGURATION
@@ -101,12 +113,16 @@ public class OI {
 		gPButtonOne.toggleWhenPressed(solenoidZeroOne);
 		gPButtonTwo.toggleWhenPressed(runGearCollection);
 		gPButtonThree.whenPressed(runGearVision);
-		gPButtonFour.toggleWhenPressed(changeDriveDirection);
-		gPButtonFive.whenPressed(runBoilerVision);
-		gPButtonSix.whenPressed(runDistanceVision);
+		//gPButtonFour.toggleWhenPressed(changeDriveDirection);
+		//gPButtonFive.whenPressed(runBoilerVision);
+		//gPButtonSix.whenPressed(runDistanceVision);
 		
-		//jRButtonOne.toggleWhenActive(runScaling);
-		//jLButtonOne.toggleWhenActive(runScaling);
+		jRButtonOne.toggleWhenActive(runScaling);
+		jLButtonOne.toggleWhenActive(runScaling);
+		
+		dpButtonOne.toggleWhenActive(runScaling);
+		dpButtonTwo.toggleWhenPressed(switchGearLight);
+		//dpButtonSix.toggleWhenPressed(changeDriveDirection);
 	}
 	public double getCoPilotRightTrigger() {
 		double value = gamePad1.getRawAxis(3);
