@@ -22,8 +22,8 @@ public class Autonomous extends Subsystem  {
 	private final double DISTANCETOLINE = 60; //75
 	private final double DISTANCETOGEARMIDDLE = 160; //70, 160
 	private final int ULTRASONIC_RANGE_VALUE = 7;
-	private double lefttargetAngle = 45;
-	private double righttargetAngle = -45;                              //-68
+	private double lefttargetAngle = 45.5;
+	private double righttargetAngle = -45.5;                              //-68
 	private double initAngle = 0.0;
 
 	public static boolean vision = false;
@@ -83,8 +83,10 @@ public class Autonomous extends Subsystem  {
 		boolean isWithinRange = false;
 		
 		double angle = getGyroAngle();
+
 System.out.println("ultrasonic left = " + Robot.ultrasonicLeft.getRange());
 System.out.println("ultrasonic right = " + Robot.ultrasonicRight.getRange());
+
 		if (Robot.ultrasonicLeft.getRange() > ULTRASONIC_RANGE_VALUE || Robot.ultrasonicRight.getRange() > ULTRASONIC_RANGE_VALUE) {
 
 			RobotMap.myRobot.drive(-0.25, 0);
@@ -191,6 +193,7 @@ System.out.println("ultrasonic right = " + Robot.ultrasonicRight.getRange());
 			//				Robot.gearmechanism.openthegear();
 			//			}
 			//Robot.solSub.activateOne();
+
 			System.out.println("placeTheGearNV - we SHOULD have placed the gear");
 			Robot.solSub.activateZero(); // open the gear
 			Robot.solSub.activateTwo();	 // turn on the signal light
