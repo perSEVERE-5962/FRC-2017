@@ -20,13 +20,13 @@ public class Invert extends Subsystem {
     public void invert(){
 		RobotMap.leftDrive.setInverted(true);
 		RobotMap.rightDrive.setInverted(true);
-		RobotMap.inverted = -1;
+		RobotMap.inverted = 1;
 	}
 	
 	public void uninvert(){
 		RobotMap.leftDrive.setInverted(false);
 		RobotMap.rightDrive.setInverted(false);
-		RobotMap.inverted = 1;
+		RobotMap.inverted = -1;
 	}
 }
 

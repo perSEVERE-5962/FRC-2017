@@ -180,10 +180,10 @@ public class GearLEDVision extends Subsystem{
 	
 	public void setDirection(Robot.AutonomousPosition position){
 		if(position == Robot.AutonomousPosition.LeftStartingPosition || position == Robot.AutonomousPosition.MiddleStartingPosition){
-			direction = -1;
+			direction = 1;
 		}
 		else if(position == Robot.AutonomousPosition.RightStartingPosition){
-			direction = 1;
+			direction = -1;
 		}
 	}
 	
