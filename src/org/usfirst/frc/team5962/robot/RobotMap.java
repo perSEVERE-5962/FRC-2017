@@ -51,6 +51,8 @@ public class RobotMap {
 	public static Victor robotLeftVictor2;
 	public static Victor robotRightVictor1;
 	public static Victor robotRightVictor2;
+	public static Victor groundGearVictor;
+	
 	public static CANTalon talon;
 	public static CANTalon scalingtalon;
 	public static CANTalon ballfeedertalon; 
@@ -73,6 +75,8 @@ public class RobotMap {
 		robotLeftVictor2 = new Victor(PWM_CHANNEL_1);
 		robotRightVictor1 = new Victor(PWM_CHANNEL_6);
 		robotRightVictor2 = new Victor(PWM_CHANNEL_7);
+		
+		groundGearVictor = new Victor(PWM_CHANNEL_2);
 		
 		talon = new CANTalon(11);
 		scalingtalon = new CANTalon(13);

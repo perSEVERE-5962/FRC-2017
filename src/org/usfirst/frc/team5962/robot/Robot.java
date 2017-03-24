@@ -28,6 +28,7 @@ import org.usfirst.frc.team5962.robot.subsystems.ScalingMechanism;
 import org.usfirst.frc.team5962.robot.subsystems.Autonomous;
 import org.usfirst.frc.team5962.robot.subsystems.BallIntake;
 import org.usfirst.frc.team5962.robot.subsystems.GearLEDVision;
+import org.usfirst.frc.team5962.robot.subsystems.GroundGear;
 import org.usfirst.frc.team5962.robot.subsystems.Invert;
 
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -54,6 +55,7 @@ public class Robot extends IterativeRobot {
 	public static NetworkTable LEDGear;
 	public static Autonomous autonomousSubsystem;
 	public static SolenoidSubsystem solSub;
+	public static GroundGear groundGear;
 	
 	public static Invert invert;
 
@@ -128,7 +130,7 @@ public class Robot extends IterativeRobot {
 		scaling = new ScalingMechanism();
 		//lineUpWithWall = new LineUpWithWall(ultrasonicLeft, ultrasonicRight);
 		
-		
+		groundGear = new GroundGear();
 		
 
 		
@@ -266,13 +268,14 @@ public class Robot extends IterativeRobot {
 	//	}
 
 	private void intakeBalls() {
-		if (oi.getIntakeButton() == true)
+		if (oi.gamePad1.getRawAxis(1) >= 0.15 || oi.gamePad1.getRawAxis(1) <= 0.15)
 		{
-			intake.inTakeBall();   		
+			//intake.inTakeBall();   	
+			RobotMap.agitatortalon.set(oi.gamePad1.getRawAxis(1));
 		}
 		else 
-		{
-			intake.stop();
+		{  
+			RobotMap.agitatortalon.set(0);
 		}
 	}
 
@@ -315,7 +318,9 @@ public class Robot extends IterativeRobot {
 		
 		cameraPOV.execute();
 
-		//intakeBalls();
+		intakeBalls();
+		groundGear.runGroundGearIntake();
+		
 		//shootBalls();
 
 		//climbTheRope();
