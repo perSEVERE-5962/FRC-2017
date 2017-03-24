@@ -9,6 +9,7 @@ import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.networktables.NetworkTable;
 
 import org.usfirst.frc.team5962.robot.commands.CameraControlPOV;
+import org.usfirst.frc.team5962.robot.commands.CameraControlStick;
 import org.usfirst.frc.team5962.robot.commands.RunArcadeGame;
 import org.usfirst.frc.team5962.robot.commands.RunAutonomous;
 import org.usfirst.frc.team5962.robot.commands.RunJoystickTank;
@@ -50,7 +51,7 @@ public class Robot extends IterativeRobot {
 	public static DistanceVision distanceVision = new DistanceVision();
 	public static PIDEncoders pidEncoders = new PIDEncoders();
 	public static CameraControlPOV cameraPOV;
-
+public static CameraControlStick cameraControlStick;
 	public static NetworkTable LEDBoiler;
 	public static NetworkTable LEDGear;
 	public static Autonomous autonomousSubsystem;
@@ -144,8 +145,8 @@ public class Robot extends IterativeRobot {
 		initAutonomousTargetChooser();
 		initAutonomousVision();
 
-		cameraPOV = new CameraControlPOV();
-		
+		//cameraPOV = new CameraControlPOV();
+		cameraControlStick = new CameraControlStick();
 		solSub.deactivateTwo();
 	}
 
@@ -268,10 +269,10 @@ public class Robot extends IterativeRobot {
 	//	}
 
 	private void intakeBalls() {
-		if (oi.gamePad1.getRawAxis(1) >= 0.15 || oi.gamePad1.getRawAxis(1) <= 0.15)
+		if (oi.gamePad1.getRawAxis(5) >= 0.15 || oi.gamePad1.getRawAxis(5) <= -0.15)
 		{
 			//intake.inTakeBall();   	
-			RobotMap.agitatortalon.set(oi.gamePad1.getRawAxis(1));
+			RobotMap.agitatortalon.set(oi.gamePad1.getRawAxis(5));
 		}
 		else 
 		{  
@@ -316,8 +317,8 @@ public class Robot extends IterativeRobot {
 		SmartDashboard.putString("Gyro Angle", "" + gyro.gyro.getAngle());
 		
 		
-		cameraPOV.execute();
-
+		//cameraPOV.execute();
+		cameraControlStick.execute();
 		intakeBalls();
 		groundGear.runGroundGearIntake();
 		
