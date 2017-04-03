@@ -20,7 +20,7 @@ public class GroundGear extends Subsystem {
     
     public void runGroundGearIntake(){
     	if(Robot.oi.gamePad1.getRawButton(5) == true && Robot.oi.gamePad1.getRawButton(6) == false){
-    		RobotMap.groundGearVictor.set(-1);
+    		RobotMap.groundGearVictor.set(-0.50);
     	}
     	else if(Robot.oi.gamePad1.getRawButton(6) == true && Robot.oi.gamePad1.getRawButton(5) == false){
     		RobotMap.groundGearVictor.set(1);
