@@ -111,8 +111,7 @@ public class OI {
 		// COMPETITION BUTTON CONFIGURATION
 		
 		gPButtonOne.toggleWhenPressed(solenoidZeroOne);
-		gPButtonTwo.toggleWhenPressed(runGearCollection);
-		gPButtonThree.whenPressed(runGearVision);
+		gPButtonThree.whenPressed(runGearCollection);
 		//gPButtonFour.toggleWhenPressed(changeDriveDirection);
 		//gPButtonFive.whenPressed(runBoilerVision);
 		//gPButtonSix.whenPressed(runDistanceVision);
@@ -164,9 +163,20 @@ public class OI {
 	}
 	
 	public int getCoPilotPOV(){
-		int value = gamePad1.getPOV();
+//		int value = gamePad1.getPOV();
+		return 0;
+	}
+	
+	public double getCoPilotXaxis(){
+		double value = gamePad1.getRawAxis(0);
+		//SmartDashboard.putString("Horizontal Camera Axis", "" + value);
 		return value;
 	}
 	
+	public double getCoPilotYaxis(){
+		double value = gamePad1.getRawAxis(1);
+		//SmartDashboard.putString("Vertical Camera Axis", "" + value);
+		return value;
+	}
 }
 

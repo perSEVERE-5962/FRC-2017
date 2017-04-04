@@ -19,12 +19,14 @@ public class Autonomous extends Subsystem  {
 	private int distance = 190;
 	private int backdistance = 0;
 	private boolean gotAngle = false;
-	private final double DISTANCETOLINE = 60; //75
-	private final double DISTANCETOGEARMIDDLE = 160; //70, 160
+	private final double DISTANCETOLINE = 40; //75 //40
+	private final double DISTANCETOGEARMIDDLE = 40; //70, 160
 	private final int ULTRASONIC_RANGE_VALUE = 7;
-	private double lefttargetAngle = 45.5;
-	private double righttargetAngle = -45.5;                              //-68
+	private double lefttargetAngle = 45.5; //45.5
+	private double righttargetAngle = -45.5;     //45.5                         //-68
 	private double initAngle = 0.0;
+	private double intialTime = 0.0;
+	private boolean gotTime = false;
 
 	public static boolean vision = false;
 	//private static RobotUltrasonicBase ultrasonicRight;
@@ -79,6 +81,8 @@ public class Autonomous extends Subsystem  {
 		}
 	}
 
+	
+
 	private boolean isWithinRange() {
 		boolean isWithinRange = false;
 		
@@ -87,14 +91,12 @@ public class Autonomous extends Subsystem  {
 System.out.println("ultrasonic left = " + Robot.ultrasonicLeft.getRange());
 System.out.println("ultrasonic right = " + Robot.ultrasonicRight.getRange());
 
-		if (Robot.ultrasonicLeft.getRange() > ULTRASONIC_RANGE_VALUE || Robot.ultrasonicRight.getRange() > ULTRASONIC_RANGE_VALUE) {
 
-			RobotMap.myRobot.drive(-0.25, 0);
-		}
-		
-		else if (Robot.ultrasonicLeft.getRange() <= ULTRASONIC_RANGE_VALUE || Robot.ultrasonicRight.getRange() <= ULTRASONIC_RANGE_VALUE) {
+		if (Robot.ultrasonicLeft.getRange() <= ULTRASONIC_RANGE_VALUE || Robot.ultrasonicRight.getRange() <= ULTRASONIC_RANGE_VALUE) {
 			isWithinRange = true;
 			RobotMap.myRobot.drive(0, 0);
+		}else if (Robot.ultrasonicLeft.getRange() > ULTRASONIC_RANGE_VALUE || Robot.ultrasonicRight.getRange() > ULTRASONIC_RANGE_VALUE) {
+			RobotMap.myRobot.drive(-0.25, 0);
 		}else if ((Robot.ultrasonicLeft.getRange() - Robot.ultrasonicRight.getRange()) > 2.0) {
 
 			RobotMap.myRobot.drive(-0.25, 1); // turn left-
@@ -108,6 +110,8 @@ System.out.println("ultrasonic right = " + Robot.ultrasonicRight.getRange());
 
 	public boolean driveForward()
 	{		
+		System.out.println("driveForward = true");
+		Robot.encoder.logValues();
 		double angle = getGyroAngle();
 		// drive to obstacle
 		if (Math.abs(Robot.encoder.getDistance()) <= targetDistance)
@@ -195,19 +199,37 @@ System.out.println("ultrasonic right = " + Robot.ultrasonicRight.getRange());
 			//Robot.solSub.activateOne();
 
 			System.out.println("placeTheGearNV - we SHOULD have placed the gear");
+			//if(this.position == AutonomousPosition.MiddleStartingPosition && vision == false)
+			//{
 			Robot.solSub.activateZero(); // open the gear
-			Robot.solSub.activateTwo();	 // turn on the signal light
-			
+			//Robot.solSub.activateTwo();	 // turn on the signal light
+			//}
 			//state = State.turnDriveBackwardsNV;
-			state = State.stop;
+			state = State.turnDriveBackwardsNV;
 			break;
 
 		case turnDriveBackwardsNV:
 
-//			if(backdistance <= 150){
-//				RobotMap.myRobot.drive(0.25, 0);//check the sign
-//				backdistance++;
-//			}
+			/*if(backdistance <= 150){
+				RobotMap.myRobot.drive(0.25, 0);//check the sign
+				backdistance++;
+		}*/
+			if(gotTime == false)
+			{
+				intialTime = System.currentTimeMillis();
+				gotTime = true;
+				
+			}
+			if(System.currentTimeMillis() - intialTime <= 350)
+			{
+				RobotMap.myRobot.drive(0.25, RobotMap.inverted*(0));
+				
+			}
+			else 
+			{
+				state = State.stop;
+				RobotMap.myRobot.drive(0,0);
+			}
 //
 ////			else if(distance > 40 && distance <= 50){
 ////				RobotMap.myRobot.drive(-0.25, -1);
@@ -218,8 +240,8 @@ System.out.println("ultrasonic right = " + Robot.ultrasonicRight.getRange());
 //				state = State.driveToMiddleNV;
 //				RobotMap.myRobot.drive(0,0);
 //			}
-			state = State.driveToMiddleNV;
-			RobotMap.myRobot.drive(0,0);
+//			state = State.driveToMiddleNV;
+			
 			
 			break;
 
@@ -251,6 +273,7 @@ System.out.println("ultrasonic right = " + Robot.ultrasonicRight.getRange());
 					state = State.turnV;
 					
 				}
+				Robot.encoder.logValues();
 				
 				RobotMap.myRobot.drive(0,0);
 			}
@@ -288,8 +311,8 @@ System.out.println("ultrasonic right = " + Robot.ultrasonicRight.getRange());
 			break;
 			
 		case placeTheGearV:
-			Robot.solSub.activateZero();
-			Robot.solSub.activateTwo();
+			//Robot.solSub.activateZero();
+			//Robot.solSub.activateTwo();
 			
 			state = State.turnDriveBackwardsV;
 			break;
