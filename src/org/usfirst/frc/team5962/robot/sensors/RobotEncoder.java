@@ -1,5 +1,7 @@
 package org.usfirst.frc.team5962.robot.sensors;
 
+import org.usfirst.frc.team5962.robot.Robot;
+
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -48,4 +50,8 @@ Encoder encoderRight;
 		return distance;
 	}
 	
+	public void logValues() {
+		System.out.println("encoder left = " +  encoderLeft.getDistance());
+		System.out.println("encoder right = " +  encoderRight.getDistance());		
+	}
 }
