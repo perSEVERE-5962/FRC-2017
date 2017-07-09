@@ -1,0 +1,28 @@
+Gear || Camera Exposure: -11
+
+HSL
+Hue: 60-80
+Saturation: 156-255
+Luminance: 12-25
+
+Filter
+Min: 125
+Max: 1000
+
+
+
+Boiler || Camera Exposure: -9
+
+HSL
+Hue: 19-83
+Saturation: 0-255
+Luminance: 10-25
+
+HSV
+Hue: 10-180
+Saturation: 154-239
+Value: 19-32
+
+Filter
+Min: 400
+Max: 1000
