@@ -7,7 +7,6 @@
 	<classpathentry kind="lib" path="C:/Users/MVRobotics/wpilib/user/java/lib/TalonSRXLibJava.jar"/>
 	<classpathentry kind="lib" path="C:/Users/MVRobotics/wpilib/java/current/lib/cscore.jar"/>
 	<classpathentry kind="lib" path="C:/Users/MVRobotics/wpilib/java/current/lib/opencv.jar"/>
-	<classpathentry kind="lib" path="C:/Users/MVRobotics/.p2/pool/plugins/org.junit_4.12.0.v201504281640/junit.jar"/>
 	<classpathentry kind="var" path="wpilib" sourcepath="wpilib.sources"/>
 	<classpathentry kind="var" path="networktables" sourcepath="networktables.sources"/>
 	<classpathentry kind="var" path="opencv" sourcepath="opencv.sources"/>

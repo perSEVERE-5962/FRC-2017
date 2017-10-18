@@ -3,6 +3,7 @@ package org.usfirst.frc.team5962.robot;
 
 import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.IterativeRobot;
+import edu.wpi.first.wpilibj.RobotDrive;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
@@ -51,7 +52,7 @@ public class Robot extends IterativeRobot {
 	public static DistanceVision distanceVision = new DistanceVision();
 	public static PIDEncoders pidEncoders = new PIDEncoders();
 	public static CameraControlPOV cameraPOV;
-public static CameraControlStick cameraControlStick;
+	public static CameraControlStick cameraControlStick;
 	public static NetworkTable LEDBoiler;
 	public static NetworkTable LEDGear;
 	public static Autonomous autonomousSubsystem;
@@ -234,6 +235,7 @@ public static CameraControlStick cameraControlStick;
 
 	public void teleopInit() {
 		//Command command = new RunJoystickTank(); 
+		RobotMap.myRobot = new RobotDrive(RobotMap.rightDrive, RobotMap.leftDrive);
 		Command command = new RunArcadeGame();
 		
 		solSub.deactivateTwo();
