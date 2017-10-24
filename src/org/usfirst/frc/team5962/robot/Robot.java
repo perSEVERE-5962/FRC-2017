@@ -245,7 +245,7 @@ public class Robot extends IterativeRobot {
 		//drive.uninvert();
 		
 		command.start();
-		RobotMap.myRobot.setMaxOutput(0.5);
+		//RobotMap.myRobot.setMaxOutput(0.5);
 	}
 	
 	//	private void pidcontrol()

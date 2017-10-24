@@ -19,7 +19,7 @@ public class Autonomous extends Subsystem  {
 	private int distance = 190;
 	private int backdistance = 0;
 	private boolean gotAngle = false;
-	private final double DISTANCETOLINE = 40; //75 //40
+	private final double DISTANCETOLINE = 100; //75 //40
 	private final double DISTANCETOGEARMIDDLE = 40; //70, 160
 	private final int ULTRASONIC_RANGE_VALUE = 7;
 	private double lefttargetAngle = 45.5; //45.5
