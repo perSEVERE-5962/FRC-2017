@@ -44,7 +44,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class Robot extends IterativeRobot {
 	
 	public static boolean mode = true; //true = auto, false = teleop
-	
+	//Khushil Bhagat
 
 	public static GearLEDVision gearVision = new GearLEDVision();
 	public static BoilerLEDVision boilerVision = new BoilerLEDVision();
@@ -258,6 +258,7 @@ public static CameraControlStick cameraControlStick;
 	//		
 	//		
 		//}
+	//What is pid?
 	//	private void pidcontrolstop()
 	//	{
 	//
