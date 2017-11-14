@@ -117,7 +117,7 @@ public static CameraControlStick cameraControlStick;
 
 	public void robotInit() {
 		RobotMap.init();
-
+// test
 		//camera = new Camera();
 		CameraServer.getInstance().startAutomaticCapture();
 
