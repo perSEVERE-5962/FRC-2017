@@ -120,7 +120,7 @@ public static CameraControlStick cameraControlStick;
 
 		//camera = new Camera();
 		CameraServer.getInstance().startAutomaticCapture();
-
+		SmartDashboard.putString("The Truth:", "It's never electrical's fault.");
 		invert = new Invert();
 		ultrasonicRight = new RobotUltrasonicAnalog(1);
 		ultrasonicLeft = new RobotUltrasonicAnalog(0);
