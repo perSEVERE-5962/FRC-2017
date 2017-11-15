@@ -10,7 +10,7 @@ public class MultiSpeedController implements SpeedController {
     public MultiSpeedController(SpeedController... speedControllers) {
         this.speedControllers = speedControllers;
         this.set(0.0);
-    }
+    }//star
 
     @Override
     public double get() {
